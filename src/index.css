@@ -1,0 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
+@import "tailwindcss";
+
+html {
+  scrollbar-gutter: stable;
+}
+
+body {
+  font-family: "Manrope", sans-serif;
+}
+
+.bg-image {
+  background-image: url('../src/assets/images/bg-image.png');
+  background-repeat: no-repeat;
+}
