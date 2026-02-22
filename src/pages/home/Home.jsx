@@ -1,5 +1,6 @@
 import Banner from "../../components/Banner";
-import Works from "./components/Works";
+import TrackMovement from "./components/track-movment/TrackMovement";
+import Works from "./components/work/Works";
 
 const Home = () => {
     return (
@@ -8,6 +9,7 @@ const Home = () => {
         }}>
             <Banner />
             <Works />
+            <TrackMovement />
         </div>
     );
 };

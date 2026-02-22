@@ -2,7 +2,7 @@
 const StepCard = ({ step }) => {
     const { number, title, description, image, isOffset } = step || {};
     return (
-        <div className={`relative flex flex-col p-4 rounded-lg bg-[#0a0f1e] border border-slate-800 shadow-xl transition-transform hover:scale-105 ${isOffset ? 'mt-40' : ''}`}>
+        <div className={`relative flex flex-col p-4 rounded-lg bg-[#0a0f1e] border border-slate-800 shadow-xl transition-transform hover:scale-105 h-fit ${isOffset ? 'mt-40' : ''}`}>
             <div className="mb-7">
                 <img className="w-40 h-25" src={image} alt={`work-${image}`} />
             </div>
