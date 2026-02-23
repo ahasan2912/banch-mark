@@ -4,9 +4,13 @@ import Home from "../pages/home/Home";
 import LogIn from "../pages/auth/LogIn"
 import Register from "../pages/auth/Register";
 import Testing from "../pages/Testing";
-import PrivateRoute from "./PrivateRoute";
 import DashboardLayout from "../layout/DashboardLayout";
 import Dashboard from "../pages/dashboard/Dashboard";
+import Features from "../pages/features/Features";
+import Workprocess from "../pages/work/Workprocess";
+import Guidance from "../pages/guidance/Guidance";
+import Registration from "../pages/guidance/components/Registration";
+import GuidanceHome from "../pages/guidance/components/GuidanceHome";
 
 const router = createBrowserRouter([
     {
@@ -17,6 +21,29 @@ const router = createBrowserRouter([
             {
                 path: "/",
                 element: <Home />,
+            },
+            {
+                path: "/features",
+                element: <Features />,
+            },
+            {
+                path: "/how-it-work",
+                element: <
+                    Workprocess />,
+            },
+            {
+                path: "/guidance",
+                element: <Guidance />,
+                children: [
+                    {
+                        index: true, 
+                        element: <GuidanceHome />
+                    },
+                    {
+                        path: "registration",
+                        element: <Registration />
+                    }
+                ]
             },
             {
                 path: "/login",
@@ -35,7 +62,7 @@ const router = createBrowserRouter([
     },
     {
         path: 'dashboard',
-        element: <PrivateRoute><DashboardLayout /></PrivateRoute>,
+        element: <DashboardLayout />,
         children: [
             {
                 path: 'dashboardHome',

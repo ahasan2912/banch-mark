@@ -36,7 +36,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                     </div>
                     <nav className="flex-1">
                         <ul className='space-y-2 pr-5 mt-4 pl-2'>
-                            <NavLink to='dashboardHome' className={({ isActive }) => `flex items-center gap-1 w-full py-3 transition-all duration-200 text-base text-white ${isActive ? 'bg-[#3D286D] py-2 pl-5 rounded-md' : 'pl-5'}`}>
+                            <NavLink to='registration' className={({ isActive }) => `flex items-center gap-1 w-full py-3 transition-all duration-200 text-base text-white ${isActive ? 'bg-[#3D286D] py-2 pl-5 rounded-md' : 'pl-5'}`}>
 
                                 <span>Schedule a Pickup</span>
                             </NavLink>
