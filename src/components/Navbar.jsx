@@ -25,7 +25,7 @@ const Navbar = () => {
                     <NavLink to='/guidance' className={({ isActive }) => `font-semibold hover:text-[#90B5EE] transition ${isActive ? 'text-[#90B5EE]' : 'text-white'}`}>
                         Guidance
                     </NavLink>
-                    <NavLink to='/product' className={({ isActive }) => `font-semibold hover:text-[#90B5EE] transition ${isActive ? 'text-[#90B5EE]' : 'text-white'}`}>
+                    <NavLink to='/contact-us' className={({ isActive }) => `font-semibold hover:text-[#90B5EE] transition ${isActive ? 'text-[#90B5EE]' : 'text-white'}`}>
                         Contact
                     </NavLink>
 

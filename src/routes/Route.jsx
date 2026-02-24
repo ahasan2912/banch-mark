@@ -21,6 +21,10 @@ import SurveCSVFile from "../pages/guidance/components/subroute/SurveCSVFile";
 import AddSurve from "../pages/guidance/components/subroute/AddSurve";
 import EditProject from "../pages/guidance/components/subroute/EditProject";
 import DeleteSection from "../pages/guidance/components/subroute/DeleteSection";
+import ContactUs from "../pages/footer/ContactUs";
+import Privacy from "../pages/footer/Privacy";
+import TermCondition from "../pages/footer/TermCondition";
+import HelpSupport from "../pages/footer/HelpSupport";
 
 const router = createBrowserRouter([
     {
@@ -38,8 +42,7 @@ const router = createBrowserRouter([
             },
             {
                 path: "/how-it-work",
-                element: <
-                    Workprocess />,
+                element: <Workprocess />,
             },
             {
                 path: "/guidance",
@@ -98,6 +101,22 @@ const router = createBrowserRouter([
                         element: <DeleteSection />
                     },
                 ]
+            },
+            {
+                path: "/contact-us",
+                element: <ContactUs />,
+            },
+            {
+                path: "/privacy-policy",
+                element: <Privacy />,
+            },
+            {
+                path: "/terms-condition",
+                element: <TermCondition />,
+            },
+            {
+                path: "/help-support",
+                element: <HelpSupport />,
             },
             {
                 path: "/login",

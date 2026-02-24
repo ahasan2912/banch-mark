@@ -17,6 +17,10 @@ import featuresOne from './images/features-1.png';
 import featuresTwo from './images/features-2.png';
 import featuresThree from './images/features-3.png';
 import featuresFour from './images/features-4.png';
+import facebookIcon from './images/svg/facebook.svg';
+import linkedinIcon from './images/svg/linkdin.svg';
+import instagramIcon from './images/svg/instragram.svg';
+import youtubeIcon from './images/svg/youtube.svg';
 
 export const images = {
     navbarLogo,
@@ -38,4 +42,8 @@ export const images = {
     featuresTwo,
     featuresThree,
     featuresFour,
+    facebookIcon,
+    linkedinIcon,
+    instagramIcon,
+    youtubeIcon,
 }

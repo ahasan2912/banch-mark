@@ -18,7 +18,7 @@ const Guidance = () => {
                 <div className="pt-12 max-w-7xl mx-auto">
                     <GuidanceHeader />
                 </div>
-                <div className="flex flex-col sm:flex-row gap-2 pb-5">
+                <div className="flex flex-col sm:flex-row gap-3 pb-5">
                     <div className="w-full sm:w-72">
                         <GuidanceSidebar />
                     </div>

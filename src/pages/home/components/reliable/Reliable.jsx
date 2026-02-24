@@ -3,7 +3,7 @@ import { images } from '../../../../assets/image';
 
 const Reliable = () => {
     return (
-        <div className='max-w-7xl mx-auto px-4 mt-20 sm:mt-32 pb-10'>
+        <div className='max-w-7xl mx-auto px-4 mt-20 sm:mt-32 pb-20'>
             <HeadingBorder title='Secure & Reliable' />
             <div className="mt-16 md:mt-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                 <div className="flex flex-col items-center">
