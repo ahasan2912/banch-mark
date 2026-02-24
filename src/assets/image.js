@@ -37,5 +37,5 @@ export const images = {
     featuresOne,
     featuresTwo,
     featuresThree,
-    featuresFour
+    featuresFour,
 }

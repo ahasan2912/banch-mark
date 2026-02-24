@@ -10,11 +10,11 @@ const GuidanceHeader = () => {
     };
     return (
         <div className="sticky top-8 max-w-7xl mx-auto mt-14">
-            <div className="flex w-full bg-[#1a2c4d] min-h-40 p-6">
+            <div className="flex w-full bg-[#1a2c4d] min-h-40 p-6 rounded-lg">
                 <div className="flex flex-col w-64 gap-4">
-                    <div className="flex items-center gap-3 bg-[#89b4f7] text-[#1a2c4d] px-4 py-3 rounded-lg cursor-pointer">
-                        <Navigation size={20} className="rotate-45" />
-                        <span className="font-semibold text-sm">Guidance</span>
+                    <div className="flex items-center gap-2 bg-[#89b4f7] text-[#1a2c4d] px-4 py-3 rounded-lg cursor-pointer">
+                        <Navigation size={20} className="-rotate-45" />
+                        <span className="font-semibold text-base text-[#183A71]">Guidance</span>
                     </div>
                     <div className="relative">
                         <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
@@ -29,11 +29,11 @@ const GuidanceHeader = () => {
                         />
                     </div>
                 </div>
-                <div className="flex flex-col ml-12 justify-center">
-                    <h1 className="text-5xl font-medium text-[#89b4f7] mb-2">
+                <div className="flex flex-col ml-5 sm:ml-12 justify-center">
+                    <h1 className="text-2xl sm:text-5xl font-medium text-[#89b4f7] mb-2">
                         Guidance
                     </h1>
-                    <p className="text-gray-300 text-lg">
+                    <p className="text-gray-300 text-base sm:text-lg">
                         Choose a topic to view step-by-step instructions.
                     </p>
                 </div>

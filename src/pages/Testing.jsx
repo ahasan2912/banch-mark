@@ -1,41 +1,39 @@
-import React, { useState } from 'react';
-import { Search, Navigation } from 'lucide-react';
+import React from 'react';
+import { CheckCircle2 } from 'lucide-react';
 
 const Testing = () => {
-  const [searchQuery, setSearchQuery] = useState('');
-  const handleSearchChange = (e) => {
-    const value = e.target.value;
-    setSearchQuery(value);
-    console.log("Searching for:", value);
-  };
+  const steps = [
+    "Go to the projects list.",
+    'Click "Create New Project".',
+    "Enter the project name, region, and other necessary details in the form.",
+    "Select Baseline from the dropdown list.",
+    'Optionally, add sections to your project by clicking on "Add Section".'
+  ];
 
   return (
-    <div className="flex w-full bg-[#1a2c4d] min-h-40 p-6 mt-20">
-      <div className="flex flex-col w-64 gap-4">
-        <div className="flex items-center gap-3 bg-[#89b4f7] text-[#1a2c4d] px-4 py-3 rounded-lg cursor-pointer">
-          <Navigation size={20} className="rotate-45" />
-          <span className="font-semibold text-sm">Guidance</span>
-        </div>
-        <div className="relative">
-          <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
-            <Search size={18} className="text-gray-400" />
-          </div>
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={handleSearchChange}
-            placeholder="Search guides..."
-            className="w-full bg-[#2a3c5d] border border-gray-500 text-white placeholder-gray-400 text-sm rounded-lg pl-10 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all"
-          />
-        </div>
-      </div>
-      <div className="flex flex-col ml-12 justify-center">
-        <h1 className="text-5xl font-medium text-[#89b4f7] mb-2">
-          Guidance
+    <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
+      <div className="w-full max-w-4xl bg-[#BFDBFE] rounded-lg p-8 md:p-12 shadow-sm">
+        <h1 className="text-4xl font-bold text-[#1E3A8A] mb-6">
+          Project Creation
         </h1>
-        <p className="text-gray-300 text-lg">
-          Choose a topic to view step-by-step instructions.
+        
+        <p className="text-lg text-gray-800 mb-8 leading-relaxed">
+          Follow these steps to create a new project in the system. This guide will walk you through the necessary steps to set up a new project.
         </p>
+        <div className="space-y-4">
+          {steps.map((step, index) => (
+            <div key={index} className="flex items-start gap-4 group">
+              <div className="mt-1 shrink-0">
+                <CheckCircle2 
+                  className="w-6 h-6 text-black stroke-[1.5]" 
+                />
+              </div>
+              <p className="text-lg text-gray-800">
+                {step}
+              </p>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

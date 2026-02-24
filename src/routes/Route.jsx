@@ -9,8 +9,18 @@ import Dashboard from "../pages/dashboard/Dashboard";
 import Features from "../pages/features/Features";
 import Workprocess from "../pages/work/Workprocess";
 import Guidance from "../pages/guidance/Guidance";
-import Registration from "../pages/guidance/components/Registration";
+import Registration from "../pages/guidance/components/subroute/Registration";
 import GuidanceHome from "../pages/guidance/components/GuidanceHome";
+import Project from "../pages/guidance/components/subroute/Project";
+import UploadBaseline from "../pages/guidance/components/subroute/UploadBaseline";
+import MonitoringStage from "../pages/guidance/components/subroute/MonitoringStage";
+import GenereateReport from "../pages/guidance/components/subroute/GenereateReport";
+import AddSection from "../pages/guidance/components/subroute/AddSection";
+import AddTarget from "../pages/guidance/components/subroute/AddTarget";
+import SurveCSVFile from "../pages/guidance/components/subroute/SurveCSVFile";
+import AddSurve from "../pages/guidance/components/subroute/AddSurve";
+import EditProject from "../pages/guidance/components/subroute/EditProject";
+import DeleteSection from "../pages/guidance/components/subroute/DeleteSection";
 
 const router = createBrowserRouter([
     {
@@ -36,13 +46,57 @@ const router = createBrowserRouter([
                 element: <Guidance />,
                 children: [
                     {
-                        index: true, 
+                        index: true,
                         element: <GuidanceHome />
                     },
                     {
                         path: "registration",
                         element: <Registration />
-                    }
+                    },
+                    {
+                        path: "project-creation",
+                        element: <Project />
+                    },
+                    {
+                        path: "upload-baseline",
+                        element: <UploadBaseline />
+                    },
+                    {
+                        path: "monitoring-stages",
+                        element: <MonitoringStage />
+                    },
+                    {
+                        path: "generate-reports",
+                        element: <GenereateReport />
+                    },
+                    {
+                        path: "add-section",
+                        element: <AddSection />
+                    },
+                    {
+                        path: "add-target",
+                        element: <AddTarget />
+                    },
+                    {
+                        path: "upload-survey-csv",
+                        element: <SurveCSVFile />
+                    },
+                    {
+                        path: "add-target",
+                        element: <AddTarget />
+                    },
+                    {
+                        path: "add-survey",
+                        element: <AddSurve />
+                    },
+                    {
+                        path: "edit-project",
+                        element: <EditProject />
+                    },
+                    {
+                        path: "delete-section",
+                        element: <DeleteSection />
+                    },
                 ]
             },
             {

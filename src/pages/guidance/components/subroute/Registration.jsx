@@ -9,10 +9,10 @@ const Registration = () => {
         "At least one special character (!@#$%^&)"
     ];
     return (
-        <div className="min-h-screen bg-[#b2d1f0] flex px-6 mt-12 pt-10">
+        <div className="bg-[#b2d1f0] flex px-6 py-4 mt-2 rounded-lg min-h-[74vh]">
             <div className="max-w-2xl w-full text-[#1e293b]">
                 <h1 className="text-4xl font-bold mb-6 text-[#1e3a8a]">Registration</h1>
-                <p className="text-lg mb-8 leading-relaxed">
+                <p className="text-lg mb-6 leading-relaxed">
                     Follow these steps to register in the system. This guide will take you through
                     the necessary steps to create an account.
                 </p>
