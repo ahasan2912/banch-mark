@@ -21,6 +21,7 @@ import facebookIcon from './images/svg/facebook.svg';
 import linkedinIcon from './images/svg/linkdin.svg';
 import instagramIcon from './images/svg/instragram.svg';
 import youtubeIcon from './images/svg/youtube.svg';
+import updateIcon from './images/svg/updatePassword.svg'
 
 export const images = {
     navbarLogo,
@@ -46,4 +47,5 @@ export const images = {
     linkedinIcon,
     instagramIcon,
     youtubeIcon,
+    updateIcon
 }

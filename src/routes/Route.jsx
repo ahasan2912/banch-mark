@@ -25,6 +25,10 @@ import ContactUs from "../pages/footer/ContactUs";
 import Privacy from "../pages/footer/Privacy";
 import TermCondition from "../pages/footer/TermCondition";
 import HelpSupport from "../pages/footer/HelpSupport";
+import ForgotPassword from "../pages/auth/ForgotPassword";
+import ResetPassword from "../pages/auth/ResetPassword";
+import UpdatePassword from "../pages/auth/UpdatePassword";
+import Addcompany from "../pages/auth/Addcompany";
 
 const router = createBrowserRouter([
     {
@@ -127,9 +131,24 @@ const router = createBrowserRouter([
                 element: <Register />,
             },
             {
+                path: "/forgot-password",
+                element: <ForgotPassword />,
+            },
+            {
+                path: "/reset-password",
+                element: <ResetPassword />,
+            },
+            {
+                path: "/update-password",
+                element: <UpdatePassword />,
+            },
+            {
+                path: "/add-company",
+                element: <Addcompany />,
+            },
+            {
                 path: "/testing",
                 element: <Testing />
-
             }
         ],
     },
