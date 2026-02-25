@@ -1,82 +1,55 @@
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
-import AddCompanyModal from "./AddCompanyModal";
+import { useState } from 'react';
+import { Plus, Edit2, Trash2, ChevronDown, } from 'lucide-react';
+import ProjectModal from './ProjectModal';
+import SimpleModal from './SimpleModal';
 
 const Testing = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const { register, handleSubmit } = useForm();
-
-  const onSubmit = (data) => console.log("Form Data:", data);
+  const [activeModal, setActiveModal] = useState(null);
 
   return (
-    <div className="min-h-screen bg-[#0f172a] flex items-center justify-center p-4 font-sans">
-      <div className="w-full max-w-md space-y-8">
-        {/* Header */}
-        <div className="text-center">
-          <h1 className="text-4xl font-bold text-blue-200 mb-2">Create Your Account</h1>
-          <p className="text-green-500 font-medium">Register now for a free 30-day trial. No obligation.</p>
-        </div>
-
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          {/* Company Dropdown */}
-          <div className="space-y-4">
-            <select
-              {...register("company", { required: true })}
-              className="w-full bg-slate-800 border border-slate-600 text-white rounded-lg p-3 outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
-            >
-              <option value="">Select Company</option>
-              <option value="benchmark">BENCHMARK SES LTD</option>
-              <option value="culfin">Culfin Data Solutions</option>
-            </select>
-
-            <div className="flex items-center justify-between">
-              <span className="text-slate-300">Your company not in list?</span>
-              <button
-                type="button"
-                onClick={() => setIsModalOpen(true)}
-                className="bg-blue-200 text-slate-900 px-6 py-2 rounded-md font-semibold hover:bg-blue-300 transition"
-              >
-                Add Company
-              </button>
+    <div className="min-h-screen bg-slate-900 p-8 text-slate-200 font-sans pt-40">
+      <div className="max-w-5xl mx-auto overflow-hidden rounded-lg shadow-2xl">
+        <div className="bg-[#1e293b] p-4 flex items-center justify-between border-b border-slate-700">
+          <div className="flex items-center gap-6 flex-1">
+            <h2 className="font-semibold text-white whitespace-nowrap">Live Projects</h2>
+            <div className="relative w-full max-w-2xl">
+              <select className="w-full bg-white text-slate-900 py-2 px-4 rounded-md appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option>Select Project</option>
+              </select>
+              <ChevronDown className="absolute right-3 top-2.5 text-slate-500 pointer-events-none" size={18} />
             </div>
           </div>
-
-          {/* Terms Checkbox */}
-          <div className="flex items-center space-x-2">
-            <input
-              type="checkbox"
-              id="terms"
-              {...register("terms", { required: true })}
-              className="w-4 h-4 rounded border-slate-600 bg-slate-800"
-            />
-            <label htmlFor="terms" className="text-slate-300">
-              I agree to <span className="text-blue-400 cursor-pointer underline">terms</span> of service
-            </label>
-          </div>
-
-          {/* Action Buttons */}
-          <div className="grid grid-cols-2 gap-4">
-            <button
-              type="button"
-              className="bg-slate-800 text-slate-300 py-3 rounded-lg font-semibold border border-slate-700 hover:bg-slate-700"
-            >
-              Back
+          <div className="flex items-center gap-4 ml-4">
+            <button onClick={() => setActiveModal('project')} className="text-blue-400 hover:text-blue-300 transition-colors">
+              <Plus size={24} />
             </button>
-            <button
-              type="submit"
-              className="bg-blue-200 text-slate-900 py-3 rounded-lg font-semibold hover:bg-blue-300"
-            >
-              Register
+            <button className="text-blue-400 hover:text-blue-300 transition-colors">
+              <Edit2 size={20} />
+            </button>
+            <button className="text-red-500 hover:text-red-400 transition-colors">
+              <Trash2 size={20} />
             </button>
           </div>
-        </form>
+        </div>
+        <div className="bg-[#f0f9ff] p-6 space-y-8 min-h-50">
+          <div className="flex items-center gap-2 group cursor-pointer" onClick={() => setActiveModal('section')}>
+            <span className="text-[#1e293b] font-medium text-lg">Section</span>
+            <Plus className="text-blue-500 group-hover:scale-110 transition-transform" size={20} />
+          </div>
 
-        <p className="text-center text-slate-300">
-          Already have an account? <span className="text-blue-400 cursor-pointer">Sign in</span>
-        </p>
+          <div className="border-t border-blue-100"></div>
 
-        {isModalOpen && <AddCompanyModal onClose={() => setIsModalOpen(false)} />}
+          <div className="flex items-center gap-2 group cursor-pointer" onClick={() => setActiveModal('target')}>
+            <span className="text-[#1e293b] font-medium text-lg">Target</span>
+            <Plus className="text-blue-500 group-hover:scale-110 transition-transform" size={20} />
+          </div>
+        </div>
       </div>
+
+      {/* Modals */}
+      {activeModal === 'project' && <ProjectModal onClose={() => setActiveModal(null)} />}
+      {activeModal === 'section' && <SimpleModal title="Section" label="Section Name" onClose={() => setActiveModal(null)} />}
+      {activeModal === 'target' && <SimpleModal title="New Target" label="Target Name" onClose={() => setActiveModal(null)} />}
     </div>
   );
 };

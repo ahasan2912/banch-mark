@@ -29,6 +29,8 @@ import ForgotPassword from "../pages/auth/ForgotPassword";
 import ResetPassword from "../pages/auth/ResetPassword";
 import UpdatePassword from "../pages/auth/UpdatePassword";
 import Addcompany from "../pages/auth/Addcompany";
+import ReportGeneration from "../pages/report-generate/ReportGeneration";
+import ReportGenerationHome from "../pages/report-generate/component/ReportGenerationHome";
 
 const router = createBrowserRouter([
     {
@@ -145,6 +147,20 @@ const router = createBrowserRouter([
             {
                 path: "/add-company",
                 element: <Addcompany />,
+            },
+            {
+                path: "/report-generation",
+                element: <ReportGeneration />,
+                children: [
+                    {
+                        index: true,
+                        element: <ReportGenerationHome />
+                    },
+                    {
+                        path: "registration",
+                        element: <Registration />
+                    },
+                ]
             },
             {
                 path: "/testing",

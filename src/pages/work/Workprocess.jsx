@@ -25,7 +25,7 @@ const Workprocess = () => {
                         ))}
                     </div>
                 </div>
-                <div className="pt-10 lg:pt-16 flex flex-col sm:flex-row gap-4 sm:justify-center">
+                <div className="py-10 lg:pt-16 flex flex-col sm:flex-row gap-4 sm:justify-center">
                     <button className="bg-[#1A3155]/80 text-white backdrop-blur-md 
                             px-6 py-3 rounded-md font-semibold 
                             border border-white/20 
