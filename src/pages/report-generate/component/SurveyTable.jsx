@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Plus, MoreVertical } from 'lucide-react';
+import { Plus, MoreVertical, X } from 'lucide-react';
 import SurveyModal from '../modal/SurveyModal';
 
 const BASE_E = 123.123;
@@ -9,10 +9,15 @@ const BASE_Z = 123.123;
 export default function SurveyTable() {
     const [surveys, setSurveys] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [openPopupId, setOpenPopupId] = useState(null);
 
     const handleNewSurvey = (newEntry) => {
         setSurveys([...surveys, newEntry]);
         setIsModalOpen(false);
+    };
+
+    const handlePopUp = (rowId) => {
+        setOpenPopupId(openPopupId === rowId ? null : rowId);
     };
 
     return (
@@ -51,7 +56,7 @@ export default function SurveyTable() {
                         </thead>
                         <tbody className="bg-[#eef8ff] text-slate-800 text-base">
                             {surveys.map((row) => (
-                                <tr key={row.id} className="border-b border-blue-100 hover:bg-blue-50 transition">
+                                <tr key={row.id} className="border-b border-blue-100 hover:bg-blue-50 transition relative">
                                     <td className="px-4 py-3 whitespace-nowrap">{row.date}</td>
                                     <td className="px-4 py-3 border-l border-blue-100">{BASE_E.toFixed(3)}</td>
                                     <td className="px-4 py-3">{BASE_N.toFixed(3)}</td>
@@ -62,8 +67,26 @@ export default function SurveyTable() {
                                     <td className="px-4 py-3 border-l border-blue-100 bg-[#dcfce7] font-medium">{(row.E - BASE_E).toFixed(3)}</td>
                                     <td className="px-4 py-3 bg-[#dcfce7] font-medium">{(row.N - BASE_N).toFixed(3)}</td>
                                     <td className="px-4 py-3 bg-[#dcfce7] font-medium">{(row.Z - BASE_Z).toFixed(3)}</td>
-                                    <td className="px-4 py-3 text-right">
-                                        <MoreVertical size={16} className="inline cursor-pointer text-slate-400" />
+                                    <td
+                                        onClick={() => handlePopUp(row.id)}
+                                        className="px-4 py-3 text-right cursor-pointer relative"
+                                    >
+                                        <MoreVertical size={16} className="inline text-gray-700" />
+
+                                        {/* Popup for this row */}
+                                        {openPopupId === row.id && (
+                                            <div className='absolute right-0 -top-20 flex bg-gray-200 p-2 rounded-sm shadow-lg z-10'>
+                                                <div className='flex flex-col mr-2'>
+                                                    <button className='px-2 py-1 hover:bg-gray-300 rounded'>Delete Survey</button>
+                                                    <button className='px-2 py-1 hover:bg-gray-300 rounded'>Copy Survey</button>
+                                                </div>
+                                                <X
+                                                    onClick={() => setOpenPopupId(null)}
+                                                    className='text-black cursor-pointer'
+                                                    size={20}
+                                                />
+                                            </div>
+                                        )}
                                     </td>
                                 </tr>
                             ))}
