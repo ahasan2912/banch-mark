@@ -3,7 +3,7 @@ import { ChevronDown } from "lucide-react";
 export function ProjectSelect({ value, setValue, projects, disabled }) {
   const selected = projects.find((p) => p.id === value);
   return (
-    <div className="relative w-[360px]">
+    <div className="relative w-90">
       <select
         className={[
           "w-full appearance-none rounded-md bg-[#14264a] px-3 py-2 pr-9 text-sm font-semibold text-slate-100",
