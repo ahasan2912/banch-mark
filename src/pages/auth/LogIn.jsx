@@ -1,10 +1,11 @@
 import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const LogIn = () => {
     const [showPassword, setShowPassword] = useState(false);
+    const navigate = useNavigate();
 
     const {
         register,
@@ -14,6 +15,7 @@ const LogIn = () => {
 
     const onSubmit = (data) => {
         console.log("Form Data:", data);
+        navigate('/report-generation');
     };
     return (
         <div className="selection:bg-blue-500/15" style={{

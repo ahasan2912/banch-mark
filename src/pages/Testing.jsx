@@ -1,396 +1,148 @@
-import { useMemo, useState } from "react";
-import { ProjectSelect } from "./components/ProjectSelect";
-import IconButton from "./components/IconButton";
-import { Pencil, Plus, Trash2 } from "lucide-react";
-import NewProjectModal from "./components/NewProjectModal";
-import { NameModal } from "./components/NameModal";
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { X, Plus, MoreVertical } from 'lucide-react';
 
+const BASE_E = 123.123;
+const BASE_N = 123.123;
+const BASE_Z = 123.123;
 
-export default function Testing() {
-  const [projects, setProjects] = useState([]);
-  const [activeProjectId, setActiveProjectId] = useState("");
-  const [sectionsByProject, setSectionsByProject] = useState({});
-  const [targetsBySection, setTargetsBySection] = useState({}); 
+export default function SurveyApp() {
+  const [surveys, setSurveys] = useState([
+    { id: 1, date: '07/02/2026', E: 123.123, N: 123.123, Z: 123.123 },
+    { id: 2, date: '14/02/2026', E: 123.123, N: 123.123, Z: 123.123 },
+  ]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // UI state
-  const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
-  const [isSectionModalOpen, setIsSectionModalOpen] = useState(false);
-  const [isTargetModalOpen, setIsTargetModalOpen] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
 
-  // editing
-  const [editingProjectId, setEditingProjectId] = useState(null);
-  const [editingSection, setEditingSection] = useState(null);
-  const [editingTarget, setEditingTarget] = useState(null);
-
-  const activeSections = useMemo(() => {
-    if (!activeProjectId) return [];
-    return sectionsByProject[activeProjectId] || [];
-  }, [activeProjectId, sectionsByProject]);
-
-  const canCreateSection = !!activeProjectId;
-  const canCreateTarget = !!activeProjectId && activeSections.length > 0;
-
-  const showLists = !!activeProjectId && activeSections.length > 0;
-
-  function uid() {
-    return Math.random().toString(36).slice(2, 10);
-  }
-
-  function upsertProject(data) {
-    if (editingProjectId) {
-      setProjects((prev) =>
-        prev.map((p) => (p.id === editingProjectId ? { ...p, ...data } : p))
-      );
-      setEditingProjectId(null);
-      return;
-    }
-    const id = uid();
-    const newProject = { id, ...data };
-    setProjects((prev) => [newProject, ...prev]);
-    setActiveProjectId(id);
-  }
-
-  function deleteProject(projectId) {
-    setProjects((prev) => prev.filter((p) => p.id !== projectId));
-    setSectionsByProject((prev) => {
-      const copy = { ...prev };
-      const secs = copy[projectId] || [];
-      delete copy[projectId];
-
-      setTargetsBySection((tprev) => {
-        const tcopy = { ...tprev };
-        secs.forEach((s) => delete tcopy[s.id]);
-        return tcopy;
-      });
-
-      return copy;
-    });
-
-    if (activeProjectId === projectId) setActiveProjectId("");
-  }
-
-  function upsertSection(sectionName) {
-    if (!activeProjectId) return;
-
-    if (editingSection?.sectionId) {
-      setSectionsByProject((prev) => {
-        const list = prev[activeProjectId] || [];
-        return {
-          ...prev,
-          [activeProjectId]: list.map((s) =>
-            s.id === editingSection.sectionId ? { ...s, name: sectionName } : s
-          ),
-        };
-      });
-      setEditingSection(null);
-      return;
-    }
-
-    const id = uid();
-    setSectionsByProject((prev) => {
-      const list = prev[activeProjectId] || [];
-      return { ...prev, [activeProjectId]: [...list, { id, name: sectionName }] };
-    });
-  }
-
-  function deleteSection(sectionId) {
-    if (!activeProjectId) return;
-    setSectionsByProject((prev) => {
-      const list = prev[activeProjectId] || [];
-      const next = list.filter((s) => s.id !== sectionId);
-      return { ...prev, [activeProjectId]: next };
-    });
-
-    setTargetsBySection((prev) => {
-      const copy = { ...prev };
-      delete copy[sectionId];
-      return copy;
-    });
-  }
-
-  function upsertTarget(sectionId, targetName) {
-    if (!sectionId) return;
-
-    if (editingTarget?.targetId) {
-      setTargetsBySection((prev) => {
-        const list = prev[sectionId] || [];
-        return {
-          ...prev,
-          [sectionId]: list.map((t) =>
-            t.id === editingTarget.targetId ? { ...t, name: targetName } : t
-          ),
-        };
-      });
-      setEditingTarget(null);
-      return;
-    }
-
-    const id = uid();
-    setTargetsBySection((prev) => {
-      const list = prev[sectionId] || [];
-      return { ...prev, [sectionId]: [...list, { id, name: targetName }] };
-    });
-  }
-
-  function deleteTarget(sectionId, targetId) {
-    setTargetsBySection((prev) => {
-      const list = prev[sectionId] || [];
-      return { ...prev, [sectionId]: list.filter((t) => t.id !== targetId) };
-    });
-  }
+  const onSubmit = (data) => {
+    const newEntry = {
+      id: Date.now(),
+      date: data.date.split('-').reverse().join('/'),
+      E: parseFloat(data.E),
+      N: parseFloat(data.N),
+      Z: parseFloat(data.Z),
+    };
+    setSurveys([...surveys, newEntry]);
+    setIsModalOpen(false);
+    reset();
+  };
 
   return (
-    <div className="min-h-screen w-full bg-[#0b1220] p-6 text-slate-100 pt-40">
-      <div className="mx-auto w-full max-w-275 rounded-xl bg-[#0f1b2f] p-4 shadow-[0_20px_60px_rgba(0,0,0,.45)]">
-        <div className="flex items-center gap-3">
-          <div className="rounded-md bg-[#14264a] px-3 py-2 text-sm font-semibold text-slate-200">
-            Live Projects
-          </div>
-
-          <ProjectSelect
-            value={activeProjectId}
-            setValue={setActiveProjectId}
-            projects={projects}
-            disabled={projects.length === 0}
-          />
-
-          <div className="ml-auto flex items-center gap-2">
-            <IconButton
-              title="New Project"
-              onClick={() => {
-                setEditingProjectId(null);
-                setIsProjectModalOpen(true);
-              }}
-              icon={<Plus size={18} />}
-            />
-            <IconButton
-              title="Edit Project"
-              disabled={!activeProjectId}
-              onClick={() => {
-                setEditingProjectId(activeProjectId);
-                setIsProjectModalOpen(true);
-              }}
-              icon={<Pencil size={18} />}
-            />
-            <IconButton
-              title="Delete Project"
-              disabled={!activeProjectId}
-              danger
-              onClick={() => deleteProject(activeProjectId)}
-              icon={<Trash2 size={18} />}
-            />
-          </div>
+    <div className="min-h-screen bg-[#0b1120] p-4 md:p-10 text-slate-300 mt-44">
+      <div className="max-w-7xl mx-auto">
+        
+        <div className="overflow-hidden rounded-lg border border-slate-700 shadow-2xl">
+          <table className="w-full text-left border-collapse">
+            <thead className="bg-[#1e2f56] text-[11px] uppercase tracking-wider text-slate-300">
+              <tr>
+                <th className="p-4 border-b border-slate-700">Survey Date</th>
+                <th colSpan="3" className="p-4 border-b border-l border-slate-700 text-center">Base Readings</th>
+                <th colSpan="3" className="p-4 border-b border-l border-slate-700 text-center">Survey Readings</th>
+                <th colSpan="3" className="p-4 border-b border-l border-slate-700 text-center">Movement from Base (m)</th>
+                <th className="p-4 border-b border-slate-700 text-right">
+                  <button 
+                    onClick={() => setIsModalOpen(true)}
+                    className="hover:bg-blue-500/20 p-1 rounded-full transition"
+                  >
+                    <Plus size={20} />
+                  </button>
+                </th>
+              </tr>
+              <tr className="bg-[#162444] text-slate-400">
+                <th className="px-4 py-2 font-normal lowercase">dd/mm/yy</th>
+                <th className="px-4 py-2 border-l border-slate-700">E</th>
+                <th className="px-4 py-2">N</th>
+                <th className="px-4 py-2">Z</th>
+                <th className="px-4 py-2 border-l border-slate-700">E</th>
+                <th className="px-4 py-2">N</th>
+                <th className="px-4 py-2">Z</th>
+                <th className="px-4 py-2 border-l border-slate-700">E</th>
+                <th className="px-4 py-2">N</th>
+                <th className="px-4 py-2">Z</th>
+                <th className="px-4 py-2"></th>
+              </tr>
+            </thead>
+            <tbody className="bg-[#eef8ff] text-slate-800 text-sm">
+              {surveys.map((row) => (
+                <tr key={row.id} className="border-b border-blue-100 hover:bg-blue-50 transition">
+                  <td className="px-4 py-3 whitespace-nowrap">{row.date}</td>
+                  <td className="px-4 py-3 border-l border-blue-100">{BASE_E.toFixed(3)}</td>
+                  <td className="px-4 py-3">{BASE_N.toFixed(3)}</td>
+                  <td className="px-4 py-3">{BASE_Z.toFixed(3)}</td>
+                  <td className="px-4 py-3 border-l border-blue-100">{row.E.toFixed(3)}</td>
+                  <td className="px-4 py-3">{row.N.toFixed(3)}</td>
+                  <td className="px-4 py-3">{row.Z.toFixed(3)}</td>
+                  <td className="px-4 py-3 border-l border-blue-100 bg-[#dcfce7] font-medium">{(row.E - BASE_E).toFixed(3)}</td>
+                  <td className="px-4 py-3 bg-[#dcfce7] font-medium">{(row.N - BASE_N).toFixed(3)}</td>
+                  <td className="px-4 py-3 bg-[#dcfce7] font-medium">{(row.Z - BASE_Z).toFixed(3)}</td>
+                  <td className="px-4 py-3 text-right">
+                    <MoreVertical size={16} className="inline cursor-pointer text-slate-400" />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
 
-        {/* Body */}
-        <div className="mt-4 rounded-lg bg-[#d9edf6] p-3">
-          <div className="grid grid-cols-2 gap-0 rounded-md bg-[#d9edf6]">
-            {/* Section column */}
-            <div className="border-r border-[#b9d7e6] pr-3">
-              <div className="flex items-center gap-2 px-1 py-2 text-sm font-semibold text-[#1b3652]">
-                <span>Section</span>
-                <button
-                  className={[
-                    "inline-flex items-center gap-1 rounded-md px-2 py-1",
-                    canCreateSection
-                      ? "text-[#1d4ed8] hover:bg-[#cfe7f3]"
-                      : "cursor-not-allowed opacity-40",
-                  ].join(" ")}
-                  onClick={() => {
-                    if (!canCreateSection) return;
-                    setEditingSection(null);
-                    setIsSectionModalOpen(true);
-                  }}
-                >
-                  <Plus size={16} />
+        {isModalOpen && (
+          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+            <div className="bg-[#1a2b4b] w-full max-w-sm rounded-xl shadow-2xl border border-slate-700">
+              <div className="flex justify-between items-center p-4 border-b border-slate-700">
+                <h2 className="text-white font-semibold text-lg">New Survey</h2>
+                <button onClick={() => setIsModalOpen(false)} className="text-slate-400 hover:text-white">
+                  <X size={20} />
                 </button>
               </div>
 
-              <div className="h-40 overflow-y-auto pr-1">
-                {showLists ? (
-                  <ul className="space-y-2">
-                    {activeSections.map((s, idx) => (
-                      <li key={s.id} className="flex items-center">
-                        <button
-                          className={[
-                            "flex-1 rounded-md px-3 py-2 text-left text-sm",
-                            idx === 0
-                              ? "bg-[#bfe0ff] text-[#183a63]"
-                              : "bg-transparent text-[#183a63] hover:bg-[#cfe7f3]",
-                          ].join(" ")}
-                          onClick={() => {
-                            // In screenshot, it just highlights; keep simple.
-                          }}
-                        >
-                          {s.name}
-                        </button>
-
-                        {/* actions (same row like screenshot) */}
-                        <div className="ml-2 flex items-center gap-1 rounded-md bg-[#bfe0ff] px-2 py-1">
-                          <button
-                            className="rounded p-1 text-[#1d4ed8] hover:bg-white/30"
-                            onClick={() => {
-                              setEditingSection({ projectId: activeProjectId, sectionId: s.id });
-                              setIsSectionModalOpen(true);
-                            }}
-                            title="Edit"
-                          >
-                            <Pencil size={14} />
-                          </button>
-                          <button
-                            className="rounded p-1 text-[#ef4444] hover:bg-white/30"
-                            onClick={() => deleteSection(s.id)}
-                            title="Delete"
-                          >
-                            <Trash2 size={14} />
-                          </button>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <EmptyLikeScreenshot />
-                )}
-              </div>
-            </div>
-
-            {/* Target column */}
-            <div className="pl-3">
-              <div className="flex items-center gap-2 px-1 py-2 text-sm font-semibold text-[#1b3652]">
-                <span>Target</span>
-                <button
-                  className={[
-                    "inline-flex items-center gap-1 rounded-md px-2 py-1",
-                    canCreateTarget
-                      ? "text-[#1d4ed8] hover:bg-[#cfe7f3]"
-                      : "cursor-not-allowed opacity-40",
-                  ].join(" ")}
-                  onClick={() => {
-                    if (!canCreateTarget) return;
-                    setEditingTarget(null);
-                    setIsTargetModalOpen(true);
-                  }}
-                >
-                  <Plus size={16} />
-                </button>
-              </div>
-
-              <div className="h-40 overflow-y-auto pr-1">
-                {showLists ? (
-                  <ul className="space-y-2">
-                    {activeSections.map((section, idx) => {
-                      const targets = targetsBySection[section.id] || [];
-                      return (
-                        <li key={section.id} className="space-y-2">
-                          {idx === 0 ? (
-                            targets.length ? (
-                              targets.map((t, tIdx) => (
-                                <div key={t.id} className="flex items-center">
-                                  <button
-                                    className={[
-                                      "flex-1 rounded-md px-3 py-2 text-left text-sm",
-                                      tIdx === 0
-                                        ? "bg-[#bfe0ff] text-[#183a63]"
-                                        : "bg-transparent text-[#183a63] hover:bg-[#cfe7f3]",
-                                    ].join(" ")}
-                                  >
-                                    {t.name}
-                                  </button>
-
-                                  <div className="ml-2 flex items-center gap-1 rounded-md bg-[#bfe0ff] px-2 py-1">
-                                    <button
-                                      className="rounded p-1 text-[#1d4ed8] hover:bg-white/30"
-                                      onClick={() => {
-                                        setEditingTarget({ sectionId: section.id, targetId: t.id });
-                                        setIsTargetModalOpen(true);
-                                      }}
-                                      title="Edit"
-                                    >
-                                      <Pencil size={14} />
-                                    </button>
-                                    <button
-                                      className="rounded p-1 text-[#ef4444] hover:bg-white/30"
-                                      onClick={() => deleteTarget(section.id, t.id)}
-                                      title="Delete"
-                                    >
-                                      <Trash2 size={14} />
-                                    </button>
-                                  </div>
-                                </div>
-                              ))
-                            ) : (
-                              <EmptyLikeScreenshot />
-                            )
-                          ) : null}
-                        </li>
-                      );
-                    })}
-                  </ul>
-                ) : (
-                  <EmptyLikeScreenshot />
-                )}
-              </div>
+              <form onSubmit={handleSubmit(onSubmit)} className="p-6 space-y-5">
+                <div>
+                  <label className="block text-slate-300 text-sm mb-1.5">Survey Date</label>
+                  <input
+                    type="date"
+                    {...register("date", { required: "Survey date is required" })}
+                    className="w-full bg-[#1e2f56] border border-slate-500 rounded-md p-2.5 text-white focus:ring-2 focus:ring-blue-500 outline-none transition"
+                  />
+                  {errors.date && <p className="text-red-400 text-xs mt-1">{errors.date.message}</p>}
+                </div>
+                {['E', 'N', 'Z'].map((field) => (
+                  <div key={field}>
+                    <label className="block text-slate-300 text-sm mb-1.5">{field}</label>
+                    <input
+                      type="number"
+                      step="0.001"
+                      placeholder={`Enter ${field}`}
+                      {...register(field, { required: `${field} value is required` })}
+                      className="w-full bg-[#1e2f56] border border-slate-500 rounded-md p-2.5 text-white placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 outline-none transition"
+                    />
+                    {errors[field] && <p className="text-red-400 text-xs mt-1">{errors[field].message}</p>}
+                  </div>
+                ))}
+                <div className="flex gap-3 pt-2">
+                  <button
+                    type="button"
+                    onClick={() => setIsModalOpen(false)}
+                    className="flex-1 bg-slate-600 hover:bg-slate-500 text-white py-2.5 rounded-md font-semibold transition"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="flex-1 bg-blue-600 hover:bg-blue-500 text-white py-2.5 rounded-md font-semibold transition"
+                  >
+                    Submit
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
-        </div>
+        )}
       </div>
-
-      <NewProjectModal
-        open={isProjectModalOpen}
-        onClose={() => setIsProjectModalOpen(false)}
-        onSubmit={(data) => {
-          upsertProject(data);
-          setIsProjectModalOpen(false);
-        }}
-        initialValues={editingProjectId ? projects.find((p) => p.id === editingProjectId) : null}
-        title="New Project"
-      />
-
-      <NameModal
-        open={isSectionModalOpen}
-        onClose={() => setIsSectionModalOpen(false)}
-        title="Section"
-        label="Section Name"
-        placeholder="Enter Section Name"
-        disabled={!canCreateSection}
-        initialValue={
-          editingSection?.sectionId
-            ? (sectionsByProject[activeProjectId] || []).find((s) => s.id === editingSection.sectionId)?.name || ""
-            : ""
-        }
-        onSubmit={(name) => {
-          upsertSection(name);
-          setIsSectionModalOpen(false);
-        }}
-      />
-
-      <NameModal
-        open={isTargetModalOpen}
-        onClose={() => setIsTargetModalOpen(false)}
-        title="New Target"
-        label="Target Name"
-        placeholder="Enter Target Name"
-        disabled={!canCreateTarget}
-        initialValue={
-          editingTarget?.targetId
-            ? (targetsBySection[editingTarget.sectionId] || []).find((t) => t.id === editingTarget.targetId)?.name || ""
-            : ""
-        }
-        onSubmit={(name) => {
-          // To match screenshot behavior: put targets under FIRST section (Front)
-          const firstSectionId = activeSections?.[0]?.id;
-          const sectionIdForTarget = editingTarget?.sectionId || firstSectionId;
-
-          upsertTarget(sectionIdForTarget, name);
-          setIsTargetModalOpen(false);
-        }}
-      />
     </div>
-  );
-}
-
-function EmptyLikeScreenshot() {
-  return (
-    <div className="h-full w-full rounded-md border border-transparent" />
   );
 }

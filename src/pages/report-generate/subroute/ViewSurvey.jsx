@@ -1,10 +1,11 @@
-import { Plus, Pencil, Trash2, } from 'lucide-react';
+import { Plus, Pencil, Trash2, ChevronDown, FileText } from 'lucide-react';
 import { useState } from 'react';
-import NewProjectModal from '../modal/NewProjectModal';
+import SurveyTable from '../component/SurveyTable';
 import CreateSectionModal from '../modal/CreateSectionModal';
-import UploadBaseReading from '../modal/UploadBaseReading';
+import NewProjectModal from '../modal/NewProjectModal';
+import UploadCsvFile from '../modal/UploadCsvFile';
 
-const ReportGenerationHome = () => {
+const ViewSurvey = () => {
     const [selectedProject, setSelectedProject] = useState("Select Project");
     const [newProjectOpen, setNewProjectOpen] = useState(false);
     const [sectionCreate, setSectionCreate] = useState(false);
@@ -68,10 +69,11 @@ const ReportGenerationHome = () => {
                         </div>
                     </div>
                 </div>
-                <UploadBaseReading />
+                <UploadCsvFile />
+                <SurveyTable />
             </div>
         </div>
     );
 };
 
-export default ReportGenerationHome;
+export default ViewSurvey;

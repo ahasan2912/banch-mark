@@ -7,7 +7,7 @@ const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
-        <nav className="fixed top-0 left-0 w-full z-50 border-b border-white/20 bg-[#1A315533] backdrop-blur-md shadow-lg ">
+        <nav className="fixed top-0 left-0 w-full z-50 border-b border-white/20 bg-[#1A315533] backdrop-blur-xs shadow-lg ">
 
             <div className="max-w-7xl mx-auto flex items-center justify-between py-5 px-4">
 
@@ -30,7 +30,7 @@ const Navbar = () => {
                     </NavLink>
 
                     <div className='flex gap-4'>
-                        <Link className='bg-[#1A3155]/80 hover:bg-[#1A3155]/50 backdrop-blur-md text-white py-2 px-4 rounded-md border border-white/20 cursor-pointer'>
+                        <Link to='/report-generation' className='bg-[#1A3155]/80 hover:bg-[#1A3155]/50 backdrop-blur-md text-white py-2 px-4 rounded-md border border-white/20 cursor-pointer'>
                             Request Demo
                         </Link>
                         <Link to='/login' className='bg-[#B7D8FF]/90 hover:bg-[#B7D8FF]/70 text-[#1A3155] py-2 px-4 rounded-md font-semibold cursor-pointer'>
@@ -61,13 +61,12 @@ const Navbar = () => {
                     <NavLink to='/contact-us' className={({ isActive }) => `font-semibold hover:text-[#90B5EE] transition ${isActive ? 'text-[#90B5EE]' : 'text-white'}`}>
                         Contact
                     </NavLink>
-                    <NavLink to='/contact-us' className={({ isActive }) => `font-semibold hover:text-[#90B5EE] transition ${isActive ? 'text-[#90B5EE]' : 'text-white'}`}>
+                    <NavLink to='/report-generation' className={({ isActive }) => `font-semibold hover:text-[#90B5EE] transition ${isActive ? 'text-[#90B5EE]' : 'text-white'}`}>
                         Request Demo
                     </NavLink>
                     <NavLink to='/login' className={({ isActive }) => `font-semibold hover:text-[#90B5EE] transition ${isActive ? 'text-[#90B5EE]' : 'text-white'}`}>
                         Sign in
                     </NavLink>
-
                 </div>
             )}
         </nav>

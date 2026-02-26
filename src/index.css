@@ -14,7 +14,6 @@ body {
   background-repeat: no-repeat;
 }
 
-/* Remove Chrome autofill white background */
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
@@ -24,4 +23,23 @@ input:-webkit-autofill:active {
   -webkit-text-fill-color: white !important;
   caret-color: white !important;
   transition: background-color 5000s ease-in-out 0s;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #ffffff;
+  border-radius: 0 0 12px 0;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #cbd5e1; 
+  border-radius: 10px;
+  border: 3px solid #ffffff;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
 }

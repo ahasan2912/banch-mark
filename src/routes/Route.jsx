@@ -31,6 +31,14 @@ import UpdatePassword from "../pages/auth/UpdatePassword";
 import Addcompany from "../pages/auth/Addcompany";
 import ReportGeneration from "../pages/report-generate/ReportGeneration";
 import ReportGenerationHome from "../pages/report-generate/component/ReportGenerationHome";
+import ViewSurvey from "../pages/report-generate/subroute/ViewSurvey";
+import ViewEvent from "../pages/report-generate/subroute/ViewEvent";
+import AdditionalInfo from "../pages/report-generate/subroute/AdditionalInfo";
+import UploadDrawings from "../pages/report-generate/subroute/UploadDrawings";
+import ArchiveProject from "../pages/report-generate/subroute/ArchiveProject";
+import ViewReport from "../pages/report-generate/subroute/ViewReport";
+import ReinstateProject from "../pages/report-generate/subroute/ReinstateProject";
+import SelectProject from "../pages/report-generate/subroute/SelectProject";
 
 const router = createBrowserRouter([
     {
@@ -157,15 +165,43 @@ const router = createBrowserRouter([
                         element: <ReportGenerationHome />
                     },
                     {
-                        path: "registration",
-                        element: <Registration />
+                        path: "view-servey",
+                        element: <ViewSurvey />
+                    },
+                    {
+                        path: "view-event",
+                        element: <ViewEvent />
+                    },
+                    {
+                        path: "additional-info",
+                        element: <AdditionalInfo />
+                    },
+                    {
+                        path: "upload-drawings",
+                        element: <UploadDrawings />
+                    },
+                    {
+                        path: "archive-project",
+                        element: <ArchiveProject />
+                    },
+                    {
+                        path: "select-project",
+                        element: <SelectProject />
+                    },
+                    {
+                        path: "view-report",
+                        element: <ViewReport />
+                    },
+                    {
+                        path: "reinstate-project",
+                        element: <ReinstateProject />
                     },
                 ]
             },
             {
                 path: "/testing",
                 element: <Testing />
-            }
+            },
         ],
     },
     {
