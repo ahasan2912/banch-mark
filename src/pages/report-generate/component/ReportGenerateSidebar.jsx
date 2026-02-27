@@ -31,19 +31,18 @@ const ReportGenerateSidebar = () => {
                     <NavLink to="archive-project" className={getLinkStyles}>
                         Archive This Project
                     </NavLink>
-
-                    <NavLink to="select-project" className={getLinkStyles}>
-                        Select Archived Project
-                    </NavLink>
-                </div>
-                <div className="bg-[#112240] p-4 rounded-lg mb-4 flex flex-col gap-1">
                     <NavLink to="view-report" className={getLinkStyles}>
                         View Report
+                    </NavLink>
+                </div>
+                {/* <div className="bg-[#112240] p-4 rounded-lg mb-4 flex flex-col gap-1">
+                    <NavLink to="select-project" className={getLinkStyles}>
+                        Select Archived Project
                     </NavLink>
                     <NavLink to="reinstate-project" className={getLinkStyles}>
                         Reinstate Project
                     </NavLink>
-                </div>
+                </div> */}
                 <div className="bg-[#4473BA] hover:bg-[#5e91df] rounded-md text-white cursor-pointer">
                     <button className="block w-full px-4 py-2.5 rounded-md font-semibold text-base transition-all duration-200 mb-2 cursor-pointer">Request New Reports</button>
                 </div>

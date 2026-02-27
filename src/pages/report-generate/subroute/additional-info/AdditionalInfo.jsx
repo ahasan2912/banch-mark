@@ -15,7 +15,7 @@ const AdditionalInfo = () => {
         "Project-3",
     ];
     return (
-        <div className="p-6 flex flex-col items-start">
+        <div className="p-4 flex flex-col items-start">
             <div className="w-full relative">
                 <div className="bg-[#1a2332] rounded-t-xl px-4 py-3 flex items-center justify-between">
                     <div className="flex items-center gap-6">
