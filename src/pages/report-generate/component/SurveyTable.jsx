@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Plus, MoreVertical, X } from 'lucide-react';
+import { Plus, MoreVertical, X, Trash, Copy } from 'lucide-react';
 import SurveyModal from '../modal/SurveyModal';
 
 const BASE_E = 123.123;
@@ -21,7 +21,7 @@ export default function SurveyTable() {
     };
 
     return (
-        <div className="pt-10 text-slate-300">
+        <div className="pt-5 text-slate-300">
             <div className="max-w-7xl mx-auto">
                 <div className="overflow-hidden rounded-lg border-4 border-[#E9F6FF] shadow-2xl">
                     <table className="w-full text-left border-collapse">
@@ -75,14 +75,14 @@ export default function SurveyTable() {
 
                                         {/* Popup for this row */}
                                         {openPopupId === row.id && (
-                                            <div className='absolute right-0 -top-20 flex bg-gray-200 p-2 rounded-sm shadow-lg z-10'>
-                                                <div className='flex flex-col mr-2'>
-                                                    <button className='px-2 py-1 hover:bg-gray-300 rounded'>Delete Survey</button>
-                                                    <button className='px-2 py-1 hover:bg-gray-300 rounded'>Copy Survey</button>
+                                            <div className='absolute right-0 -top-6 flex bg-[#E9F6FF] px-2 py-3 rounded-sm shadow-lg z-10 w-40'>
+                                                <div className='flex flex-col text-[15px] text-[#183A71] font-medium'>
+                                                    <button className='px-2 py-1 hover:bg-gray-300 rounded flex justify-center items-center gap-1'><Trash className='-mt-1' size={16} /> Delete Survey</button>
+                                                    <button className='px-2 py-1 hover:bg-gray-300 rounded flex justify-center items-center gap-1'><Copy className='-mt-1' size={16} /> Copy Survey</button>
                                                 </div>
                                                 <X
                                                     onClick={() => setOpenPopupId(null)}
-                                                    className='text-black cursor-pointer'
+                                                    className='text-[#183A71] cursor-pointer absolute right-1 top-0'
                                                     size={20}
                                                 />
                                             </div>

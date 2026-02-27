@@ -9,13 +9,12 @@ const ViewSurvey = () => {
     const [selectedProject, setSelectedProject] = useState("Select Project");
     const [newProjectOpen, setNewProjectOpen] = useState(false);
     const [sectionCreate, setSectionCreate] = useState(false);
+    const [openCSVFile, setOpenCSVFile] = useState(false);
 
-
-    const projects = [
-        "AI Research System",
-        "E-commerce Platform",
-        "IoT Smart Home",
-        "Report Generation Tool",
+     const projects = [
+        "Project-1",
+        "Project-2",
+        "Project-3",
     ];
 
     return (
@@ -69,7 +68,13 @@ const ViewSurvey = () => {
                         </div>
                     </div>
                 </div>
-                <UploadCsvFile />
+                <div onClick={() => setOpenCSVFile(true)} className='mt-5 bg-[#22c55e] hover:bg-[#16a34a] text-white px-3 py-3 rounded-md flex items-center gap-2 transition-all shadow-sm cursor-pointer w-fit'>
+                    <FileText />
+                    <button className=''>Upload CSV</button>
+                </div>
+                {
+                    openCSVFile && <UploadCsvFile setIsOpen={setOpenCSVFile}/>
+                }
                 <SurveyTable />
             </div>
         </div>

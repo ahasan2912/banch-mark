@@ -3,7 +3,6 @@ import { useState } from "react";
 
 const UploadBaseReading = () => {
     const [file, setFile] = useState(null);
-
     const handleFileChange = (e) => {
         if (e.target.files.length > 0) {
             setFile(e.target.files[0]);

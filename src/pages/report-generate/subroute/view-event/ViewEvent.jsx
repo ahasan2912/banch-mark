@@ -1,20 +1,35 @@
-import { Plus, Pencil, Trash2, } from 'lucide-react';
+import { Plus, Pencil, Trash2 } from 'lucide-react';
 import { useState } from 'react';
-import NewProjectModal from '../modal/NewProjectModal';
-import CreateSectionModal from '../modal/CreateSectionModal';
-import UploadBaseReading from '../modal/UploadBaseReading';
+import NewProjectModal from '../../modal/NewProjectModal';
+import CreateSectionModal from '../../modal/CreateSectionModal';
+import SurveyTable from '../../component/SurveyTable';
+import EventTable from './components/EventTable';
+import EventModal from './components/EventModal';
 
-const ReportGenerationHome = () => {
+const ViewEvent = () => {
     const [selectedProject, setSelectedProject] = useState("Select Project");
     const [newProjectOpen, setNewProjectOpen] = useState(false);
     const [sectionCreate, setSectionCreate] = useState(false);
-
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const projects = [
         "Project-1",
         "Project-2",
         "Project-3",
     ];
+
+    const [events, setEvents] = useState([
+        { id: 1, date: '07/02/2026', description: 'Movement monitoring survey', weather: 'Rainy 16° C', surveyor: 'Tomal ux' }
+    ]);
+
+
+    const handleAddEvent = (data) => {
+        setEvents([...events, { ...data, id: Date.now() }]);
+    };
+
+    const handleDeleteEvent = (id) => {
+        setEvents(events.filter(e => e.id !== id));
+    };
 
     return (
         <div className="p-6 flex flex-col items-start">
@@ -67,10 +82,22 @@ const ReportGenerationHome = () => {
                         </div>
                     </div>
                 </div>
-                <UploadBaseReading />
+                <div className="mt-5">
+                    <EventTable
+                        events={events}
+                        onAddClick={() => setIsModalOpen(true)}
+                        onDelete={handleDeleteEvent}
+                    />
+
+                    <EventModal
+                        isOpen={isModalOpen}
+                        onClose={() => setIsModalOpen(false)}
+                        onSubmit={handleAddEvent}
+                    />
+                </div>
             </div>
         </div>
     );
 };
 
-export default ReportGenerationHome;
+export default ViewEvent;

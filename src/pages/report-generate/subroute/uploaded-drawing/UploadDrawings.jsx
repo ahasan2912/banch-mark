@@ -1,21 +1,19 @@
-import { Plus, Pencil, Trash2, } from 'lucide-react';
-import { useState } from 'react';
-import NewProjectModal from '../modal/NewProjectModal';
-import CreateSectionModal from '../modal/CreateSectionModal';
-import UploadBaseReading from '../modal/UploadBaseReading';
+import { Pencil, Plus, Trash2 } from "lucide-react";
+import { useState } from "react";
+import NewProjectModal from "../../modal/NewProjectModal";
+import CreateSectionModal from "../../modal/CreateSectionModal";
+import DrawingUploadFile from "./DrawingUploadFile";
 
-const ReportGenerationHome = () => {
+const UploadDrawings = () => {
     const [selectedProject, setSelectedProject] = useState("Select Project");
     const [newProjectOpen, setNewProjectOpen] = useState(false);
     const [sectionCreate, setSectionCreate] = useState(false);
-
 
     const projects = [
         "Project-1",
         "Project-2",
         "Project-3",
     ];
-
     return (
         <div className="p-6 flex flex-col items-start">
             <div className="w-full relative">
@@ -67,10 +65,10 @@ const ReportGenerationHome = () => {
                         </div>
                     </div>
                 </div>
-                <UploadBaseReading />
+                <DrawingUploadFile />
             </div>
         </div>
     );
 };
 
-export default ReportGenerationHome;
+export default UploadDrawings;
