@@ -24,8 +24,8 @@ const ArchiveProject = () => {
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
     return (
         <div className="w-full p-4">
-            <div className="overflow-hidden rounded-xl border border-blue-400/30 shadow-2xl">
-                <table className="w-full text-left border-collapse bg-[#e0f2fe]">
+            <div className="overflow-x-auto rounded-xl border border-blue-400/30 shadow-2xl">
+                <table className="w-full text-left border-collapse bg-[#e0f2fe] overflow-x-auto">
                     <thead>
                         <tr className="bg-[#1e293b] text-blue-100 text-sm uppercase tracking-wider">
                             <th className="px-6 py-5 border-b border-blue-400/20 font-semibold">ID</th>
@@ -58,7 +58,7 @@ const ArchiveProject = () => {
                 </table>
 
                 {/* Dynamic Pagination Bar */}
-                <div className="bg-[#1e293b] px-6 py-4 flex items-center justify-between border-t border-blue-400/30">
+                <div className="bg-[#1e293b] overflow-x-auto w-full px-6 py-4 flex items-center justify-between border-t border-blue-400/30">
                     <div className="text-sm text-blue-300">
                         Showing <span className="text-white font-bold">{indexOfFirstRow + 1}</span> to <span className="text-white font-bold">{Math.min(indexOfLastRow, allData.length)}</span> of <span className="text-white font-bold">{allData.length}</span> entries
                     </div>

@@ -11,34 +11,42 @@ const ViewReport = () => {
             report: "London bridge, Uk abcd 1233456a alnbo.pdf",
         },
     ];
+
     return (
         <div className="p-4">
-            <div className="overflow-hidden rounded-md border-4 border-[#B7D8FF] shadow-lg">
-                <div className="grid grid-cols-2 bg-[#1e2f4d] px-4 py-4">
-                    <span className="text-base font-semibold text-slate-200 uppercase tracking-wide">
-                        Project Name
-                    </span>
-                    <span className="text-base font-semibold text-slate-200 uppercase tracking-wide">
-                        Latest Reports
-                    </span>
-                </div>
-                {data.map((item, index) => (
-                    <div
-                        key={index}
-                        className="grid grid-cols-2 items-center bg-[#eef7ff] px-4 py-3 border-t border-sky-200"
-                    >
-                        <div className="text-[#1e2f4d] font-medium text-base">
-                            {item.name}
-                        </div>
-
-                        <div className="flex justify-between items-center text-[#1e2f4d] text-base">
-                            <span>{item.report}</span>
-                            <button className="px-2 py-1 bg-[#cce4ff] rounded-sm hover:bg-blue-200 transition-colors cursor-pointer">
-                                <Eye size={20} className="text-blue-600" />
-                            </button>
-                        </div>
-                    </div>
-                ))}
+            <div className="overflow-x-auto rounded-md border-4 border-[#B7D8FF] shadow-lg">
+                <table className="w-full text-left border-collapse overflow-x-auto">
+                    <thead>
+                        <tr className="bg-[#1e2f4d]">
+                            <th className="px-4 py-4 text-base font-semibold text-slate-200 uppercase tracking-wide">
+                                Project Name
+                            </th>
+                            <th className="px-4 py-4 text-base font-semibold text-slate-200 uppercase tracking-wide">
+                                Latest Reports
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {data.map((item, index) => (
+                            <tr
+                                key={index}
+                                className="bg-[#eef7ff] border-t border-sky-200 hover:bg-[#e2f0fd] transition-colors"
+                            >
+                                <td className="px-4 py-3 text-[#1e2f4d] font-medium text-base">
+                                    {item.name}
+                                </td>
+                                <td className="px-4 py-3 text-[#1e2f4d] text-base">
+                                    <div className="flex justify-between items-center">
+                                        <span>{item.report}</span>
+                                        <button className="p-2 bg-[#cce4ff] rounded-sm hover:bg-blue-200 transition-colors cursor-pointer flex items-center justify-center">
+                                            <Eye size={20} className="text-blue-600" />
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
             </div>
         </div>
     );

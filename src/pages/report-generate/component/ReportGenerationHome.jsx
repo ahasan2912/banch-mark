@@ -50,7 +50,7 @@ const ReportGenerationHome = () => {
 
                 </div>
 
-                <div className="bg-[#f0f7ff] rounded-b-lg border-t border-slate-700 min-h-55 relative overflow-y-auto custom-scrollbar">
+                <div className="bg-[#f0f7ff] rounded-b-lg border-t border-slate-700 h-55 relative overflow-y-auto custom-scrollbar">
                     <div className="flex min-h-full">
                         <div className="w-1/2 p-4 border-r border-[#d1e4ff]">
                             <div className="flex items-center gap-1 text-[#334155] font-bold text-base">

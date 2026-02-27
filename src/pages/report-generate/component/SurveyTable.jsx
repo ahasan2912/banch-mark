@@ -23,8 +23,8 @@ export default function SurveyTable() {
     return (
         <div className="pt-5 text-slate-300">
             <div className="max-w-7xl mx-auto">
-                <div className="overflow-hidden rounded-lg border-4 border-[#E9F6FF] shadow-2xl">
-                    <table className="w-full text-left border-collapse">
+                <div className="overflow-x-auto rounded-lg border-4 border-[#E9F6FF] shadow-2xl">
+                    <table className="w-full text-left border-collapse overflow-x-auto">
                         <thead className="bg-[#1e2f56] text-sm uppercase tracking-wider text-slate-300">
                             <tr>
                                 <th className="p-4 border-b border-slate-700">Survey Date</th>
