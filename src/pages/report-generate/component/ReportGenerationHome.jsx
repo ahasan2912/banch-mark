@@ -17,11 +17,11 @@ const ReportGenerationHome = () => {
     ];
 
     return (
-        <div className="p-6 flex flex-col items-start">
+        <div className="p-3 sm:p-6 flex flex-col items-start">
             <div className="w-full relative">
                 <div className="bg-[#1a2332] rounded-t-xl px-4 py-3 flex items-center justify-between">
-                    <div className="flex items-center gap-6">
-                        <span className="text-white text-base font-semibold tracking-wide">
+                    <div className="flex items-center gap-2 sm:gap-6">
+                        <span className="text-white text-sm sm:text-base font-semibold tracking-wide">
                             Live Projects
                         </span>
                         <select
@@ -36,7 +36,7 @@ const ReportGenerationHome = () => {
                         </select>
                     </div>
 
-                    <div className="flex items-center gap-4 pr-1">
+                    <div className="flex items-center gap-2 sm:gap-4">
                         <Plus onClick={() => setNewProjectOpen(true)} size={22} className="text-[#60a5fa] cursor-pointer" />
                         <Pencil size={20} className="text-[#60a5fa] cursor-pointer" />
                         <Trash2 size={20} className="text-[#ef4444] cursor-pointer" />
@@ -50,7 +50,7 @@ const ReportGenerationHome = () => {
 
                 </div>
 
-                <div className="bg-[#f0f7ff] rounded-b-lg border-t border-slate-700 h-55 relative overflow-y-auto custom-scrollbar">
+                <div className="bg-[#f0f7ff] rounded-b-lg border-t border-slate-700 min-h-55 relative overflow-y-auto custom-scrollbar">
                     <div className="flex min-h-full">
                         <div className="w-1/2 p-4 border-r border-[#d1e4ff]">
                             <div className="flex items-center gap-1 text-[#334155] font-bold text-base">

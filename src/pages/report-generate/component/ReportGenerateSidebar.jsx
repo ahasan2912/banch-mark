@@ -8,7 +8,7 @@ const ReportGenerateSidebar = () => {
             ? `${baseStyles} bg-[#4a72b2] text-white shadow-md`
             : `${baseStyles} bg-[#b9d7fb] text-[#2c5282] hover:bg-[#a5c9f5]`;
     return (
-        <div className="flex min-h-[74vh]">
+        <div className="flex min-h-fit">
             <nav className="w-full rounded-xl border border-slate-800 shadow-2xl h-fit mt-3">
                 <div className="bg-[#112240] p-4 rounded-lg mb-4 flex flex-col gap-1">
                     <NavLink to="view-servey" className={getLinkStyles}>
