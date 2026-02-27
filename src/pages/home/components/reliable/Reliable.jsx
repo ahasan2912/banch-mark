@@ -3,9 +3,9 @@ import { images } from '../../../../assets/image';
 
 const Reliable = () => {
     return (
-        <div className='max-w-7xl mx-auto px-4 mt-20 sm:mt-32 pb-20'>
+        <div className='max-w-7xl mx-auto px-4 mt-10 sm:mt-32 pb-10 sm:pb-20'>
             <HeadingBorder title='Secure & Reliable' />
-            <div className="mt-16 md:mt-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="mt-5 sm:mt-10 md:mt-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                 <div className="flex flex-col items-center">
                     <img className="object-fill w-50" src={images.encryptionImage} alt="deviation" />
                     <div className="flex items-center gap-2 mt-3">
@@ -31,7 +31,7 @@ const Reliable = () => {
                     </div>
                 </div>
             </div>
-            <div className="mt-36 flex flex-col sm:flex-row gap-4 sm:justify-center">
+            <div className="mt-10 sm:mt-36 flex flex-col sm:flex-row gap-4 sm:justify-center">
                 <button className="bg-[#1A3155]/80 text-white backdrop-blur-md 
                             px-6 py-3 rounded-md font-semibold 
                             border border-white/20 

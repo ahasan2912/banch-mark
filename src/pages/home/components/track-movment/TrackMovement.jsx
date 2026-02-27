@@ -3,7 +3,7 @@ import HeadingTitle from "../../../../components/shared/HeadingTitle";
 
 const TrackMovement = () => {
     return (
-        <div className='max-w-7xl mx-auto px-4 mt-20 sm:mt-32 pb-10'>
+        <div className='max-w-7xl mx-auto px-4 mt-12 sm:mt-32 pb-10'>
             <HeadingTitle
                 title='Track  Movement in  3D: '
                 subtitle='E, N, Z'
@@ -12,7 +12,7 @@ const TrackMovement = () => {
                 position='mx-auto'
                 text='text-center'
             />
-            <div className="mt-16 md:mt-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="mt-5 md:mt-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                 {/* east */}
                 <div className="bg-[#1A3155] px-4 pt-4 pb-6 border  rounded-md flex gap-4 items-center border-slate-800 shadow-xl transition-transform hover:scale-105">
                     <div className="max-w-35">
