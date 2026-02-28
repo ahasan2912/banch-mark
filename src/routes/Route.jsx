@@ -5,7 +5,7 @@ import LogIn from "../pages/auth/LogIn"
 import Register from "../pages/auth/Register";
 import Testing from "../pages/Testing";
 import DashboardLayout from "../layout/DashboardLayout";
-import Dashboard from "../pages/dashboard/Dashboard";
+import Dashboard from "../pages/dashboard/home/Dashboard";
 import Features from "../pages/features/Features";
 import Workprocess from "../pages/work/Workprocess";
 import Guidance from "../pages/guidance/Guidance";
@@ -39,6 +39,11 @@ import ReinstateProject from "../pages/report-generate/subroute/ReinstateProject
 import SelectProject from "../pages/report-generate/subroute/SelectProject";
 import ViewEvent from "../pages/report-generate/subroute/view-event/ViewEvent";
 import AdditionalInfo from "../pages/report-generate/subroute/additional-info/AdditionalInfo";
+import Users from "../pages/dashboard/users/Users";
+import Projects from "../pages/dashboard/projects/Projects";
+import Reports from "../pages/dashboard/reports/Reports";
+import Revenue from "../pages/dashboard/revenue/Revenue";
+import { Settings } from "lucide-react";
 
 const router = createBrowserRouter([
     {
@@ -205,12 +210,32 @@ const router = createBrowserRouter([
         ],
     },
     {
-        path: 'dashboard',
+        path: 'dashobard',
         element: <DashboardLayout />,
         children: [
             {
-                path: 'dashboardHome',
+                path: 'admin-dashboard',
                 element: <Dashboard />
+            },
+            {
+                path: 'users',
+                element: <Users/>
+            },
+            {
+                path: 'projects',
+                element: <Projects/>
+            },
+            {
+                path: 'report',
+                element: <Reports/>
+            },
+            {
+                path: 'revenue',
+                element: <Revenue/>
+            },
+            {
+                path: 'setting',
+                element: <Settings/>
             },
         ]
     }

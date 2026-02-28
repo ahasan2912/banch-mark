@@ -1,104 +1,104 @@
-import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react';
+import React from 'react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from 'recharts';
+import { TrendingUp, TrendingDown, User } from 'lucide-react';
 
-const ProjectDashboard = () => {
-  // 1. Generate 50 rows of mock data
-  const allData = Array.from({ length: 50 }, (_, i) => ({
-    id: 1234 + i,
-    projectName: "London Bridge London",
-    lastSurveyed: "01/02/2026",
-    surveyCount: 2,
-  }));
+const Dashboard = () => {
+  const chartData = [
+    { name: 'Jan', value: 100 },
+    { name: 'Feb', value: 80 },
+    { name: 'Mar', value: 15 },
+    { name: 'Apr', value: 25 },
+    { name: 'May', value: 78 },
+    { name: 'Jun', value: 50 },
+  ];
 
-  // 2. Pagination State
-  const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 10;
-  const totalPages = Math.ceil(allData.length / rowsPerPage);
-
-  // 3. Logic to get current page data
-  const indexOfLastRow = currentPage * rowsPerPage;
-  const indexOfFirstRow = indexOfLastRow - rowsPerPage;
-  const currentRows = allData.slice(indexOfFirstRow, indexOfLastRow);
-
-  // 4. Page Change Handlers
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
+  const transactions = Array(8).fill({
+    id: "ID 12345",
+    user: "David Miller",
+    email: "example123@gmail.com",
+    date: "Feb 2, 2026",
+    amount: "$1200"
+  });
   return (
-    <div className="w-full max-w-6xl mx-auto p-8 bg-slate-900 min-h-screen">
-      <div className="overflow-hidden rounded-xl border border-blue-400/30 shadow-2xl">
-        <table className="w-full text-left border-collapse bg-[#e0f2fe]">
+    <div className="min-h-screen bg-[#0a0f1c] text-white p-8 font-sans">
+
+      {/* --- Stat Cards --- */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+        {[
+          { label: "Total Revenue", value: "$144,454", trend: "+12%", up: true },
+          { label: "Monthly Recurring", value: "$144,454", trend: "+12%", up: true },
+          { label: "Average Per User", value: "$144,454", trend: "+12%", up: true },
+          { label: "Total Revenue", value: "$144,454", trend: "+12%", up: false },
+        ].map((card, i) => (
+          <div key={i} className="bg-[#111827] p-6 rounded-xl border border-gray-800">
+            <p className="text-gray-400 text-sm mb-2">{card.label}</p>
+            <h2 className="text-2xl font-bold mb-2">{card.value}</h2>
+            <div className={`flex items-center text-xs ${card.up ? 'text-emerald-400' : 'text-rose-400'}`}>
+              {card.up ? <TrendingUp size={14} className="mr-1" /> : <TrendingDown size={14} className="mr-1" />}
+              {card.trend} from last month
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* --- Chart Section --- */}
+      <div className="bg-[#111827] p-6 rounded-xl border border-gray-800 mb-8">
+        <div className="h-64 w-full">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={chartData}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#1f2937" vertical={false} />
+              <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#9ca3af', fontSize: 12 }} dy={10} />
+              <YAxis axisLine={false} tickLine={false} tick={{ fill: '#9ca3af', fontSize: 12 }} tickFormatter={(value) => `$${value}k`} />
+              <Bar dataKey="value" fill="#10b981" radius={[10, 10, 10, 10]} barSize={60} />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+        <div className="flex justify-center mt-4 text-sm text-gray-400 italic">
+          <span className="flex items-center"><div className="w-3 h-3 bg-[#10b981] rounded-sm mr-2"></div> 2020</span>
+        </div>
+      </div>
+
+      {/* --- Recent Activity Table --- */}
+      <div className="bg-[#111827] rounded-xl border border-gray-800 overflow-hidden">
+        <div className="p-6 flex justify-between items-center border-b border-gray-800">
+          <h3 className="font-semibold">Recent Activity</h3>
+          <button className="text-blue-400 text-sm hover:underline">View all →</button>
+        </div>
+        <table className="w-full text-left">
           <thead>
-            <tr className="bg-[#1e293b] text-blue-100 text-sm uppercase tracking-wider">
-              <th className="px-6 py-5 border-b border-blue-400/20 font-semibold">ID</th>
-              <th className="px-6 py-5 border-b border-blue-400/20 font-semibold">Project Name</th>
-              <th className="px-6 py-5 border-b border-blue-400/20 font-semibold text-center">Last Surveyed</th>
-              <th className="px-6 py-5 border-b border-blue-400/20 font-semibold text-right pr-16">Survey Count</th>
+            <tr className="text-blue-400 text-xs border-b border-gray-800">
+              <th className="p-4 font-medium">Order ID</th>
+              <th className="p-4 font-medium">User/Company</th>
+              <th className="p-4 font-medium text-center">Date</th>
+              <th className="p-4 font-medium text-right">Amount</th>
             </tr>
           </thead>
-          <tbody>
-            {currentRows.map((row) => (
-              <tr 
-                key={row.id} 
-                className="hover:bg-blue-200/50 transition-colors border-b border-blue-200 last:border-b-0"
-              >
-                <td className="px-6 py-4 text-slate-700 font-medium">{row.id}</td>
-                <td className="px-6 py-4 text-slate-600">{row.projectName}</td>
-                <td className="px-6 py-4 text-slate-600 text-center">{row.lastSurveyed}</td>
-                <td className="px-6 py-4 text-slate-600">
-                  <div className="flex items-center justify-end gap-10">
-                    <span className="font-medium">{row.surveyCount}</span>
-                    <input 
-                      type="checkbox" 
-                      className="w-5 h-5 rounded border-blue-300 text-blue-600 focus:ring-blue-500 cursor-pointer accent-blue-600"
-                    />
+          <tbody className="text-sm text-gray-300">
+            {transactions.map((t, i) => (
+              <tr key={i} className="hover:bg-[#1f2937]/50 transition-colors">
+                <td className="p-4">{t.id}</td>
+                <td className="p-4 flex items-center gap-3">
+                  <div className="bg-blue-900/30 p-2 rounded-full text-blue-400"><User size={16} /></div>
+                  <div>
+                    <div className="font-medium text-white">{t.user}</div>
+                    <div className="text-xs text-gray-500">{t.email}</div>
                   </div>
                 </td>
+                <td className="p-4 text-center text-gray-400">{t.date}</td>
+                <td className="p-4 text-right text-emerald-400 font-semibold">{t.amount}</td>
               </tr>
             ))}
           </tbody>
         </table>
 
-        {/* Dynamic Pagination Bar */}
-        <div className="bg-[#1e293b] px-6 py-4 flex items-center justify-between border-t border-blue-400/30">
-          <div className="text-sm text-blue-300">
-            Showing <span className="text-white font-bold">{indexOfFirstRow + 1}</span> to <span className="text-white font-bold">{Math.min(indexOfLastRow, allData.length)}</span> of <span className="text-white font-bold">{allData.length}</span> entries
-          </div>
-          
-          <div className="flex items-center gap-2">
-            {/* Previous Page */}
-            <button 
-              onClick={() => paginate(Math.max(1, currentPage - 1))}
-              disabled={currentPage === 1}
-              className="p-2 rounded-lg bg-slate-800 text-blue-400 hover:bg-slate-700 disabled:opacity-30 transition-all border border-slate-700"
-            >
-              <ChevronLeft size={18} />
-            </button>
-
-            {/* Page Numbers */}
-            <div className="flex gap-1">
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                <button 
-                  key={page} 
-                  onClick={() => paginate(page)}
-                  className={`w-9 h-9 rounded-lg text-sm font-bold transition-all border ${
-                    currentPage === page 
-                      ? 'bg-[#4473BA] text-white border-blue-500 shadow-md shadow-blue-500/20' 
-                      : 'text-blue-300 border-slate-700 hover:bg-slate-700'
-                  }`}
-                >
-                  {page}
-                </button>
-              ))}
-            </div>
-
-            {/* Next Page */}
-            <button 
-              onClick={() => paginate(Math.min(totalPages, currentPage + 1))}
-              disabled={currentPage === totalPages}
-              className="p-2 rounded-lg bg-slate-800 text-blue-400 hover:bg-slate-700 disabled:opacity-30 transition-all border border-slate-700"
-            >
-              <ChevronRight size={18} />
-            </button>
+        {/* Pagination Footer */}
+        <div className="p-4 border-t border-gray-800 flex justify-between items-center text-xs text-gray-500">
+          <span>Showing 8 of 1,254</span>
+          <div className="flex gap-2">
+            <button className="px-3 py-1 bg-[#1f2937] rounded">Previous</button>
+            <button className="px-3 py-1 bg-blue-600 text-white rounded">1</button>
+            <button className="px-3 py-1 bg-[#1f2937] rounded">2</button>
+            <button className="px-3 py-1 bg-[#1f2937] rounded">Next</button>
           </div>
         </div>
       </div>
@@ -106,4 +106,4 @@ const ProjectDashboard = () => {
   );
 };
 
-export default ProjectDashboard;
+export default Dashboard;

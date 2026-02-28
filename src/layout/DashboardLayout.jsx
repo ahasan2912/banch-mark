@@ -6,12 +6,12 @@ import { Outlet } from "react-router-dom";
 const DashboardLayout = () => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     return (
-        <div className="flex min-h-screen bg-slate-50 overflow-hidden">
+        <div className="flex min-h-screen overflow-hidden">
             <Sidebar isOpen={sidebarOpen} setIsOpen={setSidebarOpen} />
 
-            <div className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
+            <div className="flex-1 bg-[#1A202E] flex flex-col min-w-0 h-screen overflow-hidden pt-16 lg:pt-6">
                 <Header setSidebarOpen={setSidebarOpen} />
-                <main className="flex-1 bg-[#FFFFFF] overflow-y-auto p-4 md:p-8">
+                <main className="flex-1 overflow-y-auto px-4">
                     <Outlet></Outlet>
                 </main>
             </div>
