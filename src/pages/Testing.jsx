@@ -1,104 +1,72 @@
 import React from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from 'recharts';
-import { TrendingUp, TrendingDown, User } from 'lucide-react';
+import { Folder, ArrowLeft } from 'lucide-react';
 
 const Dashboard = () => {
-  const chartData = [
-    { name: 'Jan', value: 100 },
-    { name: 'Feb', value: 80 },
-    { name: 'Mar', value: 15 },
-    { name: 'Apr', value: 25 },
-    { name: 'May', value: 78 },
-    { name: 'Jun', value: 50 },
+  const projects = [
+    { title: 'Smart City Infrastructure', client: 'Urban Dev Corp', time: '2 HOURS AGO' },
+    { title: 'Coastal Erosion Monitor', client: 'Gov Environment', time: '1 DAY AGO' },
+    { title: 'Bridge Stress Analysis', client: 'Transport Authority', time: '3 MONTHS AGO' },
+    { title: 'Telecom Tower Survey', client: 'Nexus Connect', time: '5 HOURS AGO' },
   ];
 
-  const transactions = Array(8).fill({
-    id: "ID 12345",
-    user: "David Miller",
-    email: "example123@gmail.com",
-    date: "Feb 2, 2026",
-    amount: "$1200"
-  });
   return (
-    <div className="min-h-screen bg-[#0a0f1c] text-white p-8 font-sans">
+    <div className="bg-[#0f172a] text-slate-300 p-4 sm:p-8">
+      <div className='max-w-7xl mx-auto'>
+        <button className="flex items-center text-sm text-slate-400 hover:text-white mb-8 transition-colors">
+          <ArrowLeft size={16} className="mr-2" /> Back to Team Overview
+        </button>
+      </div>
+      <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-8">
+        <div className="w-full md:w-80 bg-[#1e293b]/50 border border-slate-800 rounded-2xl p-8 flex flex-col items-center">
+          <div className="w-32 h-32 rounded-full border-2 border-slate-700 bg-slate-800 mb-6 flex items-center justify-center">
+            <div className="w-24 h-24 rounded-full bg-[#111827]"></div>
+          </div>
 
-      {/* --- Stat Cards --- */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-        {[
-          { label: "Total Revenue", value: "$144,454", trend: "+12%", up: true },
-          { label: "Monthly Recurring", value: "$144,454", trend: "+12%", up: true },
-          { label: "Average Per User", value: "$144,454", trend: "+12%", up: true },
-          { label: "Total Revenue", value: "$144,454", trend: "+12%", up: false },
-        ].map((card, i) => (
-          <div key={i} className="bg-[#111827] p-6 rounded-xl border border-gray-800">
-            <p className="text-gray-400 text-sm mb-2">{card.label}</p>
-            <h2 className="text-2xl font-bold mb-2">{card.value}</h2>
-            <div className={`flex items-center text-xs ${card.up ? 'text-emerald-400' : 'text-rose-400'}`}>
-              {card.up ? <TrendingUp size={14} className="mr-1" /> : <TrendingDown size={14} className="mr-1" />}
-              {card.trend} from last month
+          <h1 className="text-2xl font-semibold text-white mb-1">Sarah Chen</h1>
+          <p className="text-blue-400 text-sm font-medium mb-4">Senior Designer</p>
+          <p className="text-slate-500 text-xs mb-8">sarah.c@benchmark.com</p>
+
+          <div className="grid grid-cols-2 gap-4 w-full">
+            <div className="bg-[#0f172a] p-4 rounded-xl border border-slate-800 text-center">
+              <p className="text-[10px] uppercase tracking-wider text-slate-500 font-bold mb-1">Live</p>
+              <p className="text-2xl font-bold text-white">5</p>
+            </div>
+            <div className="bg-[#0f172a] p-4 rounded-xl border border-slate-800 text-center">
+              <p className="text-[10px] uppercase tracking-wider text-slate-500 font-bold mb-1">Archive</p>
+              <p className="text-2xl font-bold text-white">12</p>
             </div>
           </div>
-        ))}
-      </div>
+        </div>
+        <div className="flex-1">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-xl font-semibold text-white">Project List</h2>
+            <span className="text-[10px] px-3 py-1 bg-[#1e293b] border border-slate-700 rounded-full text-slate-400 uppercase">
+              4 Projects Total
+            </span>
+          </div>
 
-      {/* --- Chart Section --- */}
-      <div className="bg-[#111827] p-6 rounded-xl border border-gray-800 mb-8">
-        <div className="h-64 w-full">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={chartData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#1f2937" vertical={false} />
-              <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#9ca3af', fontSize: 12 }} dy={10} />
-              <YAxis axisLine={false} tickLine={false} tick={{ fill: '#9ca3af', fontSize: 12 }} tickFormatter={(value) => `$${value}k`} />
-              <Bar dataKey="value" fill="#10b981" radius={[10, 10, 10, 10]} barSize={60} />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-        <div className="flex justify-center mt-4 text-sm text-gray-400 italic">
-          <span className="flex items-center"><div className="w-3 h-3 bg-[#10b981] rounded-sm mr-2"></div> 2020</span>
-        </div>
-      </div>
-
-      {/* --- Recent Activity Table --- */}
-      <div className="bg-[#111827] rounded-xl border border-gray-800 overflow-hidden">
-        <div className="p-6 flex justify-between items-center border-b border-gray-800">
-          <h3 className="font-semibold">Recent Activity</h3>
-          <button className="text-blue-400 text-sm hover:underline">View all →</button>
-        </div>
-        <table className="w-full text-left">
-          <thead>
-            <tr className="text-blue-400 text-xs border-b border-gray-800">
-              <th className="p-4 font-medium">Order ID</th>
-              <th className="p-4 font-medium">User/Company</th>
-              <th className="p-4 font-medium text-center">Date</th>
-              <th className="p-4 font-medium text-right">Amount</th>
-            </tr>
-          </thead>
-          <tbody className="text-sm text-gray-300">
-            {transactions.map((t, i) => (
-              <tr key={i} className="hover:bg-[#1f2937]/50 transition-colors">
-                <td className="p-4">{t.id}</td>
-                <td className="p-4 flex items-center gap-3">
-                  <div className="bg-blue-900/30 p-2 rounded-full text-blue-400"><User size={16} /></div>
-                  <div>
-                    <div className="font-medium text-white">{t.user}</div>
-                    <div className="text-xs text-gray-500">{t.email}</div>
+          <div className="space-y-4">
+            {projects.map((project, index) => (
+              <div
+                key={index}
+                className="group flex items-center bg-[#1e293b]/40 border border-slate-800 p-5 rounded-xl hover:bg-[#1e293b]/60 transition-all cursor-pointer"
+              >
+                <div className="bg-[#1e293b] p-3 rounded-xl border border-slate-700 mr-5 text-[#51A2FF]
+                  group-hover:bg-[#2d3c55] group-hover:text-white transition-colors">
+                  <Folder size={24} />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-white font-medium mb-1">{project.title}</h3>
+                  <div className="flex items-center text-xs text-slate-500">
+                    <span>{project.client}</span>
+                    <span className="mx-2 text-slate-700">•</span>
+                    <span className="flex items-center">
+                      <span className="mr-1">🕒</span> {project.time}
+                    </span>
                   </div>
-                </td>
-                <td className="p-4 text-center text-gray-400">{t.date}</td>
-                <td className="p-4 text-right text-emerald-400 font-semibold">{t.amount}</td>
-              </tr>
+                </div>
+              </div>
             ))}
-          </tbody>
-        </table>
-
-        {/* Pagination Footer */}
-        <div className="p-4 border-t border-gray-800 flex justify-between items-center text-xs text-gray-500">
-          <span>Showing 8 of 1,254</span>
-          <div className="flex gap-2">
-            <button className="px-3 py-1 bg-[#1f2937] rounded">Previous</button>
-            <button className="px-3 py-1 bg-blue-600 text-white rounded">1</button>
-            <button className="px-3 py-1 bg-[#1f2937] rounded">2</button>
-            <button className="px-3 py-1 bg-[#1f2937] rounded">Next</button>
           </div>
         </div>
       </div>

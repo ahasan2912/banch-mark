@@ -22,12 +22,10 @@ const Revenue = () => {
     });
     return (
         <div>
-            <div className="">
-                <TitleSection
+            <TitleSection
                     title='Revenue'
                     description='Track earnings and financial performance'
                 />
-            </div>
             <div>
                 <Stats />
                 <div className="bg-[#111827] p-6 rounded-xl border border-gray-800 mb-8">

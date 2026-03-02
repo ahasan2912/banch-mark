@@ -43,7 +43,7 @@ import Users from "../pages/dashboard/users/Users";
 import Projects from "../pages/dashboard/projects/Projects";
 import Reports from "../pages/dashboard/reports/Reports";
 import Revenue from "../pages/dashboard/revenue/Revenue";
-import { Settings } from "lucide-react";
+import Settings from "../pages/dashboard/setting/Settings";
 
 const router = createBrowserRouter([
     {

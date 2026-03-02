@@ -1,4 +1,4 @@
-import { Check, MoreVertical, Search, User, X } from "lucide-react";
+import { Search, X } from "lucide-react";
 import TitleSection from "../components/TitleSection";
 import { useState } from "react";
 import Stats from "./components/Stats";
@@ -9,8 +9,8 @@ const Users = () => {
     const [search, setSearch] = useState('');
     console.log(search);
     // 1. Sample Data
-    const totalUsers = 1454;
-    const usersData = Array.from({ length: 50 }, (_, i) => ({
+    const totalUsers = 45;
+    const usersData = Array.from({ length: 45 }, (_, i) => ({
         id: i + 1,
         name: 'David Miller',
         email: 'example123@gmail.com',
