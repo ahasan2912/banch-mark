@@ -50,20 +50,24 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                                 <span>Reports</span>
                             </NavLink>
                             <NavLink to='revenue' className={({ isActive }) => `flex items-center gap-1 w-full py-3 transition-all duration-300 text-base ${isActive ? 'bg-[#4473BA]/20 text-[#90B5EE] border border-[#90B5EE] font-semibold py-2 pl-5 rounded-md' : 'text-white'}`}>
-                                <Banknote size={24}/>
+                                <Banknote size={24} />
                                 <span>Revenue</span>
                             </NavLink>
                             <NavLink to='setting' className={({ isActive }) => `flex items-center gap-1 w-full py-3 transition-all duration-300 text-base ${isActive ? 'bg-[#4473BA]/20 text-[#90B5EE] border border-[#90B5EE] font-semibold py-2 pl-5 rounded-md' : 'text-white'}`}>
-                                <Settings size={20}/>
+                                <Settings size={20} />
                                 <span>Settings</span>
                             </NavLink>
                         </ul>
                     </nav>
 
                     {/* Profile Card */}
-                    <button onClick={logOut} className=" mt-auto py-4 pl-5 flex items-center gap-1 cursor-pointer">
-                        <LogOut size={18} className="text-white hover:text-red-400 cursor-pointer transition-colors" />
-                        <span className='text-white hover:text-red-400 cursor-pointer transition-colors'>LogOut</span>
+                    <button onClick={logOut} className=" mt-auto py-4 pl-5 flex items-center gap-3 cursor-pointer">
+                        <div>
+                            <img className='w-12 h-12 rounded-full border border-slate-300 object-fill' src={images.profileImage} alt="admin-pic" />
+                        </div>
+                        <div className='flex items-center'>
+                            <span className='text-white hover:text-gray-300 cursor-pointer transition-colors text-base'>Mr. Virus</span>
+                        </div>
                     </button>
                 </div>
             </aside>

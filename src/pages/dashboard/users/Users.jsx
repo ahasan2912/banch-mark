@@ -9,8 +9,8 @@ const Users = () => {
     const [search, setSearch] = useState('');
     console.log(search);
     // 1. Sample Data
-    const totalUsers = 45;
-    const usersData = Array.from({ length: 45 }, (_, i) => ({
+    const totalUsers = 52;
+    const usersData = Array.from({ length: 52 }, (_, i) => ({
         id: i + 1,
         name: 'David Miller',
         email: 'example123@gmail.com',

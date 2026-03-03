@@ -36,7 +36,7 @@ const Dashboard = () => {
                     </div>
                 ))}
             </div>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 min-h-[60vh]">
                 <section className="bg-[#162238] rounded-xl border border-gray-800 p-6">
                     <div className="flex justify-between items-center mb-6">
                         <h2 className="text-xl font-semibold text-[#E9F6FF]">Recent Activity</h2>
@@ -59,7 +59,7 @@ const Dashboard = () => {
                         ))}
                     </div>
                 </section>
-                <section className="bg-[#162238] rounded-xl border border-gray-800 p-6">
+                <section className="bg-[#162238] rounded-xl border border-gray-800 p-6 min-h-[60vh]">
                     <div className="flex justify-between items-center mb-2">
                         <h2 className="text-xl font-semibold text-[#E9F6FF]">Revenue Overview</h2>
                         <button className="text-[#90B5EE] text-lg flex items-center gap-1 hover:underline cursor-pointer">
@@ -89,7 +89,6 @@ const Dashboard = () => {
                         ))}
                     </div>
                 </section>
-
             </div>
         </div>
     );

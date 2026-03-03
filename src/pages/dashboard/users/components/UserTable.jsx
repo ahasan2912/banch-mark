@@ -1,6 +1,6 @@
 import { Check, MoreVertical, User, X } from "lucide-react";
 
-const UserTable = ({currentUsers, getStatusStyles}) => {
+const  UserTable = ({currentUsers, getStatusStyles}) => {
     return (
         <div className="overflow-x-auto">
             <table className="w-full text-left border-separate border-spacing-y-2">

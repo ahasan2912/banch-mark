@@ -23,7 +23,8 @@ import instagramIcon from './images/svg/instragram.svg';
 import youtubeIcon from './images/svg/youtube.svg';
 import updateIcon from './images/svg/updatePassword.svg';
 import dashboardIcon1 from './images/dashboard-image.png';
-import dashboardIcon2 from './images/banchmark.png'
+import dashboardIcon2 from './images/banchmark.png';
+import profileImage from './images/netaniyahu.webp'
 
 export const images = {
     navbarLogo,
@@ -51,5 +52,6 @@ export const images = {
     youtubeIcon,
     updateIcon,
     dashboardIcon1,
-    dashboardIcon2
+    dashboardIcon2,
+    profileImage
 }
