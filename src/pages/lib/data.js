@@ -29,7 +29,7 @@ export const steps = [
   },
   {
     number: 3,
-    title: "Submit Monitoring Stages",
+    title: "Submit Monitoring Visit Data",
     description: "Periodically upload new readings (e.g. weekly) for comparison against baseline data.",
     icon: FileUp,
     image: workThree,
@@ -65,8 +65,8 @@ export const tools = [
     badgeText: "CS"
   },
   {
-    title: "Submit Monitoring Stages",
-    description: "Submit new monitoring stages for analysis and reporting.",
+    title: "Submit Monitoring Visit Data",
+    description: "Submit new Monitoring Visit Data for analysis and reporting.",
     image: guidanceFour,
   },
   {

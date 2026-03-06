@@ -14,10 +14,10 @@ const MonitoringStage = () => {
         <div className="bg-[#b2d1f0] flex px-6 py-4 mt-2 rounded-lg min-h-[74vh]">
             <div className="max-w-2xl w-full">
                 <h1 className="text-4xl font-bold text-[#1E3A8A] mb-6">
-                    Submit Monitoring Stages
+                    Submit Monitoring Visit Data
                 </h1>
                 <p className="text-lg text-gray-800 mb-8 leading-relaxed">
-                    Follow these steps to submit monitoring stages data using a CSV file.
+                    Follow these steps to submit Monitoring Visit Data data using a CSV file.
                     This guide will help ensure the monitoring data is formatted correctly
                     and uploaded successfully.
                 </p>

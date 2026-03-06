@@ -23,7 +23,7 @@ const GuidanceSidebar = () => {
                 </NavLink>
 
                 <NavLink to="monitoring-stages" className={getLinkStyles}>
-                    Submit Monitoring Stages
+                    Submit Monitoring Visit Data
                 </NavLink>
 
                 <NavLink to="generate-reports" className={getLinkStyles}>
@@ -43,7 +43,7 @@ const GuidanceSidebar = () => {
                 </NavLink>
 
                 <NavLink to="add-survey" className={getLinkStyles}>
-                    Add a Survey
+                    Add new visit Data
                 </NavLink>
 
                 <NavLink to="edit-project" className={getLinkStyles}>

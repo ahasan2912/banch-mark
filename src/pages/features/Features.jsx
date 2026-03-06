@@ -25,7 +25,7 @@ const Features = () => {
                         </div>
                         <FeaturesContent
                             title='Automated Data Analysis & Comparison'
-                            descriptionOne='Effortlessly analyze movement data by automatically comparing baseline and monitoring stages. Our platform streamlines the process, allowing for quick, accurate comparisons without manual effort. It generates precise deviation reports that highlight critical changes and trends, ensuring you stay ahead of potential issues.'
+                            descriptionOne='Effortlessly analyze movement data by automatically comparing baseline and Monitoring Visit Data. Our platform streamlines the process, allowing for quick, accurate comparisons without manual effort. It generates precise deviation reports that highlight critical changes and trends, ensuring you stay ahead of potential issues.'
                             descriptionTwo='Leverage time-series analysis, anomaly detection, and visual summaries to gain deeper insights into your data. The system helps identify anomalies early, enabling proactive action before risks arise. Clear charts and graphs make complex data easy to understand, while historical tracking offers a comprehensive view of trends over time.'
                             descriptionThree='Support faster, data-driven decisions with clear comparisons, historical tracking, and actionable performance indicators. By continuously monitoring key metrics, you can optimize operations, mitigate risks, and ensure long-term success with confidence.'
                         />

@@ -12,7 +12,7 @@ const AddSurve = () => {
             <div className="w-full max-w-2xl ">
                 <header className="mb-8">
                     <h1 className="text-4xl font-bold text-[#1E3A8A] mb-4">
-                        Add a Survey
+                        Add new visit Data
                     </h1>
                     <p className="text-lg text-gray-800 leading-relaxed">
                         Follow these steps to add a survey to your project. This guide will help you record new survey readings efficiently.
