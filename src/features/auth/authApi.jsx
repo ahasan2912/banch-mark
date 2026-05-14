@@ -1,50 +1,59 @@
 import apiSlice from "../api/apiSlice";
-import { userLoggedIn } from "./authSlice";
+import { saveTokensAndFetchUser } from "./saveToken";
 
 export const authApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        handleRegister: builder.mutation({
+        handleUserCreate: builder.mutation({
             query: (data) => ({
-                url: "/user/register",
+                url: "/user/create",
                 method: "POST",
                 body: data,
+                credentials: "include",
             }),
-            async onQueryStarted(arg, { queryFulfilled, dispatch }) {
-                try {
-                    const { data } = await queryFulfilled;
-                    dispatch(
-                        userLoggedIn({
-                            accessToken: data.token,
-                            user: data.user,
-                        })
-                    );
-                } catch (err) {
-                    console.error(err);
-                }
-            },
         }),
 
-        handleLogin: builder.mutation({
+        handleUserLogin: builder.mutation({
             query: (data) => ({
                 url: "/auth/login",
                 method: "POST",
                 body: data,
+                credentials: "include",
             }),
             async onQueryStarted(arg, { queryFulfilled, dispatch }) {
                 try {
-                    const { data } = await queryFulfilled;
-                    dispatch(
-                        userLoggedIn({
-                            accessToken: data.token,
-                            user: data.user,
-                        })
-                    );
+                    const result = await queryFulfilled;
+                    const tokens = result?.data?.data;
+                    if (tokens) {
+                        await saveTokensAndFetchUser(tokens, dispatch);
+                    }
                 } catch (err) {
-                    console.error(err);
+                    console.error("Login failed:", err);
                 }
             },
+        }),
+
+        otpVerification: builder.mutation({
+            query: (data) => ({
+                url: "/auth/verify-otp",
+                method: "POST",
+                body: data,
+                credentials: "include",
+            }),
+        }),
+
+        handleCurrentLoggedInUser: builder.query({
+            query: () => ({
+                url: "/users/me",
+                method: "GET",
+                credentials: "include",
+            }),
         }),
     }),
 });
 
-export const { useHandleRegisterMutation, useHandleLoginMutation } = authApi;
+export const {
+    useHandleUserCreateMutation,
+    useHandleUserLoginMutation,
+    useHandleCurrentLoggedInUserQuery,
+    useOtpVerificationMutation
+} = authApi;

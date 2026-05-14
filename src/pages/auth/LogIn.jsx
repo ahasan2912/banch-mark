@@ -1,5 +1,5 @@
 import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -7,11 +7,11 @@ const LogIn = () => {
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
 
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm();
+    const { register, handleSubmit, formState: { errors } } = useForm();
+
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, []);
 
     const onSubmit = (data) => {
         console.log("Form Data:", data);

@@ -1,20 +1,24 @@
+import Cookies from "js-cookie";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+
+export const baseQuery = fetchBaseQuery({
+    baseUrl: import.meta.env.VITE_BASE_URL,
+    credentials: "include",
+    prepareHeaders: (headers) => {
+        const token = Cookies.get("accessToken");
+        console.log(token);
+        if (token) {
+            headers.set("Authorization", `Bearer ${token}`);
+        }
+        return headers;
+    },
+});
 
 const apiSlice = createApi({
     reducerPath: "api",
-    baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:5000",
-        //all requested goto header
-        prepareHeaders: (headers, { getState }) => {
-            const token = getState()?.auth?.accessToken;
-
-            if (token) {
-                headers.set("Authorization", `Bearer ${token}`);
-            }
-
-            return headers;
-        },
-    }),
+    // baseQuery: baseQueryWithErrorHandling,
+    baseQuery: baseQuery,
+    tagTypes: ["candidates"],
     endpoints: () => ({}),
 });
 

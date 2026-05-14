@@ -1,12 +1,70 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import AddCompanyModal from "./component/AddCompanyModal";
+import { useGetAllCompanyListQuery } from "../../features/company/companyApi";
+import AddCompanySekeleton from "../../components/laoding-skeleton/AddCompanySekeleton";
+import { Link, useNavigate } from "react-router-dom";
+import { useHandleUserCreateMutation } from "../../features/auth/authApi";
+import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 const Addcompany = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const { register, handleSubmit } = useForm();
-    const onSubmit = (data) => {
-        console.log("Form Data:", data);
+    const { register, handleSubmit, formState: { errors } } = useForm();
+    const [companyInfo, setCompanyInfo] = useState(null);
+    const navigate = useNavigate();
+    const { user } = useSelector(state => state?.auth);
+    const { data: allCompany, isLoading, isError } = useGetAllCompanyListQuery();
+    const [handleUserCreate, { isLoading: registerLoading }] = useHandleUserCreateMutation();
+
+    if (isLoading) {
+        return <AddCompanySekeleton />
+    }
+
+    console.log(companyInfo);
+
+    const companies = Array.isArray(allCompany?.data)
+        ? allCompany.data
+        : Object.values(allCompany?.data || {});
+
+    const onSubmit = async (data) => {
+        if (data?.terms) {
+            try {
+                if (allCompany?.data?.length === 0) {
+                    const payload = {
+                        name: user?.name,
+                        email: user?.email,
+                        password: user?.password,
+                        company: {
+                            name: companyInfo?.companyName,
+                            email: companyInfo?.companyEmail,
+                            phone: companyInfo?.companyPhone,
+                            website: companyInfo?.companyWebsite,
+                            address: companyInfo?.companyAddress,
+                        },
+                    };
+                    const res = await handleUserCreate(payload);
+                    if (res?.data?.success) {
+                        toast.success("Registration successfully!");
+                        navigate('/otp-verification');
+                    }
+                } else {
+                    const payload = {
+                        name: user?.name,
+                        email: user?.email,
+                        password: user?.password,
+                        companyId: data?.companyId
+                    };
+                    const res = await handleUserCreate(payload);
+                    if (res?.data?.success) {
+                        toast.success("Registration successfully!");
+                        navigate('/otp-verification');
+                    }
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
     }
 
     return (
@@ -40,14 +98,21 @@ const Addcompany = () => {
                                         {/* Company Dropdown */}
                                         <div className="space-y-4">
                                             <select
-                                                {...register("company", { required: true })}
-                                                className="w-full bg-slate-800 border border-slate-600 text-white rounded-lg p-3 outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
-                                            >
-                                                <option value="">Select Company</option>
-                                                <option value="benchmark">BENCHMARK SES LTD</option>
-                                                <option value="culfin">Culfin Data Solutions</option>
-                                                <option value="culfin">D2R Survey Ltd</option>
-                                                <option value="culfin">Galcross Engineering</option>
+                                                {...register("companyId", { required: true })}
+                                                disabled={isError || companies.length === 0}
+                                                className="w-full bg-slate-800 border border-slate-600 text-white rounded-lg p-3 outline-none focus:ring-2 focus:ring-blue-500 appearance-none">
+                                                <option value="">
+                                                    {isError
+                                                        ? "Unable to load companies"
+                                                        : companies.length === 0
+                                                            ? "No company found"
+                                                            : "Select Company"}
+                                                </option>
+                                                {companies.map((company) => (
+                                                    <option key={company.id} value={company.id}>
+                                                        {company.name}
+                                                    </option>
+                                                ))}
                                             </select>
 
                                             <div className="flex items-center justify-between">
@@ -55,8 +120,7 @@ const Addcompany = () => {
                                                 <button
                                                     type="button"
                                                     onClick={() => setIsModalOpen(true)}
-                                                    className="bg-blue-200 text-slate-900 px-6 py-2 rounded-md font-semibold hover:bg-blue-300 transition"
-                                                >
+                                                    className="bg-blue-200 text-slate-900 px-6 py-2 rounded-md font-semibold hover:bg-blue-300 transition">
                                                     Add Company
                                                 </button>
                                             </div>
@@ -67,36 +131,41 @@ const Addcompany = () => {
                                             <input
                                                 type="checkbox"
                                                 id="terms"
-                                                {...register("terms", { required: true })}
+                                                {...register("terms", {
+                                                    required: "You must accept the Terms and Conditions.",
+                                                })}
                                                 className="w-4 h-4 rounded border-slate-600 bg-slate-800"
                                             />
                                             <label htmlFor="terms" className="text-slate-300">
-                                                I agree to <span className="text-blue-400 cursor-pointer underline">terms</span> of service
+                                                I agree to <Link to='/terms-condition' className="text-blue-400 cursor-pointer underline">terms</Link> of service
                                             </label>
                                         </div>
+                                        {errors.terms && (
+                                            <p className="-mt-3 text-sm text-red-500">
+                                                {errors.terms.message}
+                                            </p>
+                                        )}
 
                                         {/* Action Buttons */}
                                         <div className="grid grid-cols-2 gap-4">
-                                            <button
+                                            <Link to='/register'
                                                 type="button"
-                                                className="bg-slate-800 text-slate-300 py-3 rounded-lg font-semibold border border-slate-700 hover:bg-slate-700"
+                                                className="bg-slate-800 text-slate-300 py-3 rounded-lg font-semibold border border-slate-700 hover:bg-slate-700 text-center"
                                             >
                                                 Back
-                                            </button>
+                                            </Link>
                                             <button
                                                 type="submit"
-                                                className="bg-blue-200 text-slate-900 py-3 rounded-lg font-semibold hover:bg-blue-300"
-                                            >
-                                                Register
+                                                disabled={registerLoading}
+                                                className="bg-blue-200 text-slate-900 py-3 rounded-lg font-semibold hover:bg-blue-300 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+                                                {registerLoading && (
+                                                    <span className="w-5 h-5 border-2 border-slate-900 border-t-transparent rounded-full animate-spin"></span>
+                                                )}
+                                                {registerLoading ? "Registering..." : "Register"}
                                             </button>
                                         </div>
                                     </form>
-
-                                    <p className="text-center text-slate-300">
-                                        Already have an account? <span className="text-blue-400 cursor-pointer">Sign in</span>
-                                    </p>
-
-                                    {isModalOpen && <AddCompanyModal onClose={() => setIsModalOpen(false)} />}
+                                    {isModalOpen && <AddCompanyModal onClose={() => setIsModalOpen(false)} setCompanyInfo={setCompanyInfo} />}
                                 </div>
                             </div>
                         </div>

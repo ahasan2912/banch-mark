@@ -1,10 +1,10 @@
 import { useForm } from "react-hook-form";
 
-const AddCompanyModal = ({ onClose }) => {
+const AddCompanyModal = ({ onClose, setCompanyInfo }) => {
   const { register, handleSubmit } = useForm();
 
   const onCompanySubmit = (data) => {
-    console.log("New Company:", data);
+    setCompanyInfo(data);
     onClose();
   };
 

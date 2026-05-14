@@ -17,8 +17,7 @@ const ResetPassword = () => {
     };
     return (
         <div className="selection:bg-blue-500/15" style={{
-            background: 'radial-gradient(circle at 20% 30%, #1a2332 0%, #0a0c10 100%)'
-        }}>
+            background: 'radial-gradient(circle at 20% 30%, #1a2332 0%, #0a0c10 100%)'}}>
             <div
                 className="selection:bg-blue-500/15"
                 style={{
@@ -28,7 +27,6 @@ const ResetPassword = () => {
             >
                 <div className="min-h-screen w-full text-[#CBD5E1] relative overflow-hidden">
                     <div className="absolute -right-100 inset-0 opacity-10 bg-image z-50 -rotate-20 bg-center lg:bg-right bg-cover lg:bg-contain pointer-events-none bg-fixed"></div>
-
                     <div className="max-w-7xl mx-auto px-4 pb-20 pt-24 sm:pt-32">
                         <div className="flex items-center justify-center h-full pt-28">
                             <div className="w-full max-w-160 mx-auto bg-[#1A315580] rounded-xl p-4 sm:p-8 md:p-12 shadow-2xl border border-white/5 relative z-10">

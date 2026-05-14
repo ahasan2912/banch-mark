@@ -44,6 +44,7 @@ import Projects from "../pages/dashboard/projects/Projects";
 import Reports from "../pages/dashboard/reports/Reports";
 import Revenue from "../pages/dashboard/revenue/Revenue";
 import Settings from "../pages/dashboard/setting/Settings";
+import OtpVerification from "../pages/auth/OtpVerification";
 
 const router = createBrowserRouter([
     {
@@ -146,6 +147,10 @@ const router = createBrowserRouter([
                 element: <Register />,
             },
             {
+                path: "/otp-verification",
+                element: <OtpVerification />
+            },
+            {
                 path: "/forgot-password",
                 element: <ForgotPassword />,
             },
@@ -219,23 +224,23 @@ const router = createBrowserRouter([
             },
             {
                 path: 'users',
-                element: <Users/>
+                element: <Users />
             },
             {
                 path: 'projects',
-                element: <Projects/>
+                element: <Projects />
             },
             {
                 path: 'report',
-                element: <Reports/>
+                element: <Reports />
             },
             {
                 path: 'revenue',
-                element: <Revenue/>
+                element: <Revenue />
             },
             {
                 path: 'setting',
-                element: <Settings/>
+                element: <Settings />
             },
         ]
     }

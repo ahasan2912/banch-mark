@@ -1,21 +1,31 @@
 import { Mail, Lock, Eye, EyeOff, User } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { userLoggedIn } from '../../features/auth/authSlice';
 
 const Register = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [confirmShowPassword, setConfirmShowPassword] = useState(false);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { register, handleSubmit, watch, formState: { errors } } = useForm();
+    
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, []);
 
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm();
-
-    const onSubmit = (data) => {
-        console.log("Form Data:", data);
+    const onSubmit = async (data) => {
+        const registerInfo = {
+            name: data.name,
+            email: data.email,
+            password: data.password,
+        }
+        dispatch(userLoggedIn(registerInfo));
+        navigate('/add-company');
     };
+
     return (
         <div className="selection:bg-blue-500/15" style={{
             background: 'radial-gradient(circle at 20% 30%, #1a2332 0%, #0a0c10 100%)'
@@ -30,7 +40,7 @@ const Register = () => {
                 <div className="min-h-screen w-full text-[#CBD5E1] relative overflow-hidden">
                     <div className="absolute -right-100 inset-0 opacity-10 bg-image z-50 -rotate-20 bg-center lg:bg-right bg-cover lg:bg-contain pointer-events-none bg-fixed"></div>
 
-                    <div className="max-w-7xl mx-auto px-4 pb-20 pt-24 sm:pt-32">
+                    <div className="max-w-7xl mx-auto px-4 pb-20 pt-24 sm:pt-20">
                         <div className="flex items-center justify-center h-full pt-24">
                             <div className="w-full max-w-160 mx-auto bg-[#1A315580] rounded-xl p-4 sm:p-8 md:p-12 shadow-2xl border border-white/5 relative z-10">
                                 <div className="text-center mb-10">
@@ -128,6 +138,9 @@ const Register = () => {
                                         <input
                                             {...register("confirmPassword", {
                                                 required: "Confirm Password is required",
+                                                validate: (value) =>
+                                                    value === watch("password") ||
+                                                    "Passwords do not match",
                                             })}
                                             type={confirmShowPassword ? "text" : "password"}
                                             placeholder="Confirm your new password"
@@ -149,7 +162,7 @@ const Register = () => {
                                         </button>
 
                                         {errors.confirmPassword && (
-                                            <span className="text-red-400 text-sm mt-1">
+                                            <span className="block text-red-400 text-sm mt-1">
                                                 {errors.confirmPassword.message}
                                             </span>
                                         )}
