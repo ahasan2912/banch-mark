@@ -6,10 +6,13 @@ export const baseQuery = fetchBaseQuery({
     credentials: "include",
     prepareHeaders: (headers) => {
         const token = Cookies.get("accessToken");
-        console.log(token);
+        // const resetToken = localStorage.getItem("resetToken");
         if (token) {
             headers.set("Authorization", `Bearer ${token}`);
         }
+        // if (resetToken) {
+        //     headers.set("token", resetToken);
+        // }
         return headers;
     },
 });

@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const Banner = () => {
     return (
         <div
@@ -13,17 +15,17 @@ const Banner = () => {
                         Automate your movement data analysis and generate detailed PDF reports with ease.
                     </p>
                     <div className="mt-10 flex flex-col sm:flex-row gap-4">
-                        <button className="bg-[#1A3155]/80 backdrop-blur-md 
+                        <Link to='/report-generation' className="bg-[#1A3155]/80 backdrop-blur-md 
                             px-6 py-3 rounded-lg font-semibold 
                             border border-white/20 
                             hover:scale-105 transition-all duration-300 cursor-pointer">
                             Request Demo
-                        </button>
-                        <button className="bg-[#B7D8FF]/90 text-[#1A3155] 
+                        </Link>
+                        <Link to='/' className="bg-[#B7D8FF]/90 text-[#1A3155] 
                             px-6 py-3 rounded-lg font-bold 
                             hover:scale-105 transition-all duration-300 cursor-pointer">
                             View Sample Reports
-                        </button>
+                        </Link>
                     </div>
                 </div>
             </main>

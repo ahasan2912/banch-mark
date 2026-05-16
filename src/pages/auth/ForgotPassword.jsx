@@ -1,16 +1,24 @@
 import { Mail } from 'lucide-react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useForgetPasswordMutation } from '../../features/auth/authApi';
 const ForgotPassword = () => {
 
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm();
+    const { register, handleSubmit, formState: { errors } } = useForm();
+    const [forgetPassword, { isLoading }] = useForgetPasswordMutation();
+    const navigate = useNavigate();
 
-    const onSubmit = (data) => {
-        console.log("Form Data:", data);
+    const onSubmit = async (data) => {
+        const res = await forgetPassword({
+            email: data?.email
+        });
+        // Save email to localStorage
+        localStorage.setItem("resetEmail", data?.email);
+
+        if (res?.data?.success) {
+            navigate('/forgot-password-otp');
+            
+        }
     };
     return (
         <div className="selection:bg-blue-500/15" style={{
@@ -65,9 +73,17 @@ const ForgotPassword = () => {
                                     <div className="flex flex-col md:flex-row items-center justify-between gap-6 pt-4">
                                         <button
                                             type="submit"
-                                            className="w-full md:w-auto px-10 py-3 bg-[#bcd9ff] hover:bg-blue-100 text-[#1A3155] font-bold rounded-lg transition-colors text-base sm:text-lg cursor-pointer"
+                                            disabled={isLoading}
+                                            className="w-full sm:w-auto bg-blue-200 text-slate-900 py-3 rounded-md font-semibold hover:bg-blue-300 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2 transition-colors px-8"
                                         >
-                                            Reset Password
+                                            {isLoading ? (
+                                                <>
+                                                    <span className="w-5 h-5 border-2 border-slate-900 border-t-transparent rounded-full animate-spin"></span>
+                                                    Reset Password...
+                                                </>
+                                            ) : (
+                                                "Reset Password"
+                                            )}
                                         </button>
 
                                         <div className="text-right space-y-2">
@@ -76,7 +92,7 @@ const ForgotPassword = () => {
                                                 <Link
                                                     to="/login"
                                                     className="text-blue-400 hover:underline">
-                                                     Sign in
+                                                    Sign in
                                                 </Link>
                                             </p>
                                         </div>

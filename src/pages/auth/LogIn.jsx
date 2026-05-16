@@ -2,20 +2,39 @@ import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
+import { useHandleUserLoginMutation } from '../../features/auth/authApi';
+import { toast } from 'react-toastify';
+import useAuth from '../../hooks/useAuth';
 
 const LogIn = () => {
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
-
     const { register, handleSubmit, formState: { errors } } = useForm();
+    const [handleLogin, { isLoading }] = useHandleUserLoginMutation();
+    const isAuthenticate = useAuth();
 
     useEffect(() => {
         window.scrollTo(0, 0)
     }, []);
 
-    const onSubmit = (data) => {
-        console.log("Form Data:", data);
-        navigate('/report-generation');
+    useEffect(() => {
+        if (isAuthenticate) {
+            navigate('/report-generation');
+        }
+    }, [isAuthenticate, navigate]);
+
+    const onSubmit = async (data) => {
+        const payload = {
+            email: data?.email,
+            password: data?.password
+        }
+        const res = await handleLogin(payload);
+        if (res?.data?.success) {
+            toast.success("Log in successfully!");
+            navigate('/report-generation');
+        } else {
+            toast.error("Log in faild!");
+        }
     };
     return (
         <div className="selection:bg-blue-500/15" style={{
@@ -104,9 +123,17 @@ const LogIn = () => {
                                     <div className="flex flex-col md:flex-row items-center justify-between gap-6 pt-4">
                                         <button
                                             type="submit"
-                                            className="w-full md:w-auto px-10 py-3 bg-[#bcd9ff] hover:bg-blue-100 text-[#1A3155] font-bold rounded-lg transition-colors text-base sm:text-lg cursor-pointer"
+                                            disabled={isLoading}
+                                            className="w-full sm:w-auto bg-blue-200 text-slate-900 py-3 rounded-md font-semibold hover:bg-blue-300 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2 transition-colors px-8"
                                         >
-                                            Log In
+                                            {isLoading ? (
+                                                <>
+                                                    <span className="w-5 h-5 border-2 border-slate-900 border-t-transparent rounded-full animate-spin"></span>
+                                                    Sign In...
+                                                </>
+                                            ) : (
+                                                "Sign In"
+                                            )}
                                         </button>
 
                                         <div className="text-right space-y-2">
@@ -124,7 +151,7 @@ const LogIn = () => {
                                                 <Link
                                                     to="/register"
                                                     className="text-blue-400 hover:underline">
-                                                    Register here
+                                                    Sign up
                                                 </Link>
                                             </p>
                                         </div>

@@ -1,8 +1,10 @@
 import { useSelector } from "react-redux";
+import Cookies from "js-cookie";
 
 const useAuth = () => {
-    const { accessToken } = useSelector((state) => state.auth);
-    if (accessToken?.user && accessToken?.accessToken) {
+    const { user } = useSelector((state) => state.auth);
+    const token = Cookies.get("accessToken");
+    if (token && user) {
         return true;
     }
 };

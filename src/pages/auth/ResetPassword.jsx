@@ -1,23 +1,45 @@
 import { Lock, Eye, EyeOff } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useSetNewPasswordMutation } from '../../features/auth/authApi';
+import { toast } from 'react-toastify';
 const ResetPassword = () => {
     const [showPassword, setShowPassword] = useState(false);
-    const [confirmShowPassword, setConfirmShowPassword] = useState(false);
+    const { register, handleSubmit, formState: { errors } } = useForm();
+    const resetToken = localStorage.getItem("resetToken");
+    const navigate = useNavigate();
+    const [setNewPassword, { isLoading, isSuccess, error }] = useSetNewPasswordMutation();
 
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm();
+    useEffect(() => {
+        if (isSuccess) {
+            toast.success("New password set successfully");
+            navigate('/update-password');
+        }
+        if (error) {
+            toast.error(
+                error?.data?.message || "New password set failed"
+            );
+        }
+    }, [isSuccess, navigate, error]);
 
-    const onSubmit = (data) => {
-        console.log("Form Data:", data);
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, []);
+
+    const onSubmit = async (data) => {
+        const res = await setNewPassword({
+            password: data?.newPassword,
+            token: resetToken
+        });
+        if (res?.data?.success) {
+            navigate('/update-password');
+        }
     };
     return (
         <div className="selection:bg-blue-500/15" style={{
-            background: 'radial-gradient(circle at 20% 30%, #1a2332 0%, #0a0c10 100%)'}}>
+            background: 'radial-gradient(circle at 20% 30%, #1a2332 0%, #0a0c10 100%)'
+        }}>
             <div
                 className="selection:bg-blue-500/15"
                 style={{
@@ -77,46 +99,19 @@ const ResetPassword = () => {
                                             </span>
                                         )}
                                     </div>
-                                    <div className="relative">
-                                        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                            <Lock className="h-5 w-5 text-gray-400" />
-                                        </div>
-
-                                        <input
-                                            {...register("confirmPassword", {
-                                                required: "Confirm Password is required",
-                                            })}
-                                            type={confirmShowPassword ? "text" : "password"}
-                                            placeholder="Confirm your new password"
-                                            className="block w-full pl-12 pr-12 py-4 bg-transparent border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all"
-                                        />
-
-                                        <button
-                                            type="button"
-                                            onClick={() =>
-                                                setConfirmShowPassword(!confirmShowPassword)
-                                            }
-                                            className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-white transition-colors"
-                                        >
-                                            {confirmShowPassword ? (
-                                                <EyeOff className="h-5 w-5" />
-                                            ) : (
-                                                <Eye className="h-5 w-5" />
-                                            )}
-                                        </button>
-
-                                        {errors.confirmPassword && (
-                                            <span className="text-red-400 text-sm mt-1">
-                                                {errors.confirmPassword.message}
-                                            </span>
-                                        )}
-                                    </div>
                                     <div className="flex flex-col md:flex-row items-center justify-between gap-6 pt-4">
                                         <button
                                             type="submit"
-                                            className="w-full md:w-auto px-10 py-3 bg-[#bcd9ff] hover:bg-blue-100 text-[#1A3155] font-bold rounded-lg transition-colors text-base sm:text-lg cursor-pointer"
-                                        >
-                                            Reset Password
+                                            disabled={isLoading}
+                                            className="w-full max-w-88 mx-auto bg-blue-200 text-slate-900 py-4 rounded-lg font-semibold hover:bg-blue-300 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2 transition-colors">
+                                            {isLoading ? (
+                                                <>
+                                                    <span className="w-5 h-5 border-2 border-slate-900 border-t-transparent rounded-full animate-spin"></span>
+                                                    Reset Password...
+                                                </>
+                                            ) : (
+                                                "Reset Password"
+                                            )}
                                         </button>
 
                                         <div className="text-right space-y-2">

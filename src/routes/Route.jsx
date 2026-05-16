@@ -28,7 +28,6 @@ import HelpSupport from "../pages/footer/HelpSupport";
 import ForgotPassword from "../pages/auth/ForgotPassword";
 import ResetPassword from "../pages/auth/ResetPassword";
 import UpdatePassword from "../pages/auth/UpdatePassword";
-import Addcompany from "../pages/auth/Addcompany";
 import ReportGeneration from "../pages/report-generate/ReportGeneration";
 import ReportGenerationHome from "../pages/report-generate/component/ReportGenerationHome";
 import ViewSurvey from "../pages/report-generate/subroute/ViewSurvey";
@@ -45,6 +44,8 @@ import Reports from "../pages/dashboard/reports/Reports";
 import Revenue from "../pages/dashboard/revenue/Revenue";
 import Settings from "../pages/dashboard/setting/Settings";
 import OtpVerification from "../pages/auth/OtpVerification";
+import PrivateRoute from "./PrivateRoute";
+import ForgotPasswordOTP from "../pages/auth/ForgotPasswordOTP";
 
 const router = createBrowserRouter([
     {
@@ -155,6 +156,10 @@ const router = createBrowserRouter([
                 element: <ForgotPassword />,
             },
             {
+                path: "/forgot-password-otp",
+                element: <ForgotPasswordOTP />,
+            },
+            {
                 path: "/reset-password",
                 element: <ResetPassword />,
             },
@@ -163,12 +168,8 @@ const router = createBrowserRouter([
                 element: <UpdatePassword />,
             },
             {
-                path: "/add-company",
-                element: <Addcompany />,
-            },
-            {
                 path: "/report-generation",
-                element: <ReportGeneration />,
+                element: <PrivateRoute><ReportGeneration /></PrivateRoute>,
                 children: [
                     {
                         index: true,

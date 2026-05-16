@@ -2,28 +2,47 @@ import { Mail, Lock, Eye, EyeOff, User } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { userLoggedIn } from '../../features/auth/authSlice';
+import AddCompanyModal from './component/AddCompanyModal';
+import { useHandleUserCreateMutation } from '../../features/auth/authApi';
+import { toast } from 'react-toastify';
 
 const Register = () => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+    const [companyInfo, setCompanyInfo] = useState(null);
     const [confirmShowPassword, setConfirmShowPassword] = useState(false);
     const navigate = useNavigate();
-    const dispatch = useDispatch();
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
-    
+    const [handleUserCreate, { isLoading: registerLoading }] = useHandleUserCreateMutation();
+
     useEffect(() => {
         window.scrollTo(0, 0)
     }, []);
 
     const onSubmit = async (data) => {
-        const registerInfo = {
+        if (data.password !== data.conpassword) {
+            return;
+        }
+
+        const payload = {
             name: data.name,
             email: data.email,
             password: data.password,
+            company: {
+                name: companyInfo?.companyName,
+                email: companyInfo?.companyEmail,
+                phone: companyInfo?.companyPhone,
+                website: companyInfo?.companyWebsite,
+                address: companyInfo?.companyAddress,
+            },
+        };
+        const res = await handleUserCreate(payload);
+        if (res?.data?.success) {
+            toast.success("Registration successfully!");
+            navigate('/otp-verification');
+        } else {
+            toast.error("Registration faild!");
         }
-        dispatch(userLoggedIn(registerInfo));
-        navigate('/add-company');
     };
 
     return (
@@ -39,7 +58,6 @@ const Register = () => {
             >
                 <div className="min-h-screen w-full text-[#CBD5E1] relative overflow-hidden">
                     <div className="absolute -right-100 inset-0 opacity-10 bg-image z-50 -rotate-20 bg-center lg:bg-right bg-cover lg:bg-contain pointer-events-none bg-fixed"></div>
-
                     <div className="max-w-7xl mx-auto px-4 pb-20 pt-24 sm:pt-20">
                         <div className="flex items-center justify-center h-full pt-24">
                             <div className="w-full max-w-160 mx-auto bg-[#1A315580] rounded-xl p-4 sm:p-8 md:p-12 shadow-2xl border border-white/5 relative z-10">
@@ -146,7 +164,6 @@ const Register = () => {
                                             placeholder="Confirm your new password"
                                             className="block w-full pl-12 pr-12 py-4 bg-transparent border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all"
                                         />
-
                                         <button
                                             type="button"
                                             onClick={() =>
@@ -167,12 +184,42 @@ const Register = () => {
                                             </span>
                                         )}
                                     </div>
-                                    <div className="flex flex-col md:flex-row items-center justify-between gap-6 pt-4">
+                                    {/* Add company and checkbox */}
+                                    <div className="flex flex-col sm:flex-row gap-3 sm:items-center justify-between">
+                                        <div className="flex items-center space-x-2">
+                                            <input
+                                                type="checkbox"
+                                                id="terms"
+                                                {...register("terms", {
+                                                    required: "You must accept the Terms and Conditions.",
+                                                })}
+                                                className="w-4 h-4 rounded border-slate-600 bg-slate-800"
+                                            />
+                                            <label htmlFor="terms" className="text-slate-300">
+                                                I agree to <Link to='/terms-condition' className="text-blue-400 cursor-pointer underline">terms</Link> of service
+                                            </label>
+                                        </div>
+                                        <button
+                                            type="button"
+                                            onClick={() => setIsModalOpen(true)}
+                                            className="bg-blue-200 text-slate-900 px-6 py-3 sm:py-2 rounded-md font-semibold hover:bg-blue-300 transition w-full sm:w-auto cursor-pointer">
+                                            Add Company
+                                        </button>
+                                    </div>
+                                    {errors.terms && (
+                                        <p className="-mt-7 text-sm text-red-500">
+                                            {errors.terms.message}
+                                        </p>
+                                    )}
+                                    <div className="flex flex-col sm:flex-row items-center justify-between gap-6 sm:pt-2">
                                         <button
                                             type="submit"
-                                            className="w-full md:w-auto px-10 py-3 bg-[#bcd9ff] hover:bg-blue-100 text-[#1A3155] font-bold rounded-lg transition-colors text-base sm:text-lg cursor-pointer"
-                                        >
-                                            Sign Up
+                                            disabled={registerLoading}
+                                            className="bg-blue-200 text-slate-900 py-3 rounded-lg font-semibold hover:bg-blue-300 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2 w-full sm:w-auto px-10">
+                                            {registerLoading && (
+                                                <span className="w-5 h-5 border-2 border-slate-900 border-t-transparent rounded-full animate-spin"></span>
+                                            )}
+                                            {registerLoading ? "Sign Up..." : "Sign Up"}
                                         </button>
 
                                         <div className="text-right space-y-2">
@@ -187,6 +234,7 @@ const Register = () => {
                                         </div>
                                     </div>
                                 </form>
+                                {isModalOpen && <AddCompanyModal onClose={() => setIsModalOpen(false)} setCompanyInfo={setCompanyInfo} />}
                             </div>
                         </div>
                     </div>

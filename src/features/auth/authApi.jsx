@@ -32,6 +32,14 @@ export const authApi = apiSlice.injectEndpoints({
             },
         }),
 
+        handleCurrentLoggedInUser: builder.query({
+            query: () => ({
+                url: "/user/profile",
+                method: "GET",
+                credentials: "include",
+            }),
+        }),
+
         otpVerification: builder.mutation({
             query: (data) => ({
                 url: "/auth/verify-otp",
@@ -41,13 +49,33 @@ export const authApi = apiSlice.injectEndpoints({
             }),
         }),
 
-        handleCurrentLoggedInUser: builder.query({
-            query: () => ({
-                url: "/users/me",
-                method: "GET",
+        forgetPassword: builder.mutation({
+            query: (data) => ({
+                url: "/auth/forget-password",
+                method: "POST",
+                body: data,
                 credentials: "include",
             }),
         }),
+
+        forgetPasswordOtp: builder.mutation({
+            query: (data) => ({
+                url: "/auth/forget-otp-verify",
+                method: "POST",
+                body: data,
+                credentials: "include",
+            }),
+        }),
+
+        setNewPassword: builder.mutation({
+            query: (data) => ({
+                url: "/auth/set-password",
+                method: "POST",
+                body: data,
+                credentials: "include",
+            }),
+        }),
+
     }),
 });
 
@@ -55,5 +83,8 @@ export const {
     useHandleUserCreateMutation,
     useHandleUserLoginMutation,
     useHandleCurrentLoggedInUserQuery,
-    useOtpVerificationMutation
+    useOtpVerificationMutation,
+    useForgetPasswordMutation,
+    useForgetPasswordOtpMutation,
+    useSetNewPasswordMutation
 } = authApi;

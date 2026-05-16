@@ -1,19 +1,29 @@
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
-import { useOtpVerificationMutation } from "../../features/auth/authApi";
-import { useSelector } from "react-redux";
+import { useForgetPasswordOtpMutation } from "../../features/auth/authApi";
 import { useNavigate } from "react-router-dom";
-
 const OTP_LENGTH = 6;
 const OTP_EXPIRY_SECONDS = 5 * 60;
 
-const OtpVerification = () => {
+const ForgotPasswordOTP = () => {
     const [otp, setOtp] = useState("");
     const [timeLeft, setTimeLeft] = useState(OTP_EXPIRY_SECONDS);
-    const { user } = useSelector(state => state?.auth);
     const inputRef = useRef(null);
-    const [otpVerification, { isLoading }] = useOtpVerificationMutation();
+    const [forgetPasswordOtp, { isLoading, isSuccess, error }] = useForgetPasswordOtpMutation();
     const navigate = useNavigate();
+    const email = localStorage.getItem("resetEmail");
+
+    useEffect(() => {
+        if (isSuccess) {
+            toast.success("OTP verified successfully");
+            navigate('/reset-password');
+        }
+        if (error) {
+            toast.error(
+                error?.data?.message || "OTP verification failed"
+            );
+        }
+    }, [isSuccess, navigate, error]);
 
     useEffect(() => {
         window.scrollTo(0, 0)
@@ -52,19 +62,13 @@ const OtpVerification = () => {
 
     const handleClick = async () => {
         if (otp.length === 6) {
-            const res = await otpVerification({
-                email: user?.email,
+            const res = await forgetPasswordOtp({
+                email: email,
                 otp: Number(otp),
             });
-            if (res?.data?.success) {
-                toast.success("OTP verified successfully");
-                navigate('/login');
-            } else {
-                toast.error("Invalid or expired OTP");
-            }
+            localStorage.setItem("resetToken", res?.data?.data);
         }
     }
-
     return (
         <div className="selection:bg-blue-500/15" style={{
             background: 'radial-gradient(circle at 20% 30%, #1a2332 0%, #0a0c10 100%)'
@@ -153,4 +157,4 @@ const OtpVerification = () => {
     );
 };
 
-export default OtpVerification;
+export default ForgotPasswordOTP;
