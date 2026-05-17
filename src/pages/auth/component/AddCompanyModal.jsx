@@ -27,7 +27,7 @@ const AddCompanyModal = ({ onClose, setCompanyInfo }) => {
           <input {...register("companyName")} placeholder="Company Name" className={inputStyle} />
           <input {...register("companyEmail")} placeholder="Company Email" className={inputStyle} />
           <input {...register("companyPhone")} placeholder="Company Phone" className={inputStyle} />
-          <input {...register("companyWebsite")} placeholder="Company Website" className={inputStyle} />
+          <input type="url" {...register("companyWebsite")} placeholder="Company Website" className={inputStyle} />
           <textarea {...register("companyAddress")} placeholder="Company Address" className={`${inputStyle} h-24`} />
 
           <div className="bg-red-900/60 border border-red-900 text-red-200 p-3 rounded flex items-center gap-3">

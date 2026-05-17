@@ -20,10 +20,6 @@ const Register = () => {
     }, []);
 
     const onSubmit = async (data) => {
-        if (data.password !== data.conpassword) {
-            return;
-        }
-
         const payload = {
             name: data.name,
             email: data.email,
@@ -37,6 +33,7 @@ const Register = () => {
             },
         };
         const res = await handleUserCreate(payload);
+        localStorage.setItem("email", data.email);
         if (res?.data?.success) {
             toast.success("Registration successfully!");
             navigate('/otp-verification');

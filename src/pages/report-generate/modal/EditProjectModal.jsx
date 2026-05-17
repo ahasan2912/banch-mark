@@ -1,16 +1,14 @@
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import { X } from "lucide-react";
-import { useProjectCreateMutation } from "../../../features/projects/projectApi";
+import { useEditSingleProjectMutation, useSingleProjectQuery } from "../../../features/projects/projectApi";
+import EditProjectModalSkeleton from "../../../components/laoding-skeleton/EditProjectModalSkeleton";
 import { toast } from "react-toastify";
 
-const NewProjectModal = ({ setIsModalOpen }) => {
-    const [projectCreate, { isLoading }] = useProjectCreateMutation();
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm();
+const EditProjectModal = ({ setIsModalOpen, projectId }) => {
+    const { data: singleProject, isLoading: projectLoading } = useSingleProjectQuery(projectId);
+    const [editSingleProject, { isLoading }] = useEditSingleProjectMutation();
+    const { register, handleSubmit, reset, formState: { errors } } = useForm();
 
     const inputBase =
         "w-full bg-[#2a3b5a] border border-blue-400/20 rounded-md px-3 py-3 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-blue-500 transition-colors";
@@ -25,6 +23,29 @@ const NewProjectModal = ({ setIsModalOpen }) => {
         return () => window.removeEventListener("keydown", handleEsc);
     }, [setIsModalOpen]);
 
+    useEffect(() => {
+        const project = singleProject?.data;
+
+        if (project) {
+            reset({
+                projectName: project?.name || "",
+                reference: project?.reference || "",
+                frequency: project?.frequency || "",
+                instrumentation: project?.instrumentation || "",
+                wEasting: project?.warningEasting ?? "",
+                wNorthing: project?.warningNorthing ?? "",
+                wLevel: project?.warningLevel ?? "",
+                aEasting: project?.alertEasting ?? "",
+                aNorthing: project?.alertNorthing ?? "",
+                aLevel: project?.alertLevel ?? "",
+            });
+        }
+    }, [singleProject, reset]);
+
+    if (projectLoading) {
+        return <EditProjectModalSkeleton />
+    }
+
     const onSubmit = async (data) => {
         const payload = {
             name: data?.projectName,
@@ -38,22 +59,26 @@ const NewProjectModal = ({ setIsModalOpen }) => {
             alertNorthing: Number(data?.aNorthing),
             alertLevel: Number(data?.aLevel)
         }
-        const res = await projectCreate(payload);
+
+        const res = await editSingleProject({
+            data: payload,
+            projectId: projectId
+        });
+
         if (res?.data?.success) {
-            toast.success("Project created successfully!");
+            toast.success("Project updated successfully!");
             setIsModalOpen(false);
         } else {
-            toast.error(res?.data?.message || "Project creation failed!");
+            toast.error(res?.data?.message || "Project update failed!");
         };
     }
-
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
             <form
                 onSubmit={handleSubmit(onSubmit)}
                 className="w-full max-w-5xl max-h-[90vh] overflow-y-auto bg-[#1e2d4a] border border-slate-700 rounded-lg shadow-2xl animate-fadeIn">
                 <div className="flex justify-between items-center px-6 py-4 border-b border-slate-700">
-                    <h2 className="text-white text-xl font-medium">New Project</h2>
+                    <h2 className="text-white text-xl font-medium">Edit Project</h2>
                     <button
                         type="button"
                         onClick={() => setIsModalOpen(false)}
@@ -123,11 +148,11 @@ const NewProjectModal = ({ setIsModalOpen }) => {
                     <button
                         type="submit"
                         disabled={isLoading}
-                        className="bg-blue-200 text-slate-900 py-3 rounded-lg font-semibold hover:bg-blue-300 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2 w-full sm:w-auto px-10">
+                        className="bg-blue-200 text-slate-900 py-3 rounded-md font-semibold hover:bg-blue-300 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2 w-full sm:w-auto px-10">
                         {isLoading && (
                             <span className="w-5 h-5 border-2 border-slate-900 border-t-transparent rounded-full animate-spin"></span>
                         )}
-                        {isLoading ? "Submit..." : "Submit"}
+                        {isLoading ? "Edit Peoject.." : "Edit Peoject"}
                     </button>
                 </div>
             </form>
@@ -135,4 +160,4 @@ const NewProjectModal = ({ setIsModalOpen }) => {
     );
 };
 
-export default NewProjectModal;
+export default EditProjectModal;

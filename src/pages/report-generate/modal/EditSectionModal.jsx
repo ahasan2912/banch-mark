@@ -1,13 +1,14 @@
 import { useForm } from "react-hook-form";
-import { X, Plus, Trash2 } from "lucide-react";
+import { X } from "lucide-react";
 import { useEffect, useRef } from "react";
-import { useSectionCreateMutation } from "../../../features/section/sectionApi";
+import { useEditSectionMutation } from "../../../features/section/sectionApi";
 import { toast } from "react-toastify";
 
-const CreateSectionModal = ({ setIsModalOpen, projectId }) => {
+const EditSectionModal = ({ setIsModalOpen, sectionInfo }) => {
     const modalRef = useRef();
-    const [sectionCreate, { isLoading }] = useSectionCreateMutation();
-    const { register, handleSubmit, formState: { errors } } = useForm({
+    const [editSection, { isLoading }] = useEditSectionMutation();
+    const { id: sectionId, name, projectId } = sectionInfo || {};
+    const { register, handleSubmit, reset, formState: { errors } } = useForm({
         defaultValues: {
             sectionName: "",
         },
@@ -23,38 +24,40 @@ const CreateSectionModal = ({ setIsModalOpen, projectId }) => {
         return () => window.removeEventListener("keydown", handleEsc);
     }, [setIsModalOpen]);
 
-    const handleOutsideClick = (e) => {
-        if (modalRef.current && !modalRef.current.contains(e.target)) {
-            setIsModalOpen(false);
-        }
-    };
+    useEffect(() => {
+        reset({
+            sectionName: name || "",
+        });
+    }, [name, reset]);
 
     const onSubmit = async (data) => {
         const payload = {
             name: data?.sectionName,
-        }
-        const res = await sectionCreate({
+        };
+
+        const res = await editSection({
+            projectId,
+            sectionId,
             data: payload,
-            projectId: projectId,
         });
+
         if (res?.data?.success) {
-            toast.success("Section created successfully!");
+            toast.success("Section updated successfully!");
             setIsModalOpen(false);
         } else {
-            toast.error(res?.data?.message || "Section created failed!");
-        };
+            toast.error(res?.data?.message || "Section update failed!");
+        }
     };
 
     return (
         <div
-            onClick={handleOutsideClick}
             className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4"
         >
             <div
                 ref={modalRef}
                 className="w-full max-w-lg bg-[#162a4d] rounded-lg shadow-xl overflow-hidden text-white border border-gray-700 animate-fadeIn">
                 <div className="flex justify-between items-center p-4 border-b border-gray-700">
-                    <h2 className="text-xl font-semibold">Section Add Form</h2>
+                    <h2 className="text-xl font-semibold">Section Edit Form</h2>
                     <button
                         onClick={() => setIsModalOpen(false)}
                         className="text-gray-400 hover:text-white transition"
@@ -94,7 +97,7 @@ const CreateSectionModal = ({ setIsModalOpen, projectId }) => {
                             {isLoading && (
                                 <span className="w-5 h-5 border-2 border-slate-900 border-t-transparent rounded-full animate-spin"></span>
                             )}
-                            {isLoading ? "Add Section..." : "Add Section"}
+                            {isLoading ? "Edit Section..." : "Edit Section"}
                         </button>
                     </div>
                 </form>
@@ -103,4 +106,4 @@ const CreateSectionModal = ({ setIsModalOpen, projectId }) => {
     );
 };
 
-export default CreateSectionModal;
+export default EditSectionModal;

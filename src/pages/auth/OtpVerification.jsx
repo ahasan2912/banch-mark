@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { useOtpVerificationMutation } from "../../features/auth/authApi";
-import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const OTP_LENGTH = 6;
@@ -10,7 +9,7 @@ const OTP_EXPIRY_SECONDS = 5 * 60;
 const OtpVerification = () => {
     const [otp, setOtp] = useState("");
     const [timeLeft, setTimeLeft] = useState(OTP_EXPIRY_SECONDS);
-    const { user } = useSelector(state => state?.auth);
+    const email = localStorage.getItem("email");
     const inputRef = useRef(null);
     const [otpVerification, { isLoading }] = useOtpVerificationMutation();
     const navigate = useNavigate();
@@ -53,7 +52,7 @@ const OtpVerification = () => {
     const handleClick = async () => {
         if (otp.length === 6) {
             const res = await otpVerification({
-                email: user?.email,
+                email: email,
                 otp: Number(otp),
             });
             if (res?.data?.success) {

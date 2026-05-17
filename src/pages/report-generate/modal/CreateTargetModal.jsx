@@ -1,15 +1,15 @@
 import { useForm } from "react-hook-form";
-import { X, Plus, Trash2 } from "lucide-react";
+import { X } from "lucide-react";
 import { useEffect, useRef } from "react";
-import { useSectionCreateMutation } from "../../../features/section/sectionApi";
+import { useTargetCreateMutation } from "../../../features/target/targetApi";
 import { toast } from "react-toastify";
 
-const CreateSectionModal = ({ setIsModalOpen, projectId }) => {
+const CreateTargetModal = ({ setIsModalOpen, projectId, sectionId, sectionInfo }) => {
     const modalRef = useRef();
-    const [sectionCreate, { isLoading }] = useSectionCreateMutation();
+    const [targetCreate, { isLoading }] = useTargetCreateMutation();
     const { register, handleSubmit, formState: { errors } } = useForm({
         defaultValues: {
-            sectionName: "",
+            targetName: "",
         },
     });
 
@@ -31,17 +31,19 @@ const CreateSectionModal = ({ setIsModalOpen, projectId }) => {
 
     const onSubmit = async (data) => {
         const payload = {
-            name: data?.sectionName,
+            name: data?.targetName,
         }
-        const res = await sectionCreate({
+
+        const res = await targetCreate({
             data: payload,
             projectId: projectId,
+            sectionId: sectionId,
         });
         if (res?.data?.success) {
-            toast.success("Section created successfully!");
+            toast.success("Target created successfully!");
             setIsModalOpen(false);
         } else {
-            toast.error(res?.data?.message || "Section created failed!");
+            toast.error(res?.data?.message || "Target created failed!");
         };
     };
 
@@ -54,7 +56,7 @@ const CreateSectionModal = ({ setIsModalOpen, projectId }) => {
                 ref={modalRef}
                 className="w-full max-w-lg bg-[#162a4d] rounded-lg shadow-xl overflow-hidden text-white border border-gray-700 animate-fadeIn">
                 <div className="flex justify-between items-center p-4 border-b border-gray-700">
-                    <h2 className="text-xl font-semibold">Section Add Form</h2>
+                    <h2 className="text-xl font-semibold">Target Add Form</h2>
                     <button
                         onClick={() => setIsModalOpen(false)}
                         className="text-gray-400 hover:text-white transition"
@@ -63,20 +65,23 @@ const CreateSectionModal = ({ setIsModalOpen, projectId }) => {
                     </button>
                 </div>
                 <form onSubmit={handleSubmit(onSubmit)} className="p-6 space-y-6">
+                    <p className="ext-base font-medium text-slate-300">
+                        Section: <span className="font-semibold text-white">{sectionInfo?.name}</span>
+                    </p>
                     <div>
                         <label className="block text-base font-medium mb-2 text-gray-300">
-                            Section Name
+                            Target Name
                         </label>
                         <input
-                            {...register("sectionName", {
-                                required: "Section name is required",
+                            {...register("targetName", {
+                                required: "Target name is required",
                             })}
-                            placeholder="Enter Section Name"
+                            placeholder="Enter Target Name"
                             className="w-full bg-transparent border border-blue-400/50 rounded-md p-3 outline-none focus:border-blue-400 text-gray-200 placeholder-gray-500 transition-all"
                         />
-                        {errors.sectionName && (
+                        {errors.targetName && (
                             <p className="text-red-400 text-xs mt-1">
-                                {errors.sectionName.message}
+                                {errors.targetName.message}
                             </p>
                         )}
                     </div>
@@ -94,7 +99,7 @@ const CreateSectionModal = ({ setIsModalOpen, projectId }) => {
                             {isLoading && (
                                 <span className="w-5 h-5 border-2 border-slate-900 border-t-transparent rounded-full animate-spin"></span>
                             )}
-                            {isLoading ? "Add Section..." : "Add Section"}
+                            {isLoading ? "Add Target..." : "Add Target"}
                         </button>
                     </div>
                 </form>
@@ -103,4 +108,4 @@ const CreateSectionModal = ({ setIsModalOpen, projectId }) => {
     );
 };
 
-export default CreateSectionModal;
+export default CreateTargetModal;
