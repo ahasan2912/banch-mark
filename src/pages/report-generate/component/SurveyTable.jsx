@@ -11,17 +11,12 @@ export default function SurveyTable() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [openPopupId, setOpenPopupId] = useState(null);
 
-    const handleNewSurvey = (newEntry) => {
-        setSurveys([...surveys, newEntry]);
-        setIsModalOpen(false);
-    };
-
     const handlePopUp = (rowId) => {
         setOpenPopupId(openPopupId === rowId ? null : rowId);
     };
 
     return (
-        <div className="pt-5 text-slate-300">
+        <div className="pt-5 text-slate-300 w-full">
             <div className="max-w-7xl mx-auto">
                 <div className="overflow-x-auto rounded-lg border-4 border-[#E9F6FF] shadow-2xl">
                     <table className="w-full text-left border-collapse overflow-x-auto">
@@ -97,7 +92,6 @@ export default function SurveyTable() {
                 <SurveyModal
                     isOpen={isModalOpen}
                     onClose={() => setIsModalOpen(false)}
-                    onSubmit={handleNewSurvey}
                 />
             </div>
         </div>

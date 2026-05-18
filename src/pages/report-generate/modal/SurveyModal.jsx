@@ -1,33 +1,40 @@
 import { X } from 'lucide-react';
 import { useForm } from 'react-hook-form';
+import { useSurveyDataCreateMutation } from '../../../features/survey/surveyApi';
+import { useSelector } from 'react-redux';
 
-export default function SurveyModal({ isOpen, onClose, onSubmit }) {
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm();
+export default function SurveyModal({ isOpen, onClose }) {
+  const { register, handleSubmit, reset, formState: { errors } } = useForm();
+  const { target } = useSelector((state => state?.target));
+  const [surveyDataCreate, { isLoading }] = useSurveyDataCreateMutation();
+  const { id: targetId, projectId } = target || {};
 
   const handleFormSubmit = (data) => {
-    onSubmit({
-      id: Date.now(),
-      date: data.date.split('-').reverse().join('/'),
-      E: parseFloat(data.E),
-      N: parseFloat(data.N),
-      Z: parseFloat(data.Z),
-    });
+    const payload = {
+      date: data.date,
+      E: Number(data.E),
+      N: Number(data.N),
+      Z: Number(data.Z),
+    }
+    console.log(payload);
     reset();
   };
 
+  const handleClose = () => {
+    reset();
+    onClose();
+  };
+
   if (!isOpen) return null;
+
+  console.log(targetId, projectId);
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
       <div className="bg-[#1a2b4b] w-full max-w-lg rounded-xl shadow-2xl border border-slate-700">
         <div className="flex justify-between items-center p-4 border-b border-slate-700">
           <h2 className="text-white font-semibold text-lg">New Survey</h2>
-          <button onClick={onClose} className="text-slate-400 hover:text-white">
+          <button type="button" onClick={handleClose} className="text-slate-400 hover:text-white">
             <X size={20} />
           </button>
         </div>
@@ -49,7 +56,10 @@ export default function SurveyModal({ isOpen, onClose, onSubmit }) {
                 type="number"
                 step="0.001"
                 placeholder={`Enter ${field}`}
-                {...register(field, { required: `${field} value is required` })}
+                {...register(field, {
+                  required: `${field} value is required`,
+                  valueAsNumber: true,
+                })}
                 className="w-full bg-[#1e2f56] border border-slate-500 rounded-md p-2.5 text-white placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 outline-none transition"
               />
               {errors[field] && <p className="text-red-400 text-xs mt-1">{errors[field].message}</p>}
@@ -58,7 +68,7 @@ export default function SurveyModal({ isOpen, onClose, onSubmit }) {
           <div className="flex gap-3 pt-2">
             <button
               type="button"
-              onClick={onClose}
+              onClick={handleClose}
               className="flex-1 bg-slate-600 hover:bg-slate-500 text-white py-2.5 rounded-md font-semibold transition">
               Cancel
             </button>

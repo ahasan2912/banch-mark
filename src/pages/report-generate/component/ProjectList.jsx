@@ -1,9 +1,16 @@
+import { CircleArrowLeft } from 'lucide-react';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const ProjectList = ({selectedProjectID, handleProjectChange, projects}) => {
+const ProjectList = ({ selectedProjectID, handleProjectChange, projects }) => {
+    const navigate = useNavigate();
+    const handleReportGeneration = () => {
+        navigate('/report-generation');
+    }
     return (
         <div className="flex items-center gap-2 sm:gap-6">
-            <span className="text-white text-sm sm:text-base font-semibold tracking-wide">
+            <span className="text-white text-sm sm:text-base font-semibold tracking-wide flex gap-2">
+                <CircleArrowLeft onClick={handleReportGeneration} className='cursor-pointer' />
                 Live Projects
             </span>
             <select

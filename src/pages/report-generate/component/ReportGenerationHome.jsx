@@ -1,5 +1,5 @@
 import { Plus, Pencil, Trash2 } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import NewProjectModal from '../modal/NewProjectModal';
 import UploadBaseReading from '../modal/UploadBaseReading';
 import { useAllProjectsListQuery, useDeleteSingleProjectMutation } from '../../../features/projects/projectApi';
@@ -10,8 +10,9 @@ import DeleteMessage from './DeleteMessage';
 import Section from '../section/Section';
 import Target from '../target/Target';
 import ProjectList from './ProjectList';
+import { useLocation } from 'react-router-dom';
 
-const ReportGenerationHome = () => {
+const ReportGenerationHome = ({ setProjectId }) => {
     const [selectedProjectIDValue, setSelectedProjectIDValue] = useState("");
     const [newProjectOpen, setNewProjectOpen] = useState(false);
     const [editProjectOpen, setEditProjectOpen] = useState(false);
@@ -20,9 +21,16 @@ const ReportGenerationHome = () => {
     const [sectionInfo, setSectionInfo] = useState(null);
     const { data: projecstList, isLoading } = useAllProjectsListQuery();
     const [deleteSingleProject, { isLoading: deleteLoading }] = useDeleteSingleProjectMutation();
+    const location = useLocation();
 
     const projects = projecstList?.data?.data || [];
     const selectedProjectID = selectedProjectIDValue || (projects[0]?.id ? String(projects[0].id) : "");
+
+    useEffect(() => {
+        if (setProjectId) {
+            setProjectId(selectedProjectID);
+        }
+    }, [selectedProjectID, setProjectId]);
 
     if (isLoading) {
         return <ReportGenerationHomeSkeleton />
@@ -53,15 +61,14 @@ const ReportGenerationHome = () => {
         }
     }
 
-
     return (
-        <div className="p-3 sm:p-6 flex flex-col items-start">
+        <div className="p-3 sm:px-6 flex flex-col items-start">
             <div className="w-full relative">
                 <div className="bg-[#1a2332] rounded-t-xl px-4 py-3 flex items-center justify-between">
-                    <ProjectList 
-                    selectedProjectID={selectedProjectID}
-                    handleProjectChange={handleProjectChange}
-                    projects={projects}
+                    <ProjectList
+                        selectedProjectID={selectedProjectID}
+                        handleProjectChange={handleProjectChange}
+                        projects={projects}
                     />
                     <div className="flex items-center gap-2 sm:gap-4">
                         <Plus onClick={() => setNewProjectOpen(true)} size={22} className="text-[#60a5fa] cursor-pointer" />
@@ -96,7 +103,11 @@ const ReportGenerationHome = () => {
                         <Target selectedProjectID={selectedProjectID} selectedSectionID={selectedSectionID} sectionInfo={sectionInfo} />
                     </div>
                 </div>
-                <UploadBaseReading selectedProjectID={selectedProjectID} selectedProject={selectedProject} />
+                {
+                    location?.pathname === '/report-generation' && (
+                        <UploadBaseReading selectedProjectID={selectedProjectID} selectedProject={selectedProject} />
+                    )
+                }
             </div>
         </div>
     );

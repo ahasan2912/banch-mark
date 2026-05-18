@@ -67,7 +67,6 @@ const Section = ({ selectedProjectID, selectedSectionID, setSelectedSectionID, s
         } else {
             toast.error(res?.error?.data?.message || "Delete failed!");
         }
-
     }
 
     return (

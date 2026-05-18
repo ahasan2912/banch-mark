@@ -21,25 +21,25 @@ export const targetApi = apiSlice.injectEndpoints({
             providesTags: ["Targets"]
         }),
 
-        editSection: builder.mutation({
-            query: ({ projectId, sectionId, data }) => ({
-                url: `/projects/${projectId}/sections/update/${sectionId}`,
+        editTarget: builder.mutation({
+            query: ({ projectId, targetId, data }) => ({
+                url: `/projects/${projectId}/targets/update/${targetId}`,
                 method: "PUT",
                 body: data,
                 credentials: "include",
             }),
             invalidatesTags: (result, error, arg) => [
-                "Sections",
-                { type: "Section", id: arg.sectionId }
+                "Targets",
+                { type: "Target", id: arg.sectionId }
             ]
         }),
 
-        deleteSingleSection: builder.mutation({
-            query: ({ projectId, sectionId }) => ({
-                url: `/projects/${projectId}/sections/delete/${sectionId}`,
+        deleteSingleTarget: builder.mutation({
+            query: ({ projectId, targetId }) => ({
+                url: `/projects/${projectId}/targets/delete/${targetId}`,
                 method: 'DELETE',
             }),
-            invalidatesTags: ["Sections"]
+            invalidatesTags: ["Targets"]
         }),
     }),
 });
@@ -47,6 +47,6 @@ export const targetApi = apiSlice.injectEndpoints({
 export const {
     useTargetCreateMutation,
     useAllTargetListQuery,
-    useEditSectionMutation,
-    useDeleteSingleSectionMutation
+    useEditTargetMutation,
+    useDeleteSingleTargetMutation
 } = targetApi;

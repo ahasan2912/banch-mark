@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 import { X, Calendar } from 'lucide-react';
 
 const EventModal = ({ isOpen, onClose, onSubmit }) => {
-  const { register, handleSubmit, reset, formState: { errors } } = useForm();
+  const { register, handleSubmit, reset,} = useForm();
 
   if (!isOpen) return null;
 
@@ -13,7 +13,7 @@ const EventModal = ({ isOpen, onClose, onSubmit }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 w-full">
       <div className="bg-[#1e293b] w-full max-w-md rounded-lg shadow-2xl border border-slate-700 overflow-hidden">
         <div className="flex justify-between items-center p-4 border-b border-slate-700">
           <h2 className="text-lg font-semibold text-white">New Events</h2>

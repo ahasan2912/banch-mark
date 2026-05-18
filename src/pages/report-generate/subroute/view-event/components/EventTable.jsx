@@ -5,7 +5,7 @@ const EventTable = ({ events, onAddClick, onDelete }) => {
   const [activeMenu, setActiveMenu] = useState(null);
 
   return (
-    <div className="overflow-x-auto shadow-xl border-2 border-[#B7D8FF] rounded-md custom-scrollbar">
+    <div className="overflow-x-auto shadow-xl border-2 border-[#B7D8FF] rounded-md custom-scrollbar w-full">
       <table className="w-full text-left border-collapse">
         {/* Table Header */}
         <thead className="bg-[#1e293b] text-slate-200 font-semibold">

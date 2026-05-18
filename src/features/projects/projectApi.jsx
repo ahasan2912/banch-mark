@@ -53,23 +53,31 @@ export const projectApi = apiSlice.injectEndpoints({
             invalidatesTags: ["Projects"]
         }),
 
-        uploadProjectDrawing: builder.mutation({
-            query: ({ data, projectId }) => ({
-                url: `/projects/${projectId}/drawings/upload`,
-                method: "POST",
-                body: data,
-                credentials: "include",
-            }),
-        }),
-
-        editionalInfoProject: builder.mutation({
+        addAditionalInfo: builder.mutation({
             query: ({ data, projectId }) => ({
                 url: `/projects/${projectId}/additional-info`,
                 method: "PUT",
                 body: data,
                 credentials: "include",
             }),
+            invalidatesTags: (result, error, arg) => [
+                "Projects",
+                { type: "Project", id: arg.projectId }
+            ]
         }),
+
+        addDrawingsUploadFile: builder.mutation({
+            query: ({ data, projectId }) => ({
+                url: `/projects/${projectId}/drawings/upload`,
+                method: "POST",
+                body: data,
+                credentials: "include",
+            }),
+            invalidatesTags: (result, error, arg) => [
+                "Projects",
+                { type: "Project", id: arg.projectId }
+            ]
+        })
     }),
 });
 
@@ -79,6 +87,14 @@ export const {
     useSingleProjectQuery,
     useEditSingleProjectMutation,
     useDeleteSingleProjectMutation,
-    useUploadProjectDrawingMutation,
-    useEditionalInfoProjectMutation
+    useAddAditionalInfoMutation,
+    useAddDrawingsUploadFileMutation
 } = projectApi;
+
+
+// headers: {
+//     "Content-Type": "application/formdata"
+// },
+
+// const formData = new FormData();
+// formData.append("data", JSON.stringify(createDeal));

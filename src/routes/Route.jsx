@@ -3,7 +3,6 @@ import MainLayout from "../layout/MainLayout";
 import Home from "../pages/home/Home";
 import LogIn from "../pages/auth/LogIn"
 import Register from "../pages/auth/Register";
-import Testing from "../pages/Testing";
 import DashboardLayout from "../layout/DashboardLayout";
 import Dashboard from "../pages/dashboard/home/Dashboard";
 import Features from "../pages/features/Features";
@@ -46,12 +45,13 @@ import Settings from "../pages/dashboard/setting/Settings";
 import OtpVerification from "../pages/auth/OtpVerification";
 import PrivateRoute from "./PrivateRoute";
 import ForgotPasswordOTP from "../pages/auth/ForgotPasswordOTP";
+import ErrorPage from "../pages/ErrorPage";
 
 const router = createBrowserRouter([
     {
         path: "/",
         element: <MainLayout />,
-        errorElement: <div>Error Page ...........</div>,
+        errorElement: <ErrorPage />,
         children: [
             {
                 path: "/",
@@ -208,10 +208,6 @@ const router = createBrowserRouter([
                         element: <ReinstateProject />
                     },
                 ]
-            },
-            {
-                path: "/testing",
-                element: <Testing />
             },
         ],
     },
