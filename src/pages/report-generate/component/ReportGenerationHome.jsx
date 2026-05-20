@@ -11,6 +11,7 @@ import Section from '../section/Section';
 import Target from '../target/Target';
 import ProjectList from './ProjectList';
 import { useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const ReportGenerationHome = ({ setProjectId }) => {
     const [selectedProjectIDValue, setSelectedProjectIDValue] = useState("");
@@ -21,6 +22,7 @@ const ReportGenerationHome = ({ setProjectId }) => {
     const [sectionInfo, setSectionInfo] = useState(null);
     const { data: projecstList, isLoading } = useAllProjectsListQuery();
     const [deleteSingleProject, { isLoading: deleteLoading }] = useDeleteSingleProjectMutation();
+    const { target } = useSelector((state) => state?.target);
     const location = useLocation();
 
     const projects = projecstList?.data?.data || [];
@@ -60,6 +62,8 @@ const ReportGenerationHome = ({ setProjectId }) => {
             toast.error(res?.error?.data?.message || "Delete failed!");
         }
     }
+
+    console.log(target);
 
     return (
         <div className="p-3 sm:px-6 flex flex-col items-start">

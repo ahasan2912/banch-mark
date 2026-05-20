@@ -9,14 +9,20 @@ export default function SurveyModal({ isOpen, onClose }) {
   const [surveyDataCreate, { isLoading }] = useSurveyDataCreateMutation();
   const { id: targetId, projectId } = target || {};
 
-  const handleFormSubmit = (data) => {
-    const payload = {
-      date: data.date,
+  const handleFormSubmit = async (data) => {
+    const serveyInfo = {
+      surveyDate: data.date,
       E: Number(data.E),
       N: Number(data.N),
       Z: Number(data.Z),
     }
-    console.log(payload);
+    const payload = {
+      data: serveyInfo,
+      projectId: projectId,
+      targetId: targetId,
+    }
+    const res = await surveyDataCreate(payload);
+    console.log(res.data);
     reset();
   };
 
@@ -74,8 +80,12 @@ export default function SurveyModal({ isOpen, onClose }) {
             </button>
             <button
               type="submit"
-              className="px-10 py-2 bg-[#4473BA] text-white rounded-md hover:bg-[#5286d4] transition cursor-pointer">
-              Submit
+              disabled={isLoading}
+              className="bg-blue-200 text-slate-900 py-3 rounded-lg font-semibold hover:bg-blue-300 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2 w-full sm:w-auto px-10">
+              {isLoading && (
+                <span className="w-5 h-5 border-2 border-slate-900 border-t-transparent rounded-full animate-spin"></span>
+              )}
+              {isLoading ? "Add Survey..." : "Add Survey"}
             </button>
           </div>
         </form>
