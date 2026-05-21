@@ -1,11 +1,29 @@
 import React, { useState } from 'react';
-import { X } from 'lucide-react';
+import { FileUp, X } from 'lucide-react';
+import { useSurveyCSVUploadedMutation } from '../../../features/survey/surveyApi';
+import { toast } from 'react-toastify';
+import { useSelector } from 'react-redux';
 
 const UploadModal = ({ setIsOpen }) => {
     const [fileName, setFileName] = useState('');
+    const [surveyCSVUploaded, { isLoading }] = useSurveyCSVUploadedMutation();
+    const { target } = useSelector((state => state?.target));
+    const { id: targetId, projectId } = target || {};
 
-    const handleUploadButton = () => {
-        console.log(fileName);
+    const handleUploadButton = async () => {
+        const formData = new FormData();
+        formData.append("drawings", fileName);
+
+        const res = await surveyCSVUploaded({
+            data: formData,
+            targetId: targetId,
+            projectId: projectId
+        });
+        if (res?.data?.success) {
+            toast.success("Survey file uploaded successfully!");
+        } else {
+            toast.error(res?.data?.message || "Survey file uploaded failed!");
+        };
     }
 
     return (
@@ -44,15 +62,6 @@ const UploadModal = ({ setIsOpen }) => {
                         <li>7. Only CSV format is accepted (XLS files will not work).</li>
                     </ol>
 
-                    <div className="grid grid-cols-2 gap-3 pt-2">
-                        <button className="bg-gray-600 hover:bg-gray-500 py-2 rounded text-sm font-medium transition-colors">
-                            Template
-                        </button>
-                        <button className="bg-[#305B9C] hover:bg-[#6d8cb9] py-2 rounded text-sm font-medium transition-colors">
-                            Example
-                        </button>
-                    </div>
-
                     <div className="flex border border-blue-400/30 rounded overflow-hidden h-10">
                         <label className="px-4 flex items-center cursor-pointer text-sm font-medium w-full">
                             <input
@@ -71,8 +80,11 @@ const UploadModal = ({ setIsOpen }) => {
                             className="bg-gray-500/80 hover:bg-gray-500 py-2.5 rounded text-sm font-medium transition-colors cursor-pointer">
                             Cancel
                         </button>
-                        <button onClick={handleUploadButton} className="bg-[#22c55e] hover:bg-[#1eb054] py-2.5 rounded text-sm font-medium transition-colors text-white cursor-pointer">
-                            Upload CSV
+                        <button onClick={handleUploadButton} className="bg-[#22c55e] hover:bg-[#16a34a] text-white px-3 py-3 rounded-md flex items-center justify-center transition-all shadow-sm cursor-pointer text-sm font-semibold gap-1">
+                            {isLoading ? (
+                                <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                            ) : <FileUp className="font-bold" size={20} />}
+                            {isLoading ? "Upload File.." : "Upload File"}
                         </button>
                     </div>
                 </div>
@@ -82,3 +94,4 @@ const UploadModal = ({ setIsOpen }) => {
 };
 
 export default UploadModal;
+

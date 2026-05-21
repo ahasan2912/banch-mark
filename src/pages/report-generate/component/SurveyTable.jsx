@@ -1,18 +1,79 @@
 import { useState } from 'react';
-import { Plus, MoreVertical, X, Trash, Copy } from 'lucide-react';
+import { Plus, MoreVertical, X, Trash, Pencil } from 'lucide-react';
 import SurveyModal from '../modal/SurveyModal';
-
-const BASE_E = 123.123;
-const BASE_N = 123.123;
-const BASE_Z = 123.123;
+import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import { useAllSurveyListQuery, useDeleteSurveyMutation } from '../../../features/survey/surveyApi';
+import TableSkeleton from '../../../components/laoding-skeleton/TableSkeleton';
+import DeleteMessage from './DeleteMessage';
 
 export default function SurveyTable() {
-    const [surveys, setSurveys] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [openPopupId, setOpenPopupId] = useState(null);
+    const [selectedSurvey, setSelectedSurvey] = useState(null);
+    const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+    const [surveyToDelete, setSurveyToDelete] = useState(null);
+    const { target } = useSelector((state => state?.target));
+    const { id: targetId, projectId } = target || {};
+    const [deleteSurvey, { isLoading: isDeleting }] = useDeleteSurveyMutation();
+    const { data: surveys, isLoading } = useAllSurveyListQuery(
+        { projectId, targetId },
+        {
+            skip: !projectId || !targetId,
+        }
+    );
+
+    if (isLoading) {
+        return <TableSkeleton />
+    }
 
     const handlePopUp = (rowId) => {
         setOpenPopupId(openPopupId === rowId ? null : rowId);
+    };
+
+    const handleAddSurvey = () => {
+        if (!target) {
+            toast.error('Please select a target');
+            return;
+        }
+        setIsModalOpen(true);
+        setSelectedSurvey(null);
+    };
+
+    const handleEditSurvey = (survey) => {
+        setSelectedSurvey(survey);
+        setIsModalOpen(true);
+        setOpenPopupId(null);
+    };
+
+    const handleDeleteConfirmOpen = (survey) => {
+        setSurveyToDelete(survey);
+        setOpenPopupId(null);
+        setDeleteConfirmOpen(true);
+    };
+
+    const handleDeleteSurvey = async () => {
+        if (!projectId || !surveyToDelete?.id || isDeleting) return;
+
+        const res = await deleteSurvey({ projectId, surveyId: surveyToDelete.id });
+
+        if (res?.data?.success) {
+            toast.success('Survey deleted successfully!');
+            setDeleteConfirmOpen(false);
+            setSurveyToDelete(null);
+        } else {
+            toast.error(res?.data?.message || 'Survey delete failed!');
+        }
+    };
+
+    const formatDate = (iso) => {
+        if (!iso) return '';
+
+        return new Intl.DateTimeFormat("en-GB", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+        }).format(new Date(iso));
     };
 
     return (
@@ -28,7 +89,7 @@ export default function SurveyTable() {
                                 <th colSpan="3" className="p-4 border-b border-l border-slate-700 text-center">Movement from Base (m)</th>
                                 <th className="p-4 border-b border-slate-700 text-right">
                                     <button
-                                        onClick={() => setIsModalOpen(true)}
+                                        onClick={handleAddSurvey}
                                         className="hover:bg-blue-500/20 p-1 rounded-full transition"
                                     >
                                         <Plus size={20} />
@@ -50,39 +111,62 @@ export default function SurveyTable() {
                             </tr>
                         </thead>
                         <tbody className="bg-[#eef8ff] text-slate-800 text-base">
-                            {surveys.map((row) => (
+                            {surveys?.data?.surveys?.map((row) => (
                                 <tr key={row.id} className="border-b border-blue-100 hover:bg-blue-50 transition relative">
-                                    <td className="px-4 py-3 whitespace-nowrap">{row.date}</td>
-                                    <td className="px-4 py-3 border-l border-blue-100">{BASE_E.toFixed(3)}</td>
-                                    <td className="px-4 py-3">{BASE_N.toFixed(3)}</td>
-                                    <td className="px-4 py-3">{BASE_Z.toFixed(3)}</td>
-                                    <td className="px-4 py-3 border-l border-blue-100">{row.E.toFixed(3)}</td>
-                                    <td className="px-4 py-3">{row.N.toFixed(3)}</td>
-                                    <td className="px-4 py-3">{row.Z.toFixed(3)}</td>
-                                    <td className="px-4 py-3 border-l border-blue-100 bg-[#dcfce7] font-medium">{(row.E - BASE_E).toFixed(3)}</td>
-                                    <td className="px-4 py-3 bg-[#dcfce7] font-medium">{(row.N - BASE_N).toFixed(3)}</td>
-                                    <td className="px-4 py-3 bg-[#dcfce7] font-medium">{(row.Z - BASE_Z).toFixed(3)}</td>
-                                    <td
-                                        onClick={() => handlePopUp(row.id)}
-                                        className="px-4 py-3 text-right cursor-pointer relative"
-                                    >
-                                        <MoreVertical size={16} className="inline text-gray-700" />
+                                    <td className="px-4 py-3 whitespace-nowrap">{formatDate(row?.surveyDate || row?.updatedAt)}</td>
+                                    {/* Base Readings */}
+                                    <td className="px-4 py-3 border-l border-blue-100">{row?.baseReading?.E?.toFixed(2)}</td>
+                                    <td className="px-4 py-3">{row?.baseReading?.N?.toFixed(2)}</td>
+                                    <td className="px-4 py-3">{row?.baseReading?.Z?.toFixed(2)}</td>
 
-                                        {/* Popup for this row */}
+                                    {/* Survey Readings */}
+                                    <td className="px-4 py-3 border-l border-blue-100">{row?.surveyReading?.E.toFixed(2)}</td>
+                                    <td className="px-4 py-3">{row?.surveyReading?.N.toFixed(2)}</td>
+                                    <td className="px-4 py-3">{row?.surveyReading?.Z.toFixed(2)}</td>
+
+                                    {/* Movement from Base (m) */}
+                                    <td className="px-4 py-3 border-l border-blue-100 bg-[#dcfce7] font-medium">{(row?.movementReading?.E.toFixed(2))}</td>
+                                    <td className="px-4 py-3 bg-[#dcfce7] font-medium">{(row?.movementReading?.N?.toFixed(2))}</td>
+                                    <td className="px-4 py-3 bg-[#dcfce7] font-medium">{(row?.movementReading?.Z?.toFixed(2))}</td>
+
+                                    <td className="px-4 py-3 text-right relative">
+                                        <button
+                                            type="button"
+                                            onClick={() => handlePopUp(row.id)}
+                                            className="inline-flex items-center justify-center text-gray-700 hover:text-slate-900"
+                                        >
+                                            <MoreVertical size={18} />
+                                        </button>
+
                                         {openPopupId === row.id && (
-                                            <div className='absolute right-0 -top-6 flex bg-[#E9F6FF] px-2 py-3 rounded-sm shadow-lg z-10 w-40'>
-                                                <div className='flex flex-col text-[15px] text-[#183A71] font-medium'>
-                                                    <button className='px-2 py-1 hover:bg-gray-300 rounded flex justify-center items-center gap-1'><Trash className='-mt-1' size={16} /> Delete Survey</button>
-                                                    <button className='px-2 py-1 hover:bg-gray-300 rounded flex justify-center items-center gap-1'><Copy className='-mt-1' size={16} /> Copy Survey</button>
-                                                </div>
+                                            <div className='absolute right-0 -top-20 bg-[#E9F6FF] px-3 py-4 rounded-sm shadow-xl z-10 w-44 text-left'>
                                                 <X
-                                                    onClick={() => setOpenPopupId(null)}
-                                                    className='text-[#183A71] cursor-pointer absolute right-1 top-0'
+                                                    onClick={(event) => {
+                                                        event.stopPropagation();
+                                                        setOpenPopupId(null);
+                                                    }}
+                                                    className='text-[#183A71] cursor-pointer absolute right-1 top-2'
                                                     size={20}
                                                 />
+                                                <div className='flex flex-col gap-2 text-[15px] text-[#183A71] font-medium'>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => handleEditSurvey(row)}
+                                                        className='px-2 py-1.5 hover:bg-blue-100 rounded flex items-center gap-2 transition-colors font-semibold'>
+                                                        <Pencil size={16} /> Edit Survey
+                                                    </button>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => handleDeleteConfirmOpen(row)}
+                                                        disabled={isDeleting}
+                                                        className='px-2 py-1.5 hover:bg-blue-100 rounded flex items-center gap-2 transition-colors disabled:opacity-60 disabled:cursor-not-allowed'>
+                                                        <Trash size={16} /> Delete Survey
+                                                    </button>
+                                                </div>
                                             </div>
                                         )}
                                     </td>
+                                    
                                 </tr>
                             ))}
                         </tbody>
@@ -91,8 +175,31 @@ export default function SurveyTable() {
 
                 <SurveyModal
                     isOpen={isModalOpen}
-                    onClose={() => setIsModalOpen(false)}
+                    onClose={() => {
+                        setIsModalOpen(false);
+                        setSelectedSurvey(null);
+                    }}
+                    surveyToEdit={selectedSurvey}
                 />
+
+                {deleteConfirmOpen && (
+                    <DeleteMessage
+                        setDeleteConfirmOpen={(isOpen) => {
+                            setDeleteConfirmOpen(isOpen);
+                            if (!isOpen) {
+                                setSurveyToDelete(null);
+                            }
+                        }}
+                        deleteLoading={isDeleting}
+                        selectedProject={{
+                            name: surveyToDelete
+                                ? `Survey ${formatDate(surveyToDelete?.surveyDate || surveyToDelete?.updatedAt)}`
+                                : 'Selected survey',
+                        }}
+                        handleProjectDelete={handleDeleteSurvey}
+                        itemType="survey"
+                    />
+                )}
             </div>
         </div>
     );

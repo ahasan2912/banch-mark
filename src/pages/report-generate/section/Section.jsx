@@ -6,6 +6,7 @@ import { Pencil, Plus, Trash2 } from 'lucide-react';
 import EditSectionModal from '../modal/EditSectionModal';
 import { toast } from 'react-toastify';
 import DeleteMessage from '../component/DeleteMessage';
+import SectionSkeleton from '../../../components/laoding-skeleton/SectionSkeleton';
 
 const Section = ({ selectedProjectID, selectedSectionID, setSelectedSectionID, sectionInfo, setSectionInfo }) => {
     const [sectionCreate, setSectionCreate] = useState(false);
@@ -18,7 +19,7 @@ const Section = ({ selectedProjectID, selectedSectionID, setSelectedSectionID, s
 
 
     if (sectionLoading) {
-        return <ReportGenerationHomeSkeleton />
+        return <SectionSkeleton />
     }
 
     const sections = sectionList?.data || [];

@@ -3,6 +3,7 @@ import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import authReducer from "../features/auth/authSlice";
 import targetReducer from "../features/target/targetSlice";
+import eventReducer from "../features/event/eventSlice";
 import apiSlice from "../features/api/apiSlice";
 
 const persistConfig = {
@@ -14,6 +15,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
     auth: authReducer,
     target: targetReducer,
+    event: eventReducer,
     [apiSlice.reducerPath]: apiSlice.reducer,
 });
 

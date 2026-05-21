@@ -1,13 +1,49 @@
+import { useEffect } from 'react';
 import { X } from 'lucide-react';
 import { useForm } from 'react-hook-form';
-import { useSurveyDataCreateMutation } from '../../../features/survey/surveyApi';
+import { useSurveyDataCreateMutation, useSurveyEditMutation } from '../../../features/survey/surveyApi';
 import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
-export default function SurveyModal({ isOpen, onClose }) {
+const formatInputDate = (date) => {
+  if (!date) return '';
+
+  const parsedDate = new Date(date);
+
+  if (Number.isNaN(parsedDate.getTime())) return '';
+
+  return parsedDate.toISOString().slice(0, 10);
+};
+
+export default function SurveyModal({ isOpen, onClose, surveyToEdit }) {
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
   const { target } = useSelector((state => state?.target));
-  const [surveyDataCreate, { isLoading }] = useSurveyDataCreateMutation();
+  const [surveyDataCreate, { isLoading: isCreating }] = useSurveyDataCreateMutation();
+  const [surveyEdit, { isLoading: isUpdating }] = useSurveyEditMutation();
   const { id: targetId, projectId } = target || {};
+  const isEditMode = Boolean(surveyToEdit?.id);
+  const isSubmitting = isCreating || isUpdating;
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    if (surveyToEdit) {
+      reset({
+        date: formatInputDate(surveyToEdit?.surveyDate || surveyToEdit?.updatedAt),
+        E: surveyToEdit?.surveyReading?.E ?? '',
+        N: surveyToEdit?.surveyReading?.N ?? '',
+        Z: surveyToEdit?.surveyReading?.Z ?? '',
+      });
+      return;
+    }
+
+    reset({
+      date: '',
+      E: '',
+      N: '',
+      Z: '',
+    });
+  }, [isOpen, reset, surveyToEdit]);
 
   const handleFormSubmit = async (data) => {
     const serveyInfo = {
@@ -16,14 +52,29 @@ export default function SurveyModal({ isOpen, onClose }) {
       N: Number(data.N),
       Z: Number(data.Z),
     }
-    const payload = {
-      data: serveyInfo,
-      projectId: projectId,
-      targetId: targetId,
-    }
-    const res = await surveyDataCreate(payload);
-    console.log(res.data);
-    reset();
+    const payload = isEditMode
+      ? {
+        data: serveyInfo,
+        projectId,
+        surveyId: surveyToEdit.id,
+      }
+      : {
+        data: serveyInfo,
+        projectId,
+        targetId,
+      };
+
+    const res = isEditMode
+      ? await surveyEdit(payload)
+      : await surveyDataCreate(payload);
+
+    if (res?.data?.success) {
+      toast.success(isEditMode ? "Survey updated successfully!" : "Survey added successfully!");
+      reset();
+      onClose();
+    } else {
+      toast.error(res?.data?.message || (isEditMode ? "Survey update failed!" : "Survey added failed!"));
+    };
   };
 
   const handleClose = () => {
@@ -33,13 +84,11 @@ export default function SurveyModal({ isOpen, onClose }) {
 
   if (!isOpen) return null;
 
-  console.log(targetId, projectId);
-
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
       <div className="bg-[#1a2b4b] w-full max-w-lg rounded-xl shadow-2xl border border-slate-700">
         <div className="flex justify-between items-center p-4 border-b border-slate-700">
-          <h2 className="text-white font-semibold text-lg">New Survey</h2>
+          <h2 className="text-white font-semibold text-lg">{isEditMode ? 'Edit Survey' : 'New Survey'}</h2>
           <button type="button" onClick={handleClose} className="text-slate-400 hover:text-white">
             <X size={20} />
           </button>
@@ -80,12 +129,14 @@ export default function SurveyModal({ isOpen, onClose }) {
             </button>
             <button
               type="submit"
-              disabled={isLoading}
+              disabled={isSubmitting}
               className="bg-blue-200 text-slate-900 py-3 rounded-lg font-semibold hover:bg-blue-300 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2 w-full sm:w-auto px-10">
-              {isLoading && (
+              {isSubmitting && (
                 <span className="w-5 h-5 border-2 border-slate-900 border-t-transparent rounded-full animate-spin"></span>
               )}
-              {isLoading ? "Add Survey..." : "Add Survey"}
+              {isSubmitting
+                ? (isEditMode ? "Update Survey..." : "Add Survey...")
+                : (isEditMode ? "Update Survey" : "Add Survey")}
             </button>
           </div>
         </form>

@@ -11,7 +11,9 @@ import Section from '../section/Section';
 import Target from '../target/Target';
 import ProjectList from './ProjectList';
 import { useLocation } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import BaseReadingModal from '../modal/BaseReadingModal';
+import { useDispatch } from 'react-redux';
+import { eventInformation } from '../../../features/event/eventSlice';
 
 const ReportGenerationHome = ({ setProjectId }) => {
     const [selectedProjectIDValue, setSelectedProjectIDValue] = useState("");
@@ -22,17 +24,20 @@ const ReportGenerationHome = ({ setProjectId }) => {
     const [sectionInfo, setSectionInfo] = useState(null);
     const { data: projecstList, isLoading } = useAllProjectsListQuery();
     const [deleteSingleProject, { isLoading: deleteLoading }] = useDeleteSingleProjectMutation();
-    const { target } = useSelector((state) => state?.target);
     const location = useLocation();
+    const dispatch = useDispatch();
 
     const projects = projecstList?.data?.data || [];
     const selectedProjectID = selectedProjectIDValue || (projects[0]?.id ? String(projects[0].id) : "");
 
     useEffect(() => {
+        dispatch(eventInformation({
+            projectId: selectedProjectID
+        }));
         if (setProjectId) {
             setProjectId(selectedProjectID);
         }
-    }, [selectedProjectID, setProjectId]);
+    }, [selectedProjectID, setProjectId, dispatch]);
 
     if (isLoading) {
         return <ReportGenerationHomeSkeleton />
@@ -62,8 +67,6 @@ const ReportGenerationHome = ({ setProjectId }) => {
             toast.error(res?.error?.data?.message || "Delete failed!");
         }
     }
-
-    console.log(target);
 
     return (
         <div className="p-3 sm:px-6 flex flex-col items-start">

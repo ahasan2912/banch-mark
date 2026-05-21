@@ -8,6 +8,7 @@ import EditTargetModal from '../modal/EditTargetModal';
 import DeleteMessage from '../component/DeleteMessage';
 import { useDispatch } from 'react-redux';
 import { targetInformation } from '../../../features/target/targetSlice';
+import TargetSkeleton from '../../../components/laoding-skeleton/TargetSkeleton';
 
 const Target = ({ selectedProjectID, selectedSectionID, sectionInfo }) => {
     const [targetCreate, setTargetCreate] = useState(false);
@@ -22,7 +23,7 @@ const Target = ({ selectedProjectID, selectedSectionID, sectionInfo }) => {
     });
 
     if (isLoading) {
-        return <ReportGenerationHomeSkeleton />
+        return <TargetSkeleton />
     }
 
     const targets = targetList?.data || [];

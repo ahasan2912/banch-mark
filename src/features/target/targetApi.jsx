@@ -41,6 +41,20 @@ export const targetApi = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ["Targets"]
         }),
+
+        addBaseReading: builder.mutation({
+            query: ({ projectId, targetId, data }) => ({
+                url: `/projects/${projectId}/targets/${targetId}/base-reading`,
+                method: "PUT",
+                body: data,
+                credentials: "include",
+            }),
+            invalidatesTags: (result, error, arg) => [
+                "Targets",
+                { type: "Target", id: arg.sectionId }
+            ]
+        }),
+
     }),
 });
 
@@ -48,5 +62,6 @@ export const {
     useTargetCreateMutation,
     useAllTargetListQuery,
     useEditTargetMutation,
-    useDeleteSingleTargetMutation
+    useDeleteSingleTargetMutation,
+    useAddBaseReadingMutation
 } = targetApi;

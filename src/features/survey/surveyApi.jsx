@@ -23,7 +23,7 @@ export const surveyApi = apiSlice.injectEndpoints({
         }),
 
         allSurveyList: builder.query({
-            query: (projectId, targetId) => ({
+            query: ({projectId, targetId}) => ({
                 url: `/projects/${projectId}/targets/${targetId}/surveys`,
                 method: "GET",
                 credentials: "include",
@@ -48,9 +48,12 @@ export const surveyApi = apiSlice.injectEndpoints({
             query: ({ projectId, surveyId }) => ({
                 url: `/projects/${projectId}/surveys/delete/${surveyId}`,
                 method: 'DELETE',
+                credentials: "include",
             }),
             invalidatesTags: ["Surveys"]
         }),
+
+
     }),
 });
 

@@ -21,7 +21,7 @@ export const evntApi = apiSlice.injectEndpoints({
             providesTags: ["Events"]
         }),
 
-        surveyEdit: builder.mutation({
+        eventEdit: builder.mutation({
             query: ({ projectId, eventId, data }) => ({
                 url: `/projects/${projectId}/events/update/${eventId}`,
                 method: "PUT",
@@ -34,7 +34,7 @@ export const evntApi = apiSlice.injectEndpoints({
             ]
         }),
 
-        deleteSurvey: builder.mutation({
+        deleteEvent: builder.mutation({
             query: ({ projectId, eventId }) => ({
                 url: `/projects/${projectId}/events/delete/${eventId}`,
                 method: 'DELETE',
@@ -47,6 +47,6 @@ export const evntApi = apiSlice.injectEndpoints({
 export const {
     useEventDataCreateMutation,
     useAllEventsListQuery,
-    useSurveyEditMutation,
-    useDeleteSurveyMutation
+    useEventEditMutation,
+    useDeleteEventMutation
 } = evntApi;
