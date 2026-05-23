@@ -1,26 +1,12 @@
 import { ChevronRight, User } from "lucide-react";
-import { useState } from "react";
+import { formatCurrency, formatDate, getInitials } from "../utils";
 
-const ActivityTable = () => {
-    const allData = Array.from({ length: 23 }, (_, i) => ({
-        id: `ID ${12345 + i}`,
-        name: "David Miller",
-        email: "example123@gmail.com",
-        date: "Feb 2, 2026",
-        amount: "$1200",
-    }));
+const ActivityTable = ({ transactions = [], meta = {}, currentPage, setCurrentPage }) => {
+    const totalPages = Math.max(meta.totalPage || 1, 1);
 
-    const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 8;
-    const totalPages = Math.ceil(allData.length / itemsPerPage);
-
-    const indexOfLastItem = currentPage * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItems = allData.slice(indexOfFirstItem, indexOfLastItem);
-
-    const goToPage = (pageNumber) => setCurrentPage(pageNumber);
     const nextPage = () => setCurrentPage((prev) => Math.min(prev + 1, totalPages));
     const prevPage = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
+
     return (
         <div className="bg-[rgb(17,24,39)] rounded-xl border border-slate-800 shadow-2xl overflow-hidden">
             <div className="flex justify-between items-center px-6 py-5 border-b border-slate-800/50">
@@ -37,31 +23,43 @@ const ActivityTable = () => {
                             <th className="px-6 py-4 font-bold">Order ID</th>
                             <th className="px-6 py-4 font-bold">User/Company</th>
                             <th className="px-6 py-4 font-bold text-center">Date</th>
+                            <th className="px-6 py-4 font-bold text-center">Status</th>
                             <th className="px-6 py-4 font-bold text-right">Amount</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-800/50">
-                        {currentItems.map((row, index) => (
-                            <tr key={index} className="hover:bg-slate-800/30 transition-all duration-200 group cursor-pointer">
+                        {transactions.map((row) => (
+                            <tr key={row.id} className="hover:bg-slate-800/30 transition-all duration-200 group">
                                 <td className="px-6 py-4 text-sm font-medium text-[#E9F6FF] group-hover:text-slate-200">
-                                    {row.id}
+                                    {row.orderId}
                                 </td>
                                 <td className="px-6 py-4">
                                     <div className="flex items-center gap-4">
-                                        <div className="w-10 h-10 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-[#90B5EE] group-hover:border-blue-500/50 transition-colors">
-                                            <User size={18} />
+                                        <div className="w-10 h-10 overflow-hidden rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-[#90B5EE] group-hover:border-blue-500/50 transition-colors">
+                                            {row.user?.profileImage ? (
+                                                <img src={row.user.profileImage} alt={row.user?.name || "User"} className="h-full w-full object-cover" />
+                                            ) : row.user?.name ? (
+                                                <span className="text-sm font-bold">{getInitials(row.user.name)}</span>
+                                            ) : (
+                                                <User size={18} />
+                                            )}
                                         </div>
                                         <div>
-                                            <div className="text-sm font-bold text-[#E9F6FF] leading-none mb-1">{row.name}</div>
-                                            <div className="text-sm text-slate-500">{row.email}</div>
+                                            <div className="text-sm font-bold text-[#E9F6FF] leading-none mb-1">{row.user?.name || "Unknown user"}</div>
+                                            <div className="text-sm text-slate-500">{row.user?.company?.name || row.user?.email || "No company"}</div>
                                         </div>
                                     </div>
                                 </td>
                                 <td className="px-6 py-4 text-sm text-center text-slate-400">
-                                    {row.date}
+                                    {formatDate(row.date)}
+                                </td>
+                                <td className="px-6 py-4 text-center">
+                                    <span className="rounded-full bg-emerald-400/10 px-3 py-1 text-xs font-bold text-emerald-400">
+                                        {row.status}
+                                    </span>
                                 </td>
                                 <td className="px-6 py-4 text-sm font-bold text-right text-emerald-400 tabular-nums">
-                                    {row.amount}
+                                    {formatCurrency(row.amountDisplay, row.currency)}
                                 </td>
                             </tr>
                         ))}
@@ -69,10 +67,7 @@ const ActivityTable = () => {
                 </table>
             </div>
 
-            <div className="px-6 py-5 flex flex-col sm:flex-row justify-between items-center border-t border-slate-800 gap-4">
-                <p className="text-base text-slate-500">
-                    Showing <span className="text-white font-medium">{currentItems.length}</span> of <span className="text-white font-medium">{allData.length}</span>
-                </p>
+            <div className="px-6 py-5 flex justify-end border-t border-slate-800">
                 <div className="flex items-center gap-3">
                     <button
                         onClick={prevPage}
@@ -89,11 +84,13 @@ const ActivityTable = () => {
                             return (
                                 <button
                                     key={pageNum}
-                                    onClick={() => goToPage(pageNum)}
-                                    className={`w-9 h-9 rounded-md flex items-center justify-center text-sm font-bold transition-all ${currentPage === pageNum
-                                        ? 'bg-[#1C4480] text-white shadow-lg shadow-blue-900/20'
-                                        : 'text-slate-500 hover:bg-slate-800 hover:text-slate-300'
-                                        }`}>
+                                    onClick={() => setCurrentPage(pageNum)}
+                                    className={`w-9 h-9 rounded-md flex items-center justify-center text-sm font-bold transition-all ${
+                                        currentPage === pageNum
+                                            ? "bg-[#1C4480] text-white shadow-lg shadow-blue-900/20"
+                                            : "text-slate-500 hover:bg-slate-800 hover:text-slate-300"
+                                    }`}
+                                >
                                     {pageNum}
                                 </button>
                             );
@@ -103,7 +100,8 @@ const ActivityTable = () => {
                     <button
                         onClick={nextPage}
                         disabled={currentPage === totalPages}
-                        className="px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium text-slate-400 hover:bg-slate-800 disabled:opacity-30 disabled:cursor-not-allowed transition-colors">
+                        className="px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium text-slate-400 hover:bg-slate-800 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                    >
                         Next
                     </button>
                 </div>

@@ -5,12 +5,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useHandleUserLoginMutation } from '../../features/auth/authApi';
 import { toast } from 'react-toastify';
 import useAuth from '../../hooks/useAuth';
+import { useSelector } from 'react-redux';
 
 const LogIn = () => {
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [handleLogin, { isLoading }] = useHandleUserLoginMutation();
+    const { user } = useSelector((state) => state?.auth);
     const isAuthenticate = useAuth();
 
     useEffect(() => {
@@ -18,10 +20,13 @@ const LogIn = () => {
     }, []);
 
     useEffect(() => {
-        if (isAuthenticate) {
+        if (user?.role === "ADMIN" && isAuthenticate) {
+            navigate('/dashboard/admin-dashboard');
+        }
+        if (user?.role === "USER" && isAuthenticate) {
             navigate('/report-generation');
         }
-    }, [isAuthenticate, navigate]);
+    }, [isAuthenticate, navigate, user?.role]);
 
     const onSubmit = async (data) => {
         const payload = {
@@ -31,7 +36,12 @@ const LogIn = () => {
         const res = await handleLogin(payload);
         if (res?.data?.success) {
             toast.success("Log in successfully!");
-            navigate('/report-generation');
+            if (user?.role === "ADMIN" && isAuthenticate) {
+                navigate('/dashboard/admin-dashboard');
+            }
+            if (user?.role === "USER" && isAuthenticate) {
+                navigate('/report-generation');
+            }
         } else {
             toast.error("Log in faild!");
         }

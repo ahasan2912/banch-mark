@@ -1,8 +1,22 @@
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { useEffect } from "react";
 import { images } from "../../assets/image";
 import HeadingTitle from "../../components/shared/HeadingTitle";
 import FeaturesContent from "./components/FeaturesContent";
 
 const Features = () => {
+    useEffect(() => {
+        AOS.init({
+            duration: 1000,
+            easing: "ease-out-cubic",
+            once: true,
+            offset: 120,
+        });
+
+        AOS.refresh();
+    }, []);
+
     return (
         <div className="selection:bg-blue-500/15" style={{
             background: 'radial-gradient(circle at 20% 30%, #1a2332 0%, #0a0c10 100%)'
@@ -11,16 +25,18 @@ const Features = () => {
                 className="min-h-screen w-full text-white relative overflow-hidden">
                 <div className="absolute -right-100 inset-0 opacity-10 bg-image z-50 -rotate-20 bg-center lg:bg-right bg-cover lg:bg-contain pointer-events-none bg-fixed"></div>
                 <div className="max-w-7xl mx-auto px-4 pb-20 pt-24 sm:pt-32">
-                    <HeadingTitle
-                        title='Features of Our Platform'
-                        description='Discover the powerful capabilities of our movement monitoring and reporting software designed to steamilne your workflow and deliver accurate insights.'
-                        maxWidth='max-w-[740px]'
-                        position=''
-                        text='text-left'
-                    />
+                    <div data-aos="fade-up">
+                        <HeadingTitle
+                            title='Features of Our Platform'
+                            description='Discover the powerful capabilities of our movement monitoring and reporting software designed to steamilne your workflow and deliver accurate insights.'
+                            maxWidth='max-w-[740px]'
+                            position=''
+                            text='text-left'
+                        />
+                    </div>
                     {/* 1st features */}
                     <div className="pt-13 flex flex-col lg:flex-row justify-center items-center gap-10">
-                        <div className="w-full lg:w-1/2">
+                        <div className="w-full lg:w-1/2" data-aos="fade-right">
                             <img className="w-full rounded-lg overflow-hidden" src={images.featuresOne} alt="automated-analysis" />
                         </div>
                         <FeaturesContent
@@ -41,12 +57,12 @@ const Features = () => {
                         descriptionTwo='With features that let you rotate, zoom, and explore spatial movements from any angle, you can gain deeper insights into the data, ensuring clearer interpretation of complex patterns. Track displacement patterns over time and instantly identify anomalies, trends, and structural behavior to stay ahead of potential issues.'
                         descriptionThree='Enhance your situational awareness with intuitive, easy-to-understand visuals that transform intricate data into clear, actionable insights. This approach empowers you to make informed decisions faster and optimize project outcomes by detecting potential risks early.'
                     />
-                    <div className="w-full lg:w-1/2">
+                    <div className="w-full lg:w-1/2" data-aos="fade-left">
                         <img className="w-full rounded-lg overflow-hidden" src={images.featuresTwo} alt="automated-analysis" />
                     </div>
                 </div>
                 <div className="pt-16 lg:pt-36 flex flex-col lg:flex-row justify-center items-start gap-10">
-                    <div className="w-full lg:w-1/2">
+                    <div className="w-full lg:w-1/2" data-aos="fade-right">
                         <img className="w-full rounded-lg overflow-hidden" src={images.featuresThree} alt="automated-analysis" />
                     </div>
                     <FeaturesContent
@@ -63,19 +79,21 @@ const Features = () => {
                         descriptionTwo='Support for large datasets ensures that even extensive information can be processed efficiently, while automated validation checks for accuracy and consistency, minimizing the risk of errors. The system automatically maps imported data to the corresponding monitoring points, removing the need for manual intervention and ensuring seamless integration.'
                         descriptionThree='Reduce setup time and eliminate data-entry errors with a fast, reliable, and user-friendly data import process, empowering you to get up and running quickly with complete confidence in the integrity of your data.'
                     />
-                    <div className="w-full lg:w-1/2">
+                    <div className="w-full lg:w-1/2" data-aos="fade-left">
                         <img className="w-full rounded-lg overflow-hidden" src={images.featuresFour} alt="automated-analysis" />
                     </div>
                 </div>
                 <div className="pt-8 md:pt-16 lg:pt-36">
-                    <HeadingTitle
-                        title='Ready to get started?'
-                        description='Request a demo today and experience the power of our Movement Monitoring & Reporting Platform.'
-                        maxWidth='max-w-173.75'
-                        position='mx-auto'
-                        text='text-center'
-                    />
-                    <div className="py-10 lg:pt-16 flex flex-col sm:flex-row gap-4 sm:justify-center">
+                    <div data-aos="fade-up">
+                        <HeadingTitle
+                            title='Ready to get started?'
+                            description='Request a demo today and experience the power of our Movement Monitoring & Reporting Platform.'
+                            maxWidth='max-w-173.75'
+                            position='mx-auto'
+                            text='text-center'
+                        />
+                    </div>
+                    <div className="py-10 lg:pt-16 flex flex-col sm:flex-row gap-4 sm:justify-center" data-aos="fade-up" data-aos-delay="120">
                         <button className="bg-[#1A3155]/80 text-white backdrop-blur-md 
                             px-6 py-3 rounded-md font-semibold 
                             border border-white/20 

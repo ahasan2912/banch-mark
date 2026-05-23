@@ -59,10 +59,6 @@ const ArchiveProject = () => {
 
                 {/* Dynamic Pagination Bar */}
                 <div className="bg-[#1e293b] overflow-x-auto w-full px-6 py-4 flex items-center justify-between border-t border-blue-400/30">
-                    <div className="text-sm text-blue-300">
-                        Showing <span className="text-white font-bold">{indexOfFirstRow + 1}</span> to <span className="text-white font-bold">{Math.min(indexOfLastRow, allData.length)}</span> of <span className="text-white font-bold">{allData.length}</span> entries
-                    </div>
-
                     <div className="flex items-center gap-2">
                         {/* Previous Page */}
                         <button

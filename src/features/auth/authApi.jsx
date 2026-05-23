@@ -38,6 +38,7 @@ export const authApi = apiSlice.injectEndpoints({
                 method: "GET",
                 credentials: "include",
             }),
+            providesTags: ["UserProfile"],
         }),
 
         otpVerification: builder.mutation({

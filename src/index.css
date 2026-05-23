@@ -14,6 +14,56 @@ body {
   background-repeat: no-repeat;
 }
 
+.banner-fade-in {
+  animation: bannerFadeIn 0.9s ease-out both;
+}
+
+.banner-slide-up {
+  opacity: 0;
+  transform: translateY(24px);
+  animation: bannerSlideUp 0.9s ease-out both;
+}
+
+.banner-zoom-float {
+  opacity: 0;
+  transform: scale(0.96);
+  animation: bannerZoomFloat 1.2s ease-out both;
+}
+
+@keyframes bannerFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes bannerSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bannerZoomFloat {
+  0% {
+    opacity: 0;
+    transform: scale(0.96) translateY(24px);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.02) translateY(0);
+  }
+  100% {
+    transform: scale(1) translateY(0);
+  }
+}
+
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,

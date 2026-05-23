@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { images } from '../assets/image';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { userLoggedOut } from '../features/auth/authSlice';
 import Cookies from "js-cookie";
 import { toast } from 'react-toastify';
@@ -13,6 +13,7 @@ const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const isAuthenticate = useAuth();
     const navigate = useNavigate();
+    const { user } = useSelector((state) => state?.auth);
 
     const hanldeLogOut = async () => {
         dispatch(userLoggedOut());
@@ -48,9 +49,17 @@ const Navbar = () => {
                     </NavLink>
 
                     <div className='flex gap-4'>
-                        <Link to='/report-generation' className='bg-[#1A3155]/80 hover:bg-[#1A3155]/50 backdrop-blur-md text-white py-2 px-4 rounded-md border border-white/20 cursor-pointer'>
-                            Request Demo
-                        </Link>
+                        {
+                            user?.role !== "ADMIN" ? (
+                                <Link to='/report-generation' className='bg-[#1A3155]/80 hover:bg-[#1A3155]/50 backdrop-blur-md text-white py-2 px-4 rounded-md border border-white/20 cursor-pointer'>
+                                    Request Demo
+                                </Link>
+                            ) : (
+                                <Link to='/dashboard/admin-dashboard' className='bg-[#1A3155]/80 hover:bg-[#1A3155]/50 backdrop-blur-md text-white py-2 px-4 rounded-md border border-white/20 cursor-pointer'>
+                                    Dashboard
+                                </Link>
+                            )
+                        }
                         {
                             isAuthenticate ? <button onClick={hanldeLogOut} className='bg-[#B7D8FF]/90 hover:bg-[#B7D8FF]/70 text-[#1A3155] py-2 px-4 rounded-md font-semibold cursor-pointer'>
                                 Sign Out

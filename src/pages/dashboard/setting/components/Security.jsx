@@ -1,23 +1,37 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Eye, EyeOff, Save } from 'lucide-react';
+import { useChangePasswordMutation } from '../../../../features/dashborad/dashboardApi';
+import { toast } from 'react-toastify';
 
 const Security = () => {
+    const [changePassword, { isLoading }] = useChangePasswordMutation();
     const [showPassword, setShowPassword] = useState({
         current: false,
-        new: false,
         confirm: false,
     });
 
     const {
         register,
         handleSubmit,
-        watch,
+        reset,
+        getValues,
         formState: { errors },
     } = useForm();
 
-    const onSubmit = (data) => {
-        console.log("Form Data:", data);
+    const onSubmit = async (data) => {
+        const payload = {
+            oldPassword: data.currentPassword,
+            newPassword: data.newPassword,
+        };
+
+        try {
+            await changePassword(payload).unwrap();
+            toast.success("Password changed successfully");
+            reset();
+        } catch (error) {
+            toast.error(error?.data?.message || "Password change failed");
+        }
     };
 
     const toggleVisibility = (field) => {
@@ -76,7 +90,8 @@ const Security = () => {
                             <input
                                 type={showPassword.confirm ? "text" : "password"}
                                 {...register("confirmPassword", {
-                                    validate: (value) => value === watch('newPassword') || "Passwords do not match"
+                                    required: "Confirm password is required",
+                                    validate: (value) => value === getValues("newPassword") || "Passwords do not match",
                                 })}
                                 className="w-full bg-transparent border border-slate-700 rounded-md py-3 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
                             />
@@ -92,10 +107,14 @@ const Security = () => {
                     </div>
                     <button
                         type="submit"
-                        className="flex items-center gap-2 bg-[#4f81c7] hover:bg-[#6a8fc2] text-white px-6 py-2.5 rounded-md font-medium transition-colors shadow-lg"
+                        disabled={isLoading}
+                        className="flex items-center gap-2 bg-[#4f81c7] hover:bg-[#6a8fc2] text-white px-6 py-2.5 rounded-md font-medium transition-colors shadow-lg disabled:cursor-not-allowed disabled:opacity-70"
                     >
                         <Save size={18} />
-                        Update Password
+                        {isLoading && (
+                            <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                        )}
+                        {isLoading ? "Saving..." : "Save Changes"}
                     </button>
                 </form>
             </div>

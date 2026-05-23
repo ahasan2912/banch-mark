@@ -28,9 +28,9 @@ const ReportGenerateSidebar = () => {
                     </NavLink>
                 </div>
                 <div className="bg-[#112240] p-4 rounded-lg mb-4 flex flex-col gap-1">
-                    <NavLink to="archive-project" className={getLinkStyles}>
+                    {/* <NavLink to="archive-project" className={getLinkStyles}>
                         Archive This Project
-                    </NavLink>
+                    </NavLink> */}
                     <NavLink to="view-report" className={getLinkStyles}>
                         View Report
                     </NavLink>

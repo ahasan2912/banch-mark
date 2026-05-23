@@ -46,6 +46,9 @@ import OtpVerification from "../pages/auth/OtpVerification";
 import PrivateRoute from "./PrivateRoute";
 import ForgotPasswordOTP from "../pages/auth/ForgotPasswordOTP";
 import ErrorPage from "../pages/ErrorPage";
+import Success from "../pages/payment/Success";
+import Cancel from "../pages/payment/Cancel";
+import AdminRoute from "./AdminRoute";
 
 const router = createBrowserRouter([
     {
@@ -140,6 +143,14 @@ const router = createBrowserRouter([
                 element: <HelpSupport />,
             },
             {
+                path: "/success",
+                element: <Success />,
+            },
+            {
+                path: "/cancel",
+                element: <Cancel />,
+            },
+            {
                 path: "/login",
                 element: <LogIn />,
             },
@@ -213,7 +224,7 @@ const router = createBrowserRouter([
     },
     {
         path: 'dashboard',
-        element: <DashboardLayout />,
+        element: <AdminRoute><DashboardLayout /></AdminRoute>,
         children: [
             {
                 path: 'admin-dashboard',

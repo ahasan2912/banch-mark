@@ -1,8 +1,22 @@
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { useEffect } from "react";
 import HeadingTitle from "../../components/shared/HeadingTitle";
 import StepCard from "../home/components/work/StepCard";
 import { steps } from "../lib/data";
 
 const Workprocess = () => {
+    useEffect(() => {
+        AOS.init({
+            duration: 1000,
+            easing: "ease-out-cubic",
+            once: true,
+            offset: 120,
+        });
+
+        AOS.refresh();
+    }, []);
+
     return (
         <div className="selection:bg-blue-500/15" style={{
             background: 'radial-gradient(circle at 20% 30%, #1a2332 0%, #0a0c10 100%)'
@@ -11,21 +25,29 @@ const Workprocess = () => {
                 className="min-h-screen w-full text-white relative overflow-hidden">
                 <div className="absolute -right-100 inset-0 opacity-10 bg-image z-50 -rotate-20 bg-center lg:bg-right bg-cover lg:bg-contain pointer-events-none bg-fixed"></div>
                 <div className="max-w-7xl mx-auto px-4 pb-20 pt-24 sm:pt-32">
-                    <HeadingTitle
-                        title='How it Works'
-                        description='Understand the process behind automated movement monitoring stage comparisons, and report generation'
-                        maxWidth='max-w-173.75'
-                        position=''
-                        text='text-left'
-                    />
+                    <div data-aos="fade-up">
+                        <HeadingTitle
+                            title='How it Works'
+                            description='Understand the process behind automated movement monitoring stage comparisons, and report generation'
+                            maxWidth='max-w-173.75'
+                            position=''
+                            text='text-left'
+                        />
+                    </div>
                     {/* 1st features */}
                     <div className="mt-16 md:mt-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                        {steps.map((step) => (
-                            <StepCard key={step.number} step={step} />
+                        {steps.map((step, index) => (
+                            <div
+                                key={step.number}
+                                data-aos={index % 2 === 0 ? "fade-up" : "fade-down"}
+                                data-aos-delay={index * 120}
+                            >
+                                <StepCard step={step} />
+                            </div>
                         ))}
                     </div>
                 </div>
-                <div className="py-10 lg:pt-16 flex flex-col sm:flex-row gap-4 sm:justify-center">
+                <div className="py-10 lg:pt-16 flex flex-col sm:flex-row gap-4 sm:justify-center" data-aos="fade-up" data-aos-delay="180">
                     <button className="bg-[#1A3155]/80 text-white backdrop-blur-md 
                             px-6 py-3 rounded-md font-semibold 
                             border border-white/20 

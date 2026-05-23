@@ -1,11 +1,20 @@
 import { Folder, ArrowLeft } from 'lucide-react';
+import { useGetProjectDataQuery } from '../../../features/dashborad/dashboardApi';
 const Projects = () => {
-   const projects = [
-    { title: 'Smart City Infrastructure', client: 'Urban Dev Corp', time: '2 HOURS AGO' },
-    { title: 'Coastal Erosion Monitor', client: 'Gov Environment', time: '1 DAY AGO' },
-    { title: 'Bridge Stress Analysis', client: 'Transport Authority', time: '3 MONTHS AGO' },
-    { title: 'Telecom Tower Survey', client: 'Nexus Connect', time: '5 HOURS AGO' },
-  ];
+    const { data: projectsList, isLoading } = useGetProjectDataQuery();
+
+    if(isLoading) {
+        return <ArrowLeft size={16} className="mr-2 animate-pulse text-slate-500" />
+    }
+
+    console.log(projectsList?.data); 
+
+    const projects = [
+        { title: 'Smart City Infrastructure', client: 'Urban Dev Corp', time: '2 HOURS AGO' },
+        { title: 'Coastal Erosion Monitor', client: 'Gov Environment', time: '1 DAY AGO' },
+        { title: 'Bridge Stress Analysis', client: 'Transport Authority', time: '3 MONTHS AGO' },
+        { title: 'Telecom Tower Survey', client: 'Nexus Connect', time: '5 HOURS AGO' },
+    ];
     return (
         <div className="text-slate-300">
             <div className=''>
