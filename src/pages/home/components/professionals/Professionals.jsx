@@ -7,7 +7,7 @@ import HeadingBorder from "../../../../components/shared/HeadingBorder";
 const Professionals = () => {
     useEffect(() => {
         AOS.init({
-            duration: 1200,
+            duration: 1000,
             easing: "ease-out-cubic",
             once: true,
             offset: 120,

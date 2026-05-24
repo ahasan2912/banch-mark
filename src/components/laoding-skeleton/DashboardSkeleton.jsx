@@ -6,7 +6,7 @@ const DashboardSkeleton = () => {
         <div className="animate-pulse">
             {/* Title */}
              <TitleSection
-                title='Movement Monitoring & Reporting System'
+                title='Movement Monitoring'
                 description='Platform overview and project management'
             />
 

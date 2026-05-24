@@ -1,8 +1,8 @@
 const Stats = ({ stat, index }) => {
     const changeClass = stat.trendDirection === "down" ? "text-rose-400" : "text-emerald-400";
-
+    
     return (
-        <div key={index} className="bg-[#162238] p-6 rounded-lg border border-[#90B5EE]">
+        <div key={index} className="bg-[#162238] p-6 rounded-lg border border-[#90B5EE]"  data-aos="zoom-in">
             <div className="flex items-center gap-3 mb-4">
                 <div className="px-3 py-2.5 bg-[#1e2d4a] rounded-md text-blue-400">{stat.icon}</div>
                 <h3 className="text-lg text-[#90B5EE] font-medium">{stat.title}</h3>

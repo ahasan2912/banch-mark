@@ -5,6 +5,8 @@ import TitleSection from "../components/TitleSection";
 import Stats from "./Stats";
 import { buildRevenueData, buildStats, formatCurrency, formatRelativeTime, formatTrend, getInitials } from "./utils";
 import { Link } from "react-router-dom";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const Dashboard = () => {
     const { data: homePageData, isLoading, isError } = useGetHomePageDataQuery();
@@ -15,8 +17,6 @@ const Dashboard = () => {
 
     const { cards = {}, recentActivity = [], revenueOverview = {} } = homePageData?.data || {};
 
-    console.log(recentActivity);
-    console.log(revenueOverview);
 
     const revenueTrend = formatTrend(revenueOverview.trend, "this year");
     const TrendIcon = revenueTrend?.direction === "down" ? TrendingDown : TrendingUp;
@@ -32,7 +32,7 @@ const Dashboard = () => {
         return (
             <div>
                 <TitleSection
-                    title="Movement Monitoring & Reporting System"
+                    title="Movement Monitoring"
                     description="Platform overview and project management"
                 />
                 <div className="mt-6 rounded-xl border border-rose-400/30 bg-rose-500/10 p-6 text-rose-100">
@@ -45,7 +45,7 @@ const Dashboard = () => {
     return (
         <div className="pb-5">
             <TitleSection
-                title="Movement Monitoring & Reporting System"
+                title="Movement Monitoring"
                 description="Platform overview and project management"
             />
 

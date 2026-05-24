@@ -8,7 +8,7 @@ import HeadingBorder from "../../../../components/shared/HeadingBorder";
 const Reports = () => {
     useEffect(() => {
         AOS.init({
-            duration: 1200,
+            duration: 1000,
             easing: "ease-out-cubic",
             once: true,
             offset: 120,

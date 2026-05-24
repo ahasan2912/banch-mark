@@ -8,7 +8,7 @@ import StepCard from "./StepCard";
 const Works = () => {
     useEffect(() => {
         AOS.init({
-            duration: 1200,
+            duration: 1000,
             easing: "ease-out-cubic",
             once: true,
             offset: 120,

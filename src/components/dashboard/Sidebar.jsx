@@ -1,17 +1,28 @@
 import { Banknote, FolderOpen, LayoutDashboard, LogOut, PanelsTopLeft, Settings, Users, X } from 'lucide-react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { images } from '../../assets/image';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { userLoggedOut } from '../../features/auth/authSlice';
+import { toast } from 'react-toastify';
+import Cookies from "js-cookie";
 
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { user } = useSelector((state) => state?.auth);
+
     const logOut = () => {
-        dispatch(userLoggedOut());
-        localStorage.clear();
-        navigate("/");
+       dispatch(userLoggedOut());
+       
+               Cookies.remove("accessToken", {
+                   secure: false,
+                   sameSite: "Strict",
+                   path: "/",
+               });
+       
+               toast.success("Logout successfully");
+               navigate('/');
     }
     return (
         <>
@@ -61,12 +72,16 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                     </nav>
 
                     {/* Profile Card */}
-                    <button onClick={logOut} className=" mt-auto py-4 pl-5 flex items-center gap-3 cursor-pointer">
+                    <button className=" mt-auto py-4 pl-5 flex items-center gap-3">
                         <div>
-                            <img className='w-12 h-12 rounded-full border border-slate-300 object-fill' src={images.profileImage} alt="admin-pic" />
+                            <img className='w-12 h-12 rounded-full border border-slate-300 object-contain' src={user.profileImage} alt="admin-pic" />
                         </div>
-                        <div className='flex items-center'>
-                            <span className='text-white hover:text-gray-300 cursor-pointer transition-colors text-base'>Mr. Virus</span>
+                        <div className='flex flex-col'>
+                            <span className='text-white hover:text-gray-300 transition-colors text-base'>{user.name}</span>
+                            <div onClick={logOut} className='flex items-center gap-1 text-gray-400 hover:text-white transition-colors mt-1'>
+                                <LogOut size={18} className='text-gray-400 hover:text-white transition-colors' />
+                                 <span className='text-white hover:text-gray-300 cursor-pointer transition-colors text-base'>Logout</span>
+                            </div>
                         </div>
                     </button>
                 </div>
