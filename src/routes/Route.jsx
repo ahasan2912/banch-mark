@@ -1,54 +1,58 @@
 import { createBrowserRouter } from "react-router-dom";
+import React, { Suspense } from "react";
 import MainLayout from "../layout/MainLayout";
-import Home from "../pages/home/Home";
-import LogIn from "../pages/auth/LogIn"
-import Register from "../pages/auth/Register";
 import DashboardLayout from "../layout/DashboardLayout";
-import Dashboard from "../pages/dashboard/home/Dashboard";
-import Features from "../pages/features/Features";
-import Workprocess from "../pages/work/Workprocess";
-import Guidance from "../pages/guidance/Guidance";
-import Registration from "../pages/guidance/components/subroute/Registration";
-import GuidanceHome from "../pages/guidance/components/GuidanceHome";
-import Project from "../pages/guidance/components/subroute/Project";
-import UploadBaseline from "../pages/guidance/components/subroute/UploadBaseline";
-import MonitoringStage from "../pages/guidance/components/subroute/MonitoringStage";
-import GenereateReport from "../pages/guidance/components/subroute/GenereateReport";
-import AddSection from "../pages/guidance/components/subroute/AddSection";
-import AddTarget from "../pages/guidance/components/subroute/AddTarget";
-import SurveCSVFile from "../pages/guidance/components/subroute/SurveCSVFile";
-import AddSurve from "../pages/guidance/components/subroute/AddSurve";
-import EditProject from "../pages/guidance/components/subroute/EditProject";
-import DeleteSection from "../pages/guidance/components/subroute/DeleteSection";
-import ContactUs from "../pages/footer/ContactUs";
-import Privacy from "../pages/footer/Privacy";
-import TermCondition from "../pages/footer/TermCondition";
-import HelpSupport from "../pages/footer/HelpSupport";
-import ForgotPassword from "../pages/auth/ForgotPassword";
-import ResetPassword from "../pages/auth/ResetPassword";
-import UpdatePassword from "../pages/auth/UpdatePassword";
-import ReportGeneration from "../pages/report-generate/ReportGeneration";
-import ReportGenerationHome from "../pages/report-generate/component/ReportGenerationHome";
-import ViewSurvey from "../pages/report-generate/subroute/ViewSurvey";
-import UploadDrawings from "../pages/report-generate/subroute/uploaded-drawing/UploadDrawings";
-import ArchiveProject from "../pages/report-generate/subroute/ArchiveProject";
-import ViewReport from "../pages/report-generate/subroute/ViewReport";
-import ReinstateProject from "../pages/report-generate/subroute/ReinstateProject";
-import SelectProject from "../pages/report-generate/subroute/SelectProject";
-import ViewEvent from "../pages/report-generate/subroute/view-event/ViewEvent";
-import AdditionalInfo from "../pages/report-generate/subroute/additional-info/AdditionalInfo";
-import Users from "../pages/dashboard/users/Users";
-import Projects from "../pages/dashboard/projects/Projects";
-import Reports from "../pages/dashboard/reports/Reports";
-import Revenue from "../pages/dashboard/revenue/Revenue";
-import Settings from "../pages/dashboard/setting/Settings";
-import OtpVerification from "../pages/auth/OtpVerification";
+import LoadingSpiner from "../components/LoadingSpiner";
 import PrivateRoute from "./PrivateRoute";
-import ForgotPasswordOTP from "../pages/auth/ForgotPasswordOTP";
-import ErrorPage from "../pages/ErrorPage";
-import Success from "../pages/payment/Success";
-import Cancel from "../pages/payment/Cancel";
 import AdminRoute from "./AdminRoute";
+import ErrorPage from "../pages/ErrorPage";
+
+// Lazy load page components for code splitting
+const Home = React.lazy(() => import("../pages/home/Home"));
+const LogIn = React.lazy(() => import("../pages/auth/LogIn"));
+const Register = React.lazy(() => import("../pages/auth/Register"));
+const Features = React.lazy(() => import("../pages/features/Features"));
+const Workprocess = React.lazy(() => import("../pages/work/Workprocess"));
+const Guidance = React.lazy(() => import("../pages/guidance/Guidance"));
+const Registration = React.lazy(() => import("../pages/guidance/components/subroute/Registration"));
+const GuidanceHome = React.lazy(() => import("../pages/guidance/components/GuidanceHome"));
+const Project = React.lazy(() => import("../pages/guidance/components/subroute/Project"));
+const UploadBaseline = React.lazy(() => import("../pages/guidance/components/subroute/UploadBaseline"));
+const MonitoringStage = React.lazy(() => import("../pages/guidance/components/subroute/MonitoringStage"));
+const GenereateReport = React.lazy(() => import("../pages/guidance/components/subroute/GenereateReport"));
+const AddSection = React.lazy(() => import("../pages/guidance/components/subroute/AddSection"));
+const AddTarget = React.lazy(() => import("../pages/guidance/components/subroute/AddTarget"));
+const SurveCSVFile = React.lazy(() => import("../pages/guidance/components/subroute/SurveCSVFile"));
+const AddSurve = React.lazy(() => import("../pages/guidance/components/subroute/AddSurve"));
+const EditProject = React.lazy(() => import("../pages/guidance/components/subroute/EditProject"));
+const DeleteSection = React.lazy(() => import("../pages/guidance/components/subroute/DeleteSection"));
+const ContactUs = React.lazy(() => import("../pages/footer/ContactUs"));
+const Privacy = React.lazy(() => import("../pages/footer/Privacy"));
+const TermCondition = React.lazy(() => import("../pages/footer/TermCondition"));
+const HelpSupport = React.lazy(() => import("../pages/footer/HelpSupport"));
+const ForgotPassword = React.lazy(() => import("../pages/auth/ForgotPassword"));
+const ResetPassword = React.lazy(() => import("../pages/auth/ResetPassword"));
+const UpdatePassword = React.lazy(() => import("../pages/auth/UpdatePassword"));
+const ReportGeneration = React.lazy(() => import("../pages/report-generate/ReportGeneration"));
+const ReportGenerationHome = React.lazy(() => import("../pages/report-generate/component/ReportGenerationHome"));
+const ViewSurvey = React.lazy(() => import("../pages/report-generate/subroute/ViewSurvey"));
+const UploadDrawings = React.lazy(() => import("../pages/report-generate/subroute/uploaded-drawing/UploadDrawings"));
+const ArchiveProject = React.lazy(() => import("../pages/report-generate/subroute/ArchiveProject"));
+const ViewReport = React.lazy(() => import("../pages/report-generate/subroute/ViewReport"));
+const ReinstateProject = React.lazy(() => import("../pages/report-generate/subroute/ReinstateProject"));
+const SelectProject = React.lazy(() => import("../pages/report-generate/subroute/SelectProject"));
+const ViewEvent = React.lazy(() => import("../pages/report-generate/subroute/view-event/ViewEvent"));
+const AdditionalInfo = React.lazy(() => import("../pages/report-generate/subroute/additional-info/AdditionalInfo"));
+const Dashboard = React.lazy(() => import("../pages/dashboard/home/Dashboard"));
+const Users = React.lazy(() => import("../pages/dashboard/users/Users"));
+const Projects = React.lazy(() => import("../pages/dashboard/projects/Projects"));
+const Reports = React.lazy(() => import("../pages/dashboard/reports/Reports"));
+const Revenue = React.lazy(() => import("../pages/dashboard/revenue/Revenue"));
+const Settings = React.lazy(() => import("../pages/dashboard/setting/Settings"));
+const OtpVerification = React.lazy(() => import("../pages/auth/OtpVerification"));
+const ForgotPasswordOTP = React.lazy(() => import("../pages/auth/ForgotPasswordOTP"));
+const Success = React.lazy(() => import("../pages/payment/Success"));
+const Cancel = React.lazy(() => import("../pages/payment/Cancel"));
 
 const router = createBrowserRouter([
     {
@@ -58,165 +62,161 @@ const router = createBrowserRouter([
         children: [
             {
                 path: "/",
-                element: <Home />,
+                element: <Suspense fallback={<LoadingSpiner />}><Home /></Suspense>,
             },
             {
                 path: "/features",
-                element: <Features />,
+                element: <Suspense fallback={<LoadingSpiner />}><Features /></Suspense>,
             },
             {
                 path: "/how-it-work",
-                element: <Workprocess />,
+                element: <Suspense fallback={<LoadingSpiner />}><Workprocess /></Suspense>,
             },
             {
                 path: "/guidance",
-                element: <Guidance />,
+                element: <Suspense fallback={<LoadingSpiner />}><Guidance /></Suspense>,
                 children: [
                     {
                         index: true,
-                        element: <GuidanceHome />
+                        element: <Suspense fallback={<LoadingSpiner />}><GuidanceHome /></Suspense>
                     },
                     {
                         path: "registration",
-                        element: <Registration />
+                        element: <Suspense fallback={<LoadingSpiner />}><Registration /></Suspense>
                     },
                     {
                         path: "project-creation",
-                        element: <Project />
+                        element: <Suspense fallback={<LoadingSpiner />}><Project /></Suspense>
                     },
                     {
                         path: "upload-baseline",
-                        element: <UploadBaseline />
+                        element: <Suspense fallback={<LoadingSpiner />}><UploadBaseline /></Suspense>
                     },
                     {
                         path: "monitoring-stages",
-                        element: <MonitoringStage />
+                        element: <Suspense fallback={<LoadingSpiner />}><MonitoringStage /></Suspense>
                     },
                     {
                         path: "generate-reports",
-                        element: <GenereateReport />
+                        element: <Suspense fallback={<LoadingSpiner />}><GenereateReport /></Suspense>
                     },
                     {
                         path: "add-section",
-                        element: <AddSection />
+                        element: <Suspense fallback={<LoadingSpiner />}><AddSection /></Suspense>
                     },
                     {
                         path: "add-target",
-                        element: <AddTarget />
+                        element: <Suspense fallback={<LoadingSpiner />}><AddTarget /></Suspense>
                     },
                     {
                         path: "upload-survey-csv",
-                        element: <SurveCSVFile />
-                    },
-                    {
-                        path: "add-target",
-                        element: <AddTarget />
+                        element: <Suspense fallback={<LoadingSpiner />}><SurveCSVFile /></Suspense>
                     },
                     {
                         path: "add-survey",
-                        element: <AddSurve />
+                        element: <Suspense fallback={<LoadingSpiner />}><AddSurve /></Suspense>
                     },
                     {
                         path: "edit-project",
-                        element: <EditProject />
+                        element: <Suspense fallback={<LoadingSpiner />}><EditProject /></Suspense>
                     },
                     {
                         path: "delete-section",
-                        element: <DeleteSection />
+                        element: <Suspense fallback={<LoadingSpiner />}><DeleteSection /></Suspense>
                     },
                 ]
             },
             {
                 path: "/contact-us",
-                element: <ContactUs />,
+                element: <Suspense fallback={<LoadingSpiner />}><ContactUs /></Suspense>,
             },
             {
                 path: "/privacy-policy",
-                element: <Privacy />,
+                element: <Suspense fallback={<LoadingSpiner />}><Privacy /></Suspense>,
             },
             {
                 path: "/terms-condition",
-                element: <TermCondition />,
+                element: <Suspense fallback={<LoadingSpiner />}><TermCondition /></Suspense>,
             },
             {
                 path: "/help-support",
-                element: <HelpSupport />,
+                element: <Suspense fallback={<LoadingSpiner />}><HelpSupport /></Suspense>,
             },
             {
                 path: "/success",
-                element: <Success />,
+                element: <Suspense fallback={<LoadingSpiner />}><Success /></Suspense>,
             },
             {
                 path: "/cancel",
-                element: <Cancel />,
+                element: <Suspense fallback={<LoadingSpiner />}><Cancel /></Suspense>,
             },
             {
                 path: "/login",
-                element: <LogIn />,
+                element: <Suspense fallback={<LoadingSpiner />}><LogIn /></Suspense>,
             },
             {
                 path: "/register",
-                element: <Register />,
+                element: <Suspense fallback={<LoadingSpiner />}><Register /></Suspense>,
             },
             {
                 path: "/otp-verification",
-                element: <OtpVerification />
+                element: <Suspense fallback={<LoadingSpiner />}><OtpVerification /></Suspense>
             },
             {
                 path: "/forgot-password",
-                element: <ForgotPassword />,
+                element: <Suspense fallback={<LoadingSpiner />}><ForgotPassword /></Suspense>,
             },
             {
                 path: "/forgot-password-otp",
-                element: <ForgotPasswordOTP />,
+                element: <Suspense fallback={<LoadingSpiner />}><ForgotPasswordOTP /></Suspense>,
             },
             {
                 path: "/reset-password",
-                element: <ResetPassword />,
+                element: <Suspense fallback={<LoadingSpiner />}><ResetPassword /></Suspense>,
             },
             {
                 path: "/update-password",
-                element: <UpdatePassword />,
+                element: <Suspense fallback={<LoadingSpiner />}><UpdatePassword /></Suspense>,
             },
             {
                 path: "/report-generation",
-                element: <PrivateRoute><ReportGeneration /></PrivateRoute>,
+                element: <Suspense fallback={<LoadingSpiner />}><PrivateRoute><ReportGeneration /></PrivateRoute></Suspense>,
                 children: [
                     {
                         index: true,
-                        element: <ReportGenerationHome />
+                        element: <Suspense fallback={<LoadingSpiner />}><ReportGenerationHome /></Suspense>
                     },
                     {
                         path: "view-servey",
-                        element: <ViewSurvey />
+                        element: <Suspense fallback={<LoadingSpiner />}><ViewSurvey /></Suspense>
                     },
                     {
                         path: "view-event",
-                        element: <ViewEvent />
+                        element: <Suspense fallback={<LoadingSpiner />}><ViewEvent /></Suspense>
                     },
                     {
                         path: "additional-info",
-                        element: <AdditionalInfo />
+                        element: <Suspense fallback={<LoadingSpiner />}><AdditionalInfo /></Suspense>
                     },
                     {
                         path: "upload-drawings",
-                        element: <UploadDrawings />
+                        element: <Suspense fallback={<LoadingSpiner />}><UploadDrawings /></Suspense>
                     },
                     {
                         path: "archive-project",
-                        element: <ArchiveProject />
+                        element: <Suspense fallback={<LoadingSpiner />}><ArchiveProject /></Suspense>
                     },
                     {
                         path: "select-project",
-                        element: <SelectProject />
+                        element: <Suspense fallback={<LoadingSpiner />}><SelectProject /></Suspense>
                     },
                     {
                         path: "view-report",
-                        element: <ViewReport />
+                        element: <Suspense fallback={<LoadingSpiner />}><ViewReport /></Suspense>
                     },
                     {
                         path: "reinstate-project",
-                        element: <ReinstateProject />
+                        element: <Suspense fallback={<LoadingSpiner />}><ReinstateProject /></Suspense>
                     },
                 ]
             },
@@ -224,31 +224,31 @@ const router = createBrowserRouter([
     },
     {
         path: 'dashboard',
-        element: <AdminRoute><DashboardLayout /></AdminRoute>,
+        element: <Suspense fallback={<LoadingSpiner />}><AdminRoute><DashboardLayout /></AdminRoute></Suspense>,
         children: [
             {
                 path: 'admin-dashboard',
-                element: <Dashboard />
+                element: <Suspense fallback={<LoadingSpiner />}><Dashboard /></Suspense>
             },
             {
                 path: 'users',
-                element: <Users />
+                element: <Suspense fallback={<LoadingSpiner />}><Users /></Suspense>
             },
             {
                 path: 'projects',
-                element: <Projects />
+                element: <Suspense fallback={<LoadingSpiner />}><Projects /></Suspense>
             },
             {
                 path: 'report',
-                element: <Reports />
+                element: <Suspense fallback={<LoadingSpiner />}><Reports /></Suspense>
             },
             {
                 path: 'revenue',
-                element: <Revenue />
+                element: <Suspense fallback={<LoadingSpiner />}><Revenue /></Suspense>
             },
             {
                 path: 'setting',
-                element: <Settings />
+                element: <Suspense fallback={<LoadingSpiner />}><Settings /></Suspense>
             },
         ]
     }
