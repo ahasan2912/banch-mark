@@ -5,8 +5,6 @@ import TitleSection from "../components/TitleSection";
 import Stats from "./Stats";
 import { buildRevenueData, buildStats, formatCurrency, formatRelativeTime, formatTrend, getInitials } from "./utils";
 import { Link } from "react-router-dom";
-import AOS from "aos";
-import "aos/dist/aos.css";
 
 const Dashboard = () => {
     const { data: homePageData, isLoading, isError } = useGetHomePageDataQuery();
@@ -16,7 +14,6 @@ const Dashboard = () => {
     }
 
     const { cards = {}, recentActivity = [], revenueOverview = {} } = homePageData?.data || {};
-
 
     const revenueTrend = formatTrend(revenueOverview.trend, "this year");
     const TrendIcon = revenueTrend?.direction === "down" ? TrendingDown : TrendingUp;
